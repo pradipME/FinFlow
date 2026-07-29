@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RefreshTokenService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.auth.service</a> &gt; <span class="el_source">RefreshTokenService.java</span></div><h1>RefreshTokenService.java</h1><pre class="source lang-java linenums">package com.finflow.modules.auth.service;
+
+import com.finflow.modules.auth.domain.RefreshToken;
+import com.finflow.modules.auth.domain.User;
+import com.finflow.modules.auth.dto.AuthenticationResult;
+import com.finflow.modules.auth.repository.RefreshTokenRepository;
+import com.finflow.modules.auth.repository.UserRepository;
+import com.finflow.shared.config.JwtTokenProvider;
+import com.finflow.shared.exception.UnauthorizedException;
+import com.finflow.shared.exception.ValidationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+/**
+ * Core service for refresh token operations.
+ *
+ * &lt;p&gt;Orchestrates the complete refresh token lifecycle: creation during login,
+ * validation during refresh, rotation on use, and revocation on security events.&lt;/p&gt;
+ *
+ * &lt;h3&gt;Security Design&lt;/h3&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;Refresh tokens are high-entropy random values (not JWTs).&lt;/li&gt;
+ *   &lt;li&gt;Only SHA-256 hashes are stored in database and Redis.&lt;/li&gt;
+ *   &lt;li&gt;Rotation is mandatory — every refresh generates new tokens.&lt;/li&gt;
+ *   &lt;li&gt;Reuse of revoked tokens triggers family-wide revocation.&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * @author FinFlow Engineering
+ * @since 1.0.0
+ */
+@Service
+public class RefreshTokenService {
+
+<span class="nc" id="L42">    private static final Logger log = LoggerFactory.getLogger(RefreshTokenService.class);</span>
+
+    private final SessionService sessionService;
+    private final UserRepository userRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final ApplicationEventPublisher eventPublisher;
+
+    public RefreshTokenService(SessionService sessionService,
+                               UserRepository userRepository,
+                               JwtTokenProvider jwtTokenProvider,
+<span class="nc" id="L52">                               ApplicationEventPublisher eventPublisher) {</span>
+<span class="nc" id="L53">        this.sessionService = sessionService;</span>
+<span class="nc" id="L54">        this.userRepository = userRepository;</span>
+<span class="nc" id="L55">        this.jwtTokenProvider = jwtTokenProvider;</span>
+<span class="nc" id="L56">        this.eventPublisher = eventPublisher;</span>
+<span class="nc" id="L57">    }</span>
+
+    /**
+     * Creates a new refresh token session for a newly authenticated user.
+     *
+     * &lt;p&gt;Called by {@link AuthenticationService} after successful password verification.
+     * Returns the raw refresh token to be included in the login response.&lt;/p&gt;
+     *
+     * @param user          the authenticated user
+     * @param ipAddress     client IP address
+     * @param userAgent     client User-Agent
+     * @return the raw refresh token (shown once to client)
+     */
+    @Transactional
+    public String createRefreshToken(User user, String ipAddress, String userAgent) {
+<span class="nc" id="L72">        return createRefreshToken(user, ipAddress, userAgent, null);</span>
+    }
+
+    @Transactional
+    public String createRefreshToken(User user, String ipAddress, String userAgent, String familyId) {
+<span class="nc" id="L77">        SessionService.RefreshTokenSession session = sessionService.createSession(user, ipAddress, userAgent, familyId);</span>
+<span class="nc" id="L78">        log.info(&quot;Refresh token created for user={}, sessionId={}, familyId={}&quot;,</span>
+<span class="nc" id="L79">                 user.getId(), session.sessionId(), session.familyId());</span>
+<span class="nc" id="L80">        return session.rawToken();</span>
+    }
+
+    /**
+     * Refreshes the access token using a valid refresh token.
+     *
+     * &lt;p&gt;Flow:&lt;/p&gt;
+     * &lt;ol&gt;
+     *   &lt;li&gt;Validate the refresh token format.&lt;/li&gt;
+     *   &lt;li&gt;Look up the session in Redis/MySQL.&lt;/li&gt;
+     *   &lt;li&gt;Revoke the old refresh token.&lt;/li&gt;
+     *   &lt;li&gt;Generate new access token + new refresh token.&lt;/li&gt;
+     *   &lt;li&gt;Return both tokens to the client.&lt;/li&gt;
+     * &lt;/ol&gt;
+     *
+     * @param rawRefreshToken the refresh token presented by the client
+     * @param ipAddress       client IP address
+     * @param userAgent       client User-Agent
+     * @return the new access token and refresh token
+     * @throws UnauthorizedException if the refresh token is invalid, expired, or revoked
+     */
+    @Transactional
+    public RefreshResult refresh(String rawRefreshToken, String ipAddress, String userAgent) {
+        // Validate session
+<span class="nc" id="L104">        Optional&lt;SessionService.RefreshTokenSession&gt; sessionOpt =</span>
+<span class="nc" id="L105">                sessionService.validateSession(rawRefreshToken, ipAddress);</span>
+
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (sessionOpt.isEmpty()) {</span>
+<span class="nc" id="L108">            log.warn(&quot;Invalid refresh token presented from ip={}&quot;, ipAddress);</span>
+<span class="nc" id="L109">            throw UnauthorizedException.invalidCredentials();</span>
+        }
+
+<span class="nc" id="L112">        SessionService.RefreshTokenSession currentSession = sessionOpt.get();</span>
+
+        // Revoke old refresh token (rotation is mandatory)
+<span class="nc" id="L115">        sessionService.revokeSession(rawRefreshToken, ipAddress);</span>
+
+        // Look up user
+<span class="nc" id="L118">        Optional&lt;User&gt; userOpt = userRepository.findById(UUID.fromString(currentSession.sessionId()));</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        if (userOpt.isEmpty()) {</span>
+<span class="nc" id="L120">            Optional&lt;String&gt; userIdOpt = sessionService.getUserIdFromSession(currentSession.sessionId());</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            if (userIdOpt.isPresent()) {</span>
+<span class="nc" id="L122">                userOpt = userRepository.findById(UUID.fromString(userIdOpt.get()));</span>
+            }
+        }
+
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        if (userOpt.isEmpty()) {</span>
+<span class="nc" id="L127">            throw UnauthorizedException.invalidCredentials();</span>
+        }
+
+<span class="nc" id="L130">        User user = userOpt.get();</span>
+
+        // Generate new access token
+<span class="nc" id="L133">        List&lt;String&gt; roles = loadUserRoleNames(user);</span>
+<span class="nc" id="L134">        String newAccessToken = jwtTokenProvider.generateAccessToken(</span>
+<span class="nc" id="L135">                user.getId().toString(), user.getEmail(), roles, List.of());</span>
+
+        // Generate new refresh token (preserve family ID for reuse detection)
+<span class="nc" id="L138">        String newRefreshToken = createRefreshToken(user, ipAddress, userAgent, currentSession.familyId());</span>
+
+        // Publish rotation event
+<span class="nc" id="L141">        eventPublisher.publishEvent(new RefreshTokenRotatedEvent(</span>
+<span class="nc" id="L142">                user.getId().toString(), user.getId().toString(),</span>
+<span class="nc" id="L143">                currentSession.sessionId(), currentSession.sessionId(),</span>
+<span class="nc" id="L144">                currentSession.familyId(), ipAddress, LocalDateTime.now()));</span>
+
+<span class="nc" id="L146">        log.info(&quot;Token refreshed: userId={}, sessionId={}&quot;, user.getId(), currentSession.sessionId());</span>
+
+<span class="nc" id="L148">        return new RefreshResult(newAccessToken, newRefreshToken);</span>
+    }
+
+    /**
+     * Revokes a specific refresh token.
+     *
+     * @param rawRefreshToken the token to revoke
+     * @param ipAddress       client IP for audit
+     * @return true if revoked, false if not found
+     */
+    @Transactional
+    public boolean revokeToken(String rawRefreshToken, String ipAddress) {
+<span class="nc" id="L160">        return sessionService.revokeSession(rawRefreshToken, ipAddress);</span>
+    }
+
+    /**
+     * Revokes all refresh tokens for a user.
+     *
+     * @param userId the user ID
+     */
+    @Transactional
+    public void revokeAllUserTokens(UUID userId) {
+<span class="nc" id="L170">        sessionService.revokeAllUserSessions(userId);</span>
+<span class="nc" id="L171">        log.info(&quot;All refresh tokens revoked for userId={}&quot;, userId);</span>
+<span class="nc" id="L172">    }</span>
+
+    /**
+     * Gets the active session count for a user.
+     *
+     * @param userId the user ID
+     * @return the number of active sessions
+     */
+    public long getActiveSessionCount(UUID userId) {
+<span class="nc" id="L181">        return sessionService.getActiveSessionCount(userId);</span>
+    }
+
+    private List&lt;String&gt; loadUserRoleNames(User user) {
+<span class="nc" id="L185">        return user.getRoles().stream()</span>
+<span class="nc" id="L186">                .map(ur -&gt; ur.getRole().getName())</span>
+<span class="nc" id="L187">                .toList();</span>
+    }
+
+    /**
+     * Result of a token refresh operation.
+     */
+<span class="nc" id="L193">    public record RefreshResult(String accessToken, String refreshToken) {}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

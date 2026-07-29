@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BeneficiaryService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.beneficiaries.service</a> &gt; <span class="el_source">BeneficiaryService.java</span></div><h1>BeneficiaryService.java</h1><pre class="source lang-java linenums">package com.finflow.modules.beneficiaries.service;
+
+import com.finflow.modules.beneficiaries.domain.Beneficiary;
+import com.finflow.modules.beneficiaries.domain.BeneficiaryStatus;
+import com.finflow.modules.beneficiaries.dto.BeneficiaryResponse;
+import com.finflow.modules.beneficiaries.dto.CreateBeneficiaryRequest;
+import com.finflow.modules.beneficiaries.dto.UpdateBeneficiaryRequest;
+import com.finflow.modules.beneficiaries.mapper.BeneficiaryMapper;
+import com.finflow.modules.beneficiaries.repository.BeneficiaryRepository;
+import com.finflow.modules.beneficiaries.validator.BeneficiaryValidator;
+import com.finflow.shared.dto.PageResponse;
+import com.finflow.shared.util.SecurityUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
+
+@Service
+public class BeneficiaryService {
+
+<span class="fc" id="L25">    private static final Logger log = LoggerFactory.getLogger(BeneficiaryService.class);</span>
+
+    private final BeneficiaryRepository beneficiaryRepository;
+    private final BeneficiaryMapper beneficiaryMapper;
+    private final BeneficiaryValidator beneficiaryValidator;
+
+    public BeneficiaryService(BeneficiaryRepository beneficiaryRepository,
+                              BeneficiaryMapper beneficiaryMapper,
+<span class="fc" id="L33">                              BeneficiaryValidator beneficiaryValidator) {</span>
+<span class="fc" id="L34">        this.beneficiaryRepository = beneficiaryRepository;</span>
+<span class="fc" id="L35">        this.beneficiaryMapper = beneficiaryMapper;</span>
+<span class="fc" id="L36">        this.beneficiaryValidator = beneficiaryValidator;</span>
+<span class="fc" id="L37">    }</span>
+
+    @Transactional
+    public BeneficiaryResponse createBeneficiary(CreateBeneficiaryRequest request) {
+<span class="fc" id="L41">        String userId = SecurityUtil.getCurrentUserId();</span>
+<span class="fc" id="L42">        log.info(&quot;Creating beneficiary: userId={}, name={}&quot;, userId, request.beneficiaryName());</span>
+
+<span class="fc" id="L44">        beneficiaryValidator.validateNoDuplicateAccount(userId, request.accountNumber());</span>
+
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        String currency = request.currency() != null ? request.currency() : &quot;USD&quot;;</span>
+
+<span class="fc" id="L48">        Beneficiary beneficiary = new Beneficiary(userId, request.beneficiaryName(), request.accountNumber());</span>
+<span class="fc" id="L49">        beneficiary.setNickname(request.nickname());</span>
+<span class="fc" id="L50">        beneficiary.setEmail(request.email());</span>
+<span class="fc" id="L51">        beneficiary.setBankName(request.bankName());</span>
+<span class="fc" id="L52">        beneficiary.setRoutingNumber(request.routingNumber());</span>
+<span class="fc" id="L53">        beneficiary.setIban(request.iban());</span>
+<span class="fc" id="L54">        beneficiary.setSwiftCode(request.swiftCode());</span>
+<span class="fc" id="L55">        beneficiary.setCurrency(currency);</span>
+
+<span class="fc" id="L57">        beneficiary = beneficiaryRepository.save(beneficiary);</span>
+<span class="fc" id="L58">        log.info(&quot;Beneficiary created: id={}&quot;, beneficiary.getId());</span>
+<span class="fc" id="L59">        return beneficiaryMapper.toResponse(beneficiary);</span>
+    }
+
+    @Transactional(readOnly = true)
+    public BeneficiaryResponse getBeneficiary(UUID beneficiaryId) {
+<span class="fc" id="L64">        String userId = SecurityUtil.getCurrentUserId();</span>
+<span class="fc" id="L65">        Beneficiary beneficiary = beneficiaryValidator.getAndValidateBeneficiary(beneficiaryId, userId);</span>
+<span class="fc" id="L66">        return beneficiaryMapper.toResponse(beneficiary);</span>
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse&lt;BeneficiaryResponse&gt; getMyBeneficiaries(Pageable pageable) {
+<span class="nc" id="L71">        String userId = SecurityUtil.getCurrentUserId();</span>
+<span class="nc" id="L72">        Page&lt;Beneficiary&gt; page = beneficiaryRepository.findByOwnerId(userId, pageable);</span>
+<span class="nc" id="L73">        return PageResponse.of(</span>
+<span class="nc" id="L74">                beneficiaryMapper.toResponseList(page.getContent()),</span>
+<span class="nc" id="L75">                page.getNumber(), page.getSize(), page.getTotalElements());</span>
+    }
+
+    @Transactional
+    public BeneficiaryResponse updateBeneficiary(UUID beneficiaryId, UpdateBeneficiaryRequest request) {
+<span class="fc" id="L80">        String userId = SecurityUtil.getCurrentUserId();</span>
+<span class="fc" id="L81">        log.info(&quot;Updating beneficiary: id={}, userId={}&quot;, beneficiaryId, userId);</span>
+
+<span class="fc" id="L83">        Beneficiary beneficiary = beneficiaryValidator.getAndValidateBeneficiary(beneficiaryId, userId);</span>
+
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        if (request.beneficiaryName() != null) beneficiary.setBeneficiaryName(request.beneficiaryName());</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">        if (request.nickname() != null) beneficiary.setNickname(request.nickname());</span>
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">        if (request.email() != null) beneficiary.setEmail(request.email());</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (request.bankName() != null) beneficiary.setBankName(request.bankName());</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">        if (request.accountNumber() != null) {</span>
+<span class="nc" id="L90">            beneficiaryValidator.validateNoDuplicateAccountExcluding(</span>
+<span class="nc" id="L91">                    userId, request.accountNumber(), beneficiaryId);</span>
+<span class="nc" id="L92">            beneficiary.setAccountNumber(request.accountNumber());</span>
+        }
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if (request.routingNumber() != null) beneficiary.setRoutingNumber(request.routingNumber());</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        if (request.iban() != null) beneficiary.setIban(request.iban());</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">        if (request.swiftCode() != null) beneficiary.setSwiftCode(request.swiftCode());</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (request.currency() != null) beneficiary.setCurrency(request.currency());</span>
+
+<span class="fc" id="L99">        beneficiary = beneficiaryRepository.save(beneficiary);</span>
+<span class="fc" id="L100">        log.info(&quot;Beneficiary updated: id={}&quot;, beneficiaryId);</span>
+<span class="fc" id="L101">        return beneficiaryMapper.toResponse(beneficiary);</span>
+    }
+
+    @Transactional
+    public void deleteBeneficiary(UUID beneficiaryId) {
+<span class="fc" id="L106">        String userId = SecurityUtil.getCurrentUserId();</span>
+<span class="fc" id="L107">        log.info(&quot;Deleting beneficiary: id={}, userId={}&quot;, beneficiaryId, userId);</span>
+
+<span class="fc" id="L109">        Beneficiary beneficiary = beneficiaryValidator.getAndValidateBeneficiary(beneficiaryId, userId);</span>
+<span class="fc" id="L110">        beneficiary.softDelete(userId);</span>
+<span class="fc" id="L111">        beneficiaryRepository.save(beneficiary);</span>
+
+<span class="fc" id="L113">        log.info(&quot;Beneficiary deleted: id={}&quot;, beneficiaryId);</span>
+<span class="fc" id="L114">    }</span>
+
+    @Transactional
+    public BeneficiaryResponse changeStatus(UUID beneficiaryId, BeneficiaryStatus newStatus) {
+<span class="fc" id="L118">        String userId = SecurityUtil.getCurrentUserId();</span>
+<span class="fc" id="L119">        log.info(&quot;Changing beneficiary status: id={}, status={}, userId={}&quot;, beneficiaryId, newStatus, userId);</span>
+
+<span class="fc" id="L121">        Beneficiary beneficiary = beneficiaryValidator.getAndValidateBeneficiary(beneficiaryId, userId);</span>
+
+<span class="pc bpc" id="L123" title="3 of 4 branches missed.">        switch (newStatus) {</span>
+<span class="nc" id="L124">            case ACTIVE -&gt; beneficiary.activate();</span>
+<span class="nc" id="L125">            case INACTIVE -&gt; beneficiary.deactivate();</span>
+<span class="fc" id="L126">            case BLOCKED -&gt; beneficiary.block();</span>
+        }
+
+<span class="fc" id="L129">        beneficiary = beneficiaryRepository.save(beneficiary);</span>
+<span class="fc" id="L130">        log.info(&quot;Beneficiary status changed: id={}, status={}&quot;, beneficiaryId, newStatus);</span>
+<span class="fc" id="L131">        return beneficiaryMapper.toResponse(beneficiary);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

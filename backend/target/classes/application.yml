@@ -1,0 +1,99 @@
+spring:
+  application:
+    name: finflow-backend
+
+  profiles:
+    active: dev
+
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+      fail-on-empty-beans: false
+    deserialization:
+      fail-on-unknown-properties: false
+      fail-on-null-for-primitives: true
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+    time-zone: UTC
+
+  output:
+    ansi:
+      enabled: detect
+
+server:
+  port: 8080
+  tomcat:
+    max-threads: 200
+    min-spare-threads: 20
+    accept-count: 100
+    connection-timeout: 10s
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/css,text/javascript
+    min-response-size: 1024
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    default-models-expand-depth: 1
+    default-model-display-name: never
+    try-it-out-enabled: false
+  packages-to-scan: com.finflow
+  default-produces-media-type: application/json
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,env,loggers
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when_authorized
+      show-components: when_authorized
+      roles: ADMIN
+    loggers:
+      enabled: true
+  health:
+    db:
+      enabled: true
+    diskspace:
+      enabled: true
+    redis:
+      enabled: true
+
+logging:
+  level:
+    root: INFO
+    com.finflow: INFO
+    org.springframework.security: WARN
+    org.springframework.web: INFO
+    org.flywaydb: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{requestId}] %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{requestId}] %logger{36} - %msg%n"
+  file:
+    name: logs/finflow.log
+
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+
+finflow:
+  jwt:
+    secret: ${FINFLOW_JWT_SECRET:default-dev-secret-must-be-replaced-in-production-at-least-64-bytes!!}
+    access-token-expiration-ms: 900000
+    issuer: finflow
+    audience: finflow-api
+    clock-skew-ms: 30000
+    signing-keys:
+      primary: ${FINFLOW_JWT_SECRET:default-dev-secret-must-be-replaced-in-production-at-least-64-bytes!!}
+    active-key-id: primary
+  session:
+    max-active-sessions: 5
+    refresh-token-ttl-days: 30

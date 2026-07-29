@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CardTransaction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.cards.domain</a> &gt; <span class="el_source">CardTransaction.java</span></div><h1>CardTransaction.java</h1><pre class="source lang-java linenums">package com.finflow.modules.cards.domain;
+
+import com.finflow.shared.domain.BaseEntity;
+import com.finflow.shared.domain.BaseEntityListener;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = &quot;card_transactions&quot;, catalog = &quot;finflow_accounts&quot;)
+@EntityListeners({BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
+public class CardTransaction extends BaseEntity {
+
+    @Column(name = &quot;card_id&quot;, nullable = false, length = 36)
+    private String cardId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = &quot;transaction_type&quot;, nullable = false, length = 20)
+    private CardTransactionType transactionType;
+
+    @Column(name = &quot;amount_cents&quot;, nullable = false)
+    private Long amountCents;
+
+    @Column(name = &quot;currency&quot;, nullable = false, length = 3)
+    private String currency;
+
+    @Column(name = &quot;merchant_name&quot;, length = 200)
+    private String merchantName;
+
+    @Column(name = &quot;merchant_category&quot;, length = 50)
+    private String merchantCategory;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = &quot;status&quot;, nullable = false, length = 20)
+    private CardTransactionStatus status;
+
+    @Column(name = &quot;authorization_code&quot;, length = 20)
+    private String authorizationCode;
+
+<span class="fc" id="L38">    protected CardTransaction() {}</span>
+
+    public CardTransaction(String cardId, CardTransactionType transactionType, Long amountCents,
+<span class="nc" id="L41">                           String currency, CardTransactionStatus status) {</span>
+<span class="nc" id="L42">        this.cardId = cardId;</span>
+<span class="nc" id="L43">        this.transactionType = transactionType;</span>
+<span class="nc" id="L44">        this.amountCents = amountCents;</span>
+<span class="nc" id="L45">        this.currency = currency;</span>
+<span class="nc" id="L46">        this.status = status;</span>
+<span class="nc" id="L47">    }</span>
+
+<span class="nc" id="L49">    public String getCardId() { return cardId; }</span>
+<span class="nc" id="L50">    public CardTransactionType getTransactionType() { return transactionType; }</span>
+<span class="nc" id="L51">    public Long getAmountCents() { return amountCents; }</span>
+<span class="nc" id="L52">    public String getCurrency() { return currency; }</span>
+<span class="nc" id="L53">    public String getMerchantName() { return merchantName; }</span>
+<span class="nc" id="L54">    public String getMerchantCategory() { return merchantCategory; }</span>
+<span class="nc" id="L55">    public CardTransactionStatus getStatus() { return status; }</span>
+<span class="nc" id="L56">    public String getAuthorizationCode() { return authorizationCode; }</span>
+
+<span class="nc" id="L58">    public void setMerchantName(String m) { this.merchantName = m; }</span>
+<span class="nc" id="L59">    public void setMerchantCategory(String m) { this.merchantCategory = m; }</span>
+<span class="nc" id="L60">    public void setStatus(CardTransactionStatus s) { this.status = s; }</span>
+<span class="nc" id="L61">    public void setAuthorizationCode(String a) { this.authorizationCode = a; }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

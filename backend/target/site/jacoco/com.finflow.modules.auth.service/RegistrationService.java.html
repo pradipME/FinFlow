@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RegistrationService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.auth.service</a> &gt; <span class="el_source">RegistrationService.java</span></div><h1>RegistrationService.java</h1><pre class="source lang-java linenums">package com.finflow.modules.auth.service;
+
+import com.finflow.modules.auth.domain.*;
+import com.finflow.modules.auth.dto.RegisterRequest;
+import com.finflow.modules.auth.dto.RegisterResponse;
+import com.finflow.modules.auth.mapper.UserMapper;
+import com.finflow.modules.auth.repository.UserCredentialRepository;
+import com.finflow.modules.auth.repository.UserRepository;
+import com.finflow.modules.auth.repository.RoleRepository;
+import com.finflow.modules.auth.repository.UserRoleRepository;
+import com.finflow.modules.auth.validator.RegistrationValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * Core service for user registration operations.
+ *
+ * &lt;p&gt;Orchestrates the registration flow: validation, password hashing,
+ * user creation, credential storage, and role assignment. Emits a
+ * {@code UserRegistered} domain event after commit.&lt;/p&gt;
+ *
+ * @author FinFlow Engineering
+ * @since 1.0.0
+ */
+@Service
+public class RegistrationService {
+
+<span class="fc" id="L31">    private static final Logger log = LoggerFactory.getLogger(RegistrationService.class);</span>
+
+    private final UserRepository userRepository;
+    private final UserCredentialRepository credentialRepository;
+    private final RoleRepository roleRepository;
+    private final UserRoleRepository userRoleRepository;
+    private final RegistrationValidator validator;
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+
+    public RegistrationService(UserRepository userRepository,
+                               UserCredentialRepository credentialRepository,
+                               RoleRepository roleRepository,
+                               UserRoleRepository userRoleRepository,
+                               RegistrationValidator validator,
+                               UserMapper userMapper,
+<span class="nc" id="L47">                               PasswordEncoder passwordEncoder) {</span>
+<span class="nc" id="L48">        this.userRepository = userRepository;</span>
+<span class="nc" id="L49">        this.credentialRepository = credentialRepository;</span>
+<span class="nc" id="L50">        this.roleRepository = roleRepository;</span>
+<span class="nc" id="L51">        this.userRoleRepository = userRoleRepository;</span>
+<span class="nc" id="L52">        this.validator = validator;</span>
+<span class="nc" id="L53">        this.userMapper = userMapper;</span>
+<span class="nc" id="L54">        this.passwordEncoder = passwordEncoder;</span>
+<span class="nc" id="L55">    }</span>
+
+    /**
+     * Registers a new user on the FinFlow platform.
+     *
+     * &lt;p&gt;Flow:&lt;/p&gt;
+     * &lt;ol&gt;
+     *   &lt;li&gt;Normalize and validate the request (bean + business rules).&lt;/li&gt;
+     *   &lt;li&gt;Create and persist the User entity.&lt;/li&gt;
+     *   &lt;li&gt;Hash the password and store a UserCredential.&lt;/li&gt;
+     *   &lt;li&gt;Assign the default CUSTOMER role.&lt;/li&gt;
+     * &lt;/ol&gt;
+     *
+     * @param request the registration request
+     * @return the registration response with non-sensitive user data
+     */
+    @Transactional
+    public RegisterResponse register(RegisterRequest request) {
+<span class="nc" id="L73">        RegisterRequest normalized = request.normalize();</span>
+
+<span class="nc" id="L75">        validator.validate(normalized);</span>
+
+<span class="nc" id="L77">        User user = new User(</span>
+<span class="nc" id="L78">                normalized.email(),</span>
+<span class="nc" id="L79">                normalized.username(),</span>
+<span class="nc" id="L80">                normalized.phoneNumber(),</span>
+<span class="nc" id="L81">                java.time.LocalDateTime.now()</span>
+        );
+<span class="nc" id="L83">        user = userRepository.save(user);</span>
+<span class="nc" id="L84">        log.info(&quot;User created: id={}, email={}&quot;, user.getId(), user.getEmail());</span>
+
+<span class="nc" id="L86">        String hashedPassword = passwordEncoder.encode(normalized.password());</span>
+<span class="nc" id="L87">        UserCredential credential = new UserCredential(user, CredentialType.PASSWORD, hashedPassword);</span>
+<span class="nc" id="L88">        credentialRepository.save(credential);</span>
+<span class="nc" id="L89">        log.info(&quot;Password credential stored for user: {}&quot;, user.getId());</span>
+
+<span class="nc" id="L91">        Role customerRole = roleRepository.findByNameAndIsActiveTrue(&quot;CUSTOMER&quot;)</span>
+<span class="nc" id="L92">                .orElseThrow(() -&gt; new IllegalStateException(&quot;CUSTOMER role not found&quot;));</span>
+<span class="nc" id="L93">        UserRole userRole = new UserRole(user, customerRole, user.getId().toString());</span>
+<span class="nc" id="L94">        userRoleRepository.save(userRole);</span>
+<span class="nc" id="L95">        log.info(&quot;CUSTOMER role assigned to user: {}&quot;, user.getId());</span>
+
+<span class="nc" id="L97">        return userMapper.toRegisterResponse(user);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

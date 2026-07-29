@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SettingController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.settings.controller</a> &gt; <span class="el_source">SettingController.java</span></div><h1>SettingController.java</h1><pre class="source lang-java linenums">package com.finflow.modules.settings.controller;
+
+import com.finflow.modules.settings.dto.BulkUpdateSettingsRequest;
+import com.finflow.modules.settings.dto.SettingResponse;
+import com.finflow.modules.settings.dto.UpdateSettingRequest;
+import com.finflow.modules.settings.service.SettingService;
+import com.finflow.shared.dto.ApiResponse;
+import com.finflow.shared.util.SecurityUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(&quot;/api/v1/settings&quot;)
+@Tag(name = &quot;Settings&quot;, description = &quot;User settings management endpoints&quot;)
+public class SettingController {
+
+<span class="nc" id="L25">    private static final Logger log = LoggerFactory.getLogger(SettingController.class);</span>
+
+    private final SettingService settingService;
+
+<span class="nc" id="L29">    public SettingController(SettingService settingService) {</span>
+<span class="nc" id="L30">        this.settingService = settingService;</span>
+<span class="nc" id="L31">    }</span>
+
+    @GetMapping
+    @Operation(summary = &quot;Get all user settings&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;List&lt;SettingResponse&gt;&gt;&gt; getSettings() {
+<span class="nc" id="L36">        String userId = SecurityUtil.getCurrentUserId();</span>
+<span class="nc" id="L37">        List&lt;SettingResponse&gt; settings = settingService.getSettings(userId);</span>
+<span class="nc" id="L38">        return ResponseEntity.ok(ApiResponse.ok(settings));</span>
+    }
+
+    @GetMapping(&quot;/{key}&quot;)
+    @Operation(summary = &quot;Get a specific setting by key&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;SettingResponse&gt;&gt; getSetting(@PathVariable String key) {
+<span class="nc" id="L44">        String userId = SecurityUtil.getCurrentUserId();</span>
+<span class="nc" id="L45">        SettingResponse setting = settingService.getSetting(userId, key);</span>
+<span class="nc" id="L46">        return ResponseEntity.ok(ApiResponse.ok(setting));</span>
+    }
+
+    @PatchMapping(&quot;/{key}&quot;)
+    @Operation(summary = &quot;Update a specific setting&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;SettingResponse&gt;&gt; updateSetting(
+            @PathVariable String key,
+            @Valid @RequestBody UpdateSettingRequest request) {
+<span class="nc" id="L54">        String userId = SecurityUtil.getCurrentUserId();</span>
+<span class="nc" id="L55">        SettingResponse setting = settingService.updateSetting(userId, key, request);</span>
+<span class="nc" id="L56">        return ResponseEntity.ok(ApiResponse.ok(setting, &quot;Setting updated successfully&quot;));</span>
+    }
+
+    @PutMapping(&quot;/bulk&quot;)
+    @Operation(summary = &quot;Bulk update settings&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;List&lt;SettingResponse&gt;&gt;&gt; bulkUpdateSettings(
+            @Valid @RequestBody BulkUpdateSettingsRequest request) {
+<span class="nc" id="L63">        String userId = SecurityUtil.getCurrentUserId();</span>
+<span class="nc" id="L64">        List&lt;SettingResponse&gt; settings = settingService.bulkUpdate(userId, request);</span>
+<span class="nc" id="L65">        return ResponseEntity.ok(ApiResponse.ok(settings, &quot;Settings updated successfully&quot;));</span>
+    }
+
+    @DeleteMapping(&quot;/{key}&quot;)
+    @Operation(summary = &quot;Delete a specific setting&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;Void&gt;&gt; deleteSetting(@PathVariable String key) {
+<span class="nc" id="L71">        String userId = SecurityUtil.getCurrentUserId();</span>
+<span class="nc" id="L72">        settingService.deleteSetting(userId, key);</span>
+<span class="nc" id="L73">        return ResponseEntity.ok(ApiResponse.ok(null, &quot;Setting deleted successfully&quot;));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

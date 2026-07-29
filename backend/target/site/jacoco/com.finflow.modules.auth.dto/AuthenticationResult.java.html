@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthenticationResult.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.auth.dto</a> &gt; <span class="el_source">AuthenticationResult.java</span></div><h1>AuthenticationResult.java</h1><pre class="source lang-java linenums">package com.finflow.modules.auth.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+/**
+ * Domain model representing the result of a successful authentication.
+ *
+ * &lt;p&gt;Returned by the {@code AuthenticationService} after credential verification.
+ * Contains only business-safe information — no password hashes, internal flags,
+ * or security-sensitive metadata.&lt;/p&gt;
+ *
+ * &lt;p&gt;This object is mapped to an {@code ApiResponse} wrapper by the controller
+ * layer. Clients use the {@code userId} and {@code roles} for subsequent
+ * authorization decisions.&lt;/p&gt;
+ *
+ * &lt;h3&gt;Security Notes&lt;/h3&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;Password hashes are never included.&lt;/li&gt;
+ *   &lt;li&gt;{@code failedLoginCount} and {@code lockedUntil} are omitted —
+ *       these are internal security state.&lt;/li&gt;
+ *   &lt;li&gt;{@code lastLoginAt} reflects the &lt;em&gt;previous&lt;/em&gt; login, not this one,
+ *       for display purposes (&quot;last seen&quot; widget).&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * @author FinFlow Engineering
+ * @since 1.0.0
+ */
+@Schema(description = &quot;Authentication result containing user identity and session context&quot;)
+<span class="nc" id="L33">public record AuthenticationResult(</span>
+
+        @Schema(
+                description = &quot;JWT access token for subsequent authenticated requests&quot;,
+                example = &quot;eyJhbGciOiJIUzUxMiJ9...&quot;
+        )
+        String accessToken,
+
+        @Schema(
+                description = &quot;Authenticated user's unique identifier&quot;,
+                example = &quot;550e8400-e29b-41d4-a716-446655440000&quot;
+        )
+        UUID userId,
+
+        @Schema(
+                description = &quot;User's email address&quot;,
+                example = &quot;john@finflow.com&quot;
+        )
+        String email,
+
+        @Schema(
+                description = &quot;User's username&quot;,
+                example = &quot;john_doe&quot;
+        )
+        String username,
+
+        @Schema(
+                description = &quot;Current account status&quot;,
+                example = &quot;ACTIVE&quot;
+        )
+        String status,
+
+        @Schema(
+                description = &quot;Roles assigned to the user&quot;,
+                example = &quot;[\&quot;CUSTOMER\&quot;]&quot;
+        )
+        List&lt;String&gt; roles,
+
+        @Schema(
+                description = &quot;Timestamp of the successful authentication (ISO 8601)&quot;,
+                example = &quot;2026-07-13T16:30:00Z&quot;
+        )
+        LocalDateTime authenticatedAt,
+
+        @Schema(
+                description = &quot;Timestamp of the user's previous login, if any (ISO 8601)&quot;,
+                example = &quot;2026-07-12T09:15:00Z&quot;
+        )
+        LocalDateTime lastLoginAt
+) {}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

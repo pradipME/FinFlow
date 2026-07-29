@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ScheduledTransfer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.transfers.domain</a> &gt; <span class="el_source">ScheduledTransfer.java</span></div><h1>ScheduledTransfer.java</h1><pre class="source lang-java linenums">package com.finflow.modules.transfers.domain;
+
+import com.finflow.shared.domain.BaseEntity;
+import com.finflow.shared.domain.BaseEntityListener;
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = &quot;scheduled_transfers&quot;, catalog = &quot;finflow_transfers&quot;)
+@EntityListeners({BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
+public class ScheduledTransfer extends BaseEntity {
+
+    @Column(name = &quot;owner_id&quot;, nullable = false, length = 36)
+    private String ownerId;
+
+    @Column(name = &quot;template_id&quot;, length = 36)
+    private String templateId;
+
+    @Column(name = &quot;source_account_id&quot;, nullable = false, length = 36)
+    private String sourceAccountId;
+
+    @Column(name = &quot;target_account_id&quot;, length = 36)
+    private String targetAccountId;
+
+    @Column(name = &quot;target_beneficiary_id&quot;, length = 36)
+    private String targetBeneficiaryId;
+
+    @Column(name = &quot;amount_cents&quot;, nullable = false)
+    private Long amountCents;
+
+    @Column(name = &quot;currency&quot;, nullable = false, length = 3)
+    private String currency;
+
+    @Column(name = &quot;description&quot;, length = 255)
+    private String description;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = &quot;schedule_type&quot;, nullable = false, length = 20)
+    private ScheduleType scheduleType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = &quot;frequency&quot;, length = 20)
+    private TransferFrequency frequency;
+
+    @Column(name = &quot;next_execution&quot;, nullable = false)
+    private LocalDateTime nextExecution;
+
+    @Column(name = &quot;last_execution&quot;)
+    private LocalDateTime lastExecution;
+
+    @Column(name = &quot;end_date&quot;)
+    private LocalDateTime endDate;
+
+<span class="fc" id="L55">    @Column(name = &quot;execution_count&quot;, nullable = false)</span>
+<span class="fc" id="L56">    private Integer executionCount = 0;</span>
+
+    @Column(name = &quot;max_executions&quot;)
+    private Integer maxExecutions;
+
+<span class="fc" id="L61">    @Enumerated(EnumType.STRING)</span>
+    @Column(name = &quot;schedule_status&quot;, nullable = false, length = 20)
+    private ScheduleStatus scheduleStatus = ScheduleStatus.ACTIVE;
+
+<span class="fc" id="L65">    protected ScheduledTransfer() {}</span>
+
+    public ScheduledTransfer(String ownerId, String sourceAccountId, Long amountCents,
+<span class="fc" id="L68">                             String currency, ScheduleType scheduleType, LocalDateTime nextExecution) {</span>
+<span class="fc" id="L69">        this.ownerId = ownerId;</span>
+<span class="fc" id="L70">        this.sourceAccountId = sourceAccountId;</span>
+<span class="fc" id="L71">        this.amountCents = amountCents;</span>
+<span class="fc" id="L72">        this.currency = currency;</span>
+<span class="fc" id="L73">        this.scheduleType = scheduleType;</span>
+<span class="fc" id="L74">        this.nextExecution = nextExecution;</span>
+<span class="fc" id="L75">    }</span>
+
+    public void pause() {
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (this.scheduleStatus != ScheduleStatus.ACTIVE)</span>
+<span class="fc" id="L79">            throw new IllegalStateException(&quot;Only ACTIVE transfers can be paused&quot;);</span>
+<span class="fc" id="L80">        this.scheduleStatus = ScheduleStatus.PAUSED;</span>
+<span class="fc" id="L81">    }</span>
+
+    public void resume() {
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">        if (this.scheduleStatus != ScheduleStatus.PAUSED)</span>
+<span class="nc" id="L85">            throw new IllegalStateException(&quot;Only PAUSED transfers can be resumed&quot;);</span>
+<span class="fc" id="L86">        this.scheduleStatus = ScheduleStatus.ACTIVE;</span>
+<span class="fc" id="L87">    }</span>
+
+    public void cancel() {
+<span class="pc bpc" id="L90" title="1 of 4 branches missed.">        if (this.scheduleStatus == ScheduleStatus.COMPLETED || this.scheduleStatus == ScheduleStatus.CANCELLED)</span>
+<span class="fc" id="L91">            throw new IllegalStateException(&quot;Cannot cancel a completed or already cancelled transfer&quot;);</span>
+<span class="fc" id="L92">        this.scheduleStatus = ScheduleStatus.CANCELLED;</span>
+<span class="fc" id="L93">    }</span>
+
+    public void markCompleted() {
+<span class="fc" id="L96">        this.executionCount++;</span>
+<span class="fc" id="L97">        this.lastExecution = LocalDateTime.now();</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        if (this.scheduleType == ScheduleType.ONE_TIME) {</span>
+<span class="fc" id="L99">            this.scheduleStatus = ScheduleStatus.COMPLETED;</span>
+<span class="pc bpc" id="L100" title="1 of 4 branches missed.">        } else if (this.maxExecutions != null &amp;&amp; this.executionCount &gt;= this.maxExecutions) {</span>
+<span class="fc" id="L101">            this.scheduleStatus = ScheduleStatus.COMPLETED;</span>
+        }
+<span class="fc" id="L103">    }</span>
+
+    public boolean isDue() {
+<span class="pc bpc" id="L106" title="1 of 4 branches missed.">        return this.scheduleStatus == ScheduleStatus.ACTIVE</span>
+            &amp;&amp; this.nextExecution != null
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">            &amp;&amp; !this.nextExecution.isAfter(LocalDateTime.now());</span>
+    }
+
+<span class="nc" id="L111">    public String getOwnerId() { return ownerId; }</span>
+<span class="nc" id="L112">    public String getTemplateId() { return templateId; }</span>
+<span class="nc" id="L113">    public String getSourceAccountId() { return sourceAccountId; }</span>
+<span class="nc" id="L114">    public String getTargetAccountId() { return targetAccountId; }</span>
+<span class="nc" id="L115">    public String getTargetBeneficiaryId() { return targetBeneficiaryId; }</span>
+<span class="nc" id="L116">    public Long getAmountCents() { return amountCents; }</span>
+<span class="nc" id="L117">    public String getCurrency() { return currency; }</span>
+<span class="nc" id="L118">    public String getDescription() { return description; }</span>
+<span class="nc" id="L119">    public ScheduleType getScheduleType() { return scheduleType; }</span>
+<span class="nc" id="L120">    public TransferFrequency getFrequency() { return frequency; }</span>
+<span class="nc" id="L121">    public LocalDateTime getNextExecution() { return nextExecution; }</span>
+<span class="nc" id="L122">    public LocalDateTime getLastExecution() { return lastExecution; }</span>
+<span class="nc" id="L123">    public LocalDateTime getEndDate() { return endDate; }</span>
+<span class="fc" id="L124">    public Integer getExecutionCount() { return executionCount; }</span>
+<span class="nc" id="L125">    public Integer getMaxExecutions() { return maxExecutions; }</span>
+<span class="fc" id="L126">    public ScheduleStatus getScheduleStatus() { return scheduleStatus; }</span>
+
+<span class="fc" id="L128">    public void setTemplateId(String t) { this.templateId = t; }</span>
+<span class="fc" id="L129">    public void setTargetAccountId(String t) { this.targetAccountId = t; }</span>
+<span class="fc" id="L130">    public void setTargetBeneficiaryId(String b) { this.targetBeneficiaryId = b; }</span>
+<span class="nc" id="L131">    public void setAmountCents(Long a) { this.amountCents = a; }</span>
+<span class="nc" id="L132">    public void setCurrency(String c) { this.currency = c; }</span>
+<span class="fc" id="L133">    public void setDescription(String d) { this.description = d; }</span>
+<span class="fc" id="L134">    public void setFrequency(TransferFrequency f) { this.frequency = f; }</span>
+<span class="nc" id="L135">    public void setNextExecution(LocalDateTime n) { this.nextExecution = n; }</span>
+<span class="nc" id="L136">    public void setEndDate(LocalDateTime e) { this.endDate = e; }</span>
+<span class="fc" id="L137">    public void setMaxExecutions(Integer m) { this.maxExecutions = m; }</span>
+<span class="nc" id="L138">    public void setScheduleStatus(ScheduleStatus s) { this.scheduleStatus = s; }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

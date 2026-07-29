@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransactionMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.transactions.mapper</a> &gt; <span class="el_source">TransactionMapperImpl.java</span></div><h1>TransactionMapperImpl.java</h1><pre class="source lang-java linenums">package com.finflow.modules.transactions.mapper;
+
+import com.finflow.modules.transactions.domain.EntryType;
+import com.finflow.modules.transactions.domain.Transaction;
+import com.finflow.modules.transactions.domain.TransactionEntry;
+import com.finflow.modules.transactions.domain.TransactionStatus;
+import com.finflow.modules.transactions.domain.TransactionType;
+import com.finflow.modules.transactions.dto.TransactionDetailResponse;
+import com.finflow.modules.transactions.dto.TransactionEntryResponse;
+import com.finflow.modules.transactions.dto.TransactionSummaryResponse;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+    date = &quot;2026-07-29T13:18:56+0530&quot;,
+    comments = &quot;version: 1.6.3, compiler: javac, environment: Java 21.0.11 (Eclipse Adoptium)&quot;
+)
+@Component
+<span class="nc" id="L22">public class TransactionMapperImpl implements TransactionMapper {</span>
+
+    @Override
+    public TransactionSummaryResponse toSummaryResponse(Transaction transaction) {
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        if ( transaction == null ) {</span>
+<span class="nc" id="L27">            return null;</span>
+        }
+
+<span class="nc" id="L30">        String id = null;</span>
+<span class="nc" id="L31">        TransactionType transactionType = null;</span>
+<span class="nc" id="L32">        TransactionStatus transactionStatus = null;</span>
+<span class="nc" id="L33">        String description = null;</span>
+<span class="nc" id="L34">        String referenceNumber = null;</span>
+<span class="nc" id="L35">        Long amountCents = null;</span>
+<span class="nc" id="L36">        String currency = null;</span>
+<span class="nc" id="L37">        String sourceAccountId = null;</span>
+<span class="nc" id="L38">        String targetAccountId = null;</span>
+<span class="nc" id="L39">        Long feeAmountCents = null;</span>
+<span class="nc" id="L40">        String createdAt = null;</span>
+
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if ( transaction.getId() != null ) {</span>
+<span class="nc" id="L43">            id = transaction.getId().toString();</span>
+        }
+<span class="nc" id="L45">        transactionType = transaction.getTransactionType();</span>
+<span class="nc" id="L46">        transactionStatus = transaction.getTransactionStatus();</span>
+<span class="nc" id="L47">        description = transaction.getDescription();</span>
+<span class="nc" id="L48">        referenceNumber = transaction.getReferenceNumber();</span>
+<span class="nc" id="L49">        amountCents = transaction.getAmountCents();</span>
+<span class="nc" id="L50">        currency = transaction.getCurrency();</span>
+<span class="nc" id="L51">        sourceAccountId = transaction.getSourceAccountId();</span>
+<span class="nc" id="L52">        targetAccountId = transaction.getTargetAccountId();</span>
+<span class="nc" id="L53">        feeAmountCents = transaction.getFeeAmountCents();</span>
+<span class="nc" id="L54">        createdAt = formatDateTime( transaction.getCreatedAt() );</span>
+
+<span class="nc" id="L56">        TransactionSummaryResponse transactionSummaryResponse = new TransactionSummaryResponse( id, transactionType, transactionStatus, description, referenceNumber, amountCents, currency, sourceAccountId, targetAccountId, feeAmountCents, createdAt );</span>
+
+<span class="nc" id="L58">        return transactionSummaryResponse;</span>
+    }
+
+    @Override
+    public TransactionDetailResponse toDetailResponse(Transaction transaction) {
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        if ( transaction == null ) {</span>
+<span class="nc" id="L64">            return null;</span>
+        }
+
+<span class="nc" id="L67">        String id = null;</span>
+<span class="nc" id="L68">        TransactionType transactionType = null;</span>
+<span class="nc" id="L69">        TransactionStatus transactionStatus = null;</span>
+<span class="nc" id="L70">        String description = null;</span>
+<span class="nc" id="L71">        String referenceNumber = null;</span>
+<span class="nc" id="L72">        Long amountCents = null;</span>
+<span class="nc" id="L73">        String currency = null;</span>
+<span class="nc" id="L74">        String sourceAccountId = null;</span>
+<span class="nc" id="L75">        String targetAccountId = null;</span>
+<span class="nc" id="L76">        Long feeAmountCents = null;</span>
+<span class="nc" id="L77">        String userId = null;</span>
+<span class="nc" id="L78">        String completedAt = null;</span>
+<span class="nc" id="L79">        String failedReason = null;</span>
+<span class="nc" id="L80">        List&lt;TransactionEntryResponse&gt; entries = null;</span>
+<span class="nc" id="L81">        String createdAt = null;</span>
+<span class="nc" id="L82">        String updatedAt = null;</span>
+
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        if ( transaction.getId() != null ) {</span>
+<span class="nc" id="L85">            id = transaction.getId().toString();</span>
+        }
+<span class="nc" id="L87">        transactionType = transaction.getTransactionType();</span>
+<span class="nc" id="L88">        transactionStatus = transaction.getTransactionStatus();</span>
+<span class="nc" id="L89">        description = transaction.getDescription();</span>
+<span class="nc" id="L90">        referenceNumber = transaction.getReferenceNumber();</span>
+<span class="nc" id="L91">        amountCents = transaction.getAmountCents();</span>
+<span class="nc" id="L92">        currency = transaction.getCurrency();</span>
+<span class="nc" id="L93">        sourceAccountId = transaction.getSourceAccountId();</span>
+<span class="nc" id="L94">        targetAccountId = transaction.getTargetAccountId();</span>
+<span class="nc" id="L95">        feeAmountCents = transaction.getFeeAmountCents();</span>
+<span class="nc" id="L96">        userId = transaction.getUserId();</span>
+<span class="nc" id="L97">        completedAt = formatDateTime( transaction.getCompletedAt() );</span>
+<span class="nc" id="L98">        failedReason = transaction.getFailedReason();</span>
+<span class="nc" id="L99">        entries = toEntryResponseList( transaction.getEntries() );</span>
+<span class="nc" id="L100">        createdAt = formatDateTime( transaction.getCreatedAt() );</span>
+<span class="nc" id="L101">        updatedAt = formatDateTime( transaction.getUpdatedAt() );</span>
+
+<span class="nc" id="L103">        TransactionDetailResponse transactionDetailResponse = new TransactionDetailResponse( id, transactionType, transactionStatus, description, referenceNumber, amountCents, currency, sourceAccountId, targetAccountId, feeAmountCents, userId, completedAt, failedReason, entries, createdAt, updatedAt );</span>
+
+<span class="nc" id="L105">        return transactionDetailResponse;</span>
+    }
+
+    @Override
+    public List&lt;TransactionSummaryResponse&gt; toSummaryResponseList(List&lt;Transaction&gt; transactions) {
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if ( transactions == null ) {</span>
+<span class="nc" id="L111">            return null;</span>
+        }
+
+<span class="nc" id="L114">        List&lt;TransactionSummaryResponse&gt; list = new ArrayList&lt;TransactionSummaryResponse&gt;( transactions.size() );</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        for ( Transaction transaction : transactions ) {</span>
+<span class="nc" id="L116">            list.add( toSummaryResponse( transaction ) );</span>
+<span class="nc" id="L117">        }</span>
+
+<span class="nc" id="L119">        return list;</span>
+    }
+
+    @Override
+    public TransactionEntryResponse toEntryResponse(TransactionEntry entry) {
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        if ( entry == null ) {</span>
+<span class="nc" id="L125">            return null;</span>
+        }
+
+<span class="nc" id="L128">        String id = null;</span>
+<span class="nc" id="L129">        String accountId = null;</span>
+<span class="nc" id="L130">        EntryType entryType = null;</span>
+<span class="nc" id="L131">        Long amountCents = null;</span>
+<span class="nc" id="L132">        String currency = null;</span>
+<span class="nc" id="L133">        Long balanceBeforeCents = null;</span>
+<span class="nc" id="L134">        Long balanceAfterCents = null;</span>
+<span class="nc" id="L135">        String description = null;</span>
+<span class="nc" id="L136">        String createdAt = null;</span>
+
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        if ( entry.getId() != null ) {</span>
+<span class="nc" id="L139">            id = entry.getId().toString();</span>
+        }
+<span class="nc" id="L141">        accountId = entry.getAccountId();</span>
+<span class="nc" id="L142">        entryType = entry.getEntryType();</span>
+<span class="nc" id="L143">        amountCents = entry.getAmountCents();</span>
+<span class="nc" id="L144">        currency = entry.getCurrency();</span>
+<span class="nc" id="L145">        balanceBeforeCents = entry.getBalanceBeforeCents();</span>
+<span class="nc" id="L146">        balanceAfterCents = entry.getBalanceAfterCents();</span>
+<span class="nc" id="L147">        description = entry.getDescription();</span>
+<span class="nc" id="L148">        createdAt = formatDateTime( entry.getCreatedAt() );</span>
+
+<span class="nc" id="L150">        TransactionEntryResponse transactionEntryResponse = new TransactionEntryResponse( id, accountId, entryType, amountCents, currency, balanceBeforeCents, balanceAfterCents, description, createdAt );</span>
+
+<span class="nc" id="L152">        return transactionEntryResponse;</span>
+    }
+
+    @Override
+    public List&lt;TransactionEntryResponse&gt; toEntryResponseList(List&lt;TransactionEntry&gt; entries) {
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        if ( entries == null ) {</span>
+<span class="nc" id="L158">            return null;</span>
+        }
+
+<span class="nc" id="L161">        List&lt;TransactionEntryResponse&gt; list = new ArrayList&lt;TransactionEntryResponse&gt;( entries.size() );</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        for ( TransactionEntry transactionEntry : entries ) {</span>
+<span class="nc" id="L163">            list.add( toEntryResponse( transactionEntry ) );</span>
+<span class="nc" id="L164">        }</span>
+
+<span class="nc" id="L166">        return list;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RefreshTokenRevokedEvent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.auth.service</a> &gt; <span class="el_source">RefreshTokenRevokedEvent.java</span></div><h1>RefreshTokenRevokedEvent.java</h1><pre class="source lang-java linenums">package com.finflow.modules.auth.service;
+
+import com.finflow.shared.domain.DomainEvent;
+
+import java.time.LocalDateTime;
+
+public class RefreshTokenRevokedEvent implements DomainEvent {
+
+    private final String aggregateId;
+    private final String userId;
+    private final String sessionId;
+    private final String ipAddress;
+    private final String reason;
+    private final LocalDateTime occurredOn;
+
+    public RefreshTokenRevokedEvent(String aggregateId, String userId, String sessionId,
+<span class="nc" id="L17">                                    String ipAddress, String reason, LocalDateTime occurredOn) {</span>
+<span class="nc" id="L18">        this.aggregateId = aggregateId;</span>
+<span class="nc" id="L19">        this.userId = userId;</span>
+<span class="nc" id="L20">        this.sessionId = sessionId;</span>
+<span class="nc" id="L21">        this.ipAddress = ipAddress;</span>
+<span class="nc" id="L22">        this.reason = reason;</span>
+<span class="nc" id="L23">        this.occurredOn = occurredOn;</span>
+<span class="nc" id="L24">    }</span>
+
+    @Override
+    public String getAggregateId() {
+<span class="nc" id="L28">        return aggregateId;</span>
+    }
+
+    @Override
+    public String getEventType() {
+<span class="nc" id="L33">        return &quot;REFRESH_TOKEN_REVOKED&quot;;</span>
+    }
+
+    @Override
+    public LocalDateTime getOccurredOn() {
+<span class="nc" id="L38">        return occurredOn;</span>
+    }
+
+    public String getUserId() {
+<span class="nc" id="L42">        return userId;</span>
+    }
+
+    public String getSessionId() {
+<span class="nc" id="L46">        return sessionId;</span>
+    }
+
+    public String getIpAddress() {
+<span class="nc" id="L50">        return ipAddress;</span>
+    }
+
+    public String getReason() {
+<span class="nc" id="L54">        return reason;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

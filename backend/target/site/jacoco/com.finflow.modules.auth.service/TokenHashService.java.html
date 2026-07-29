@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TokenHashService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.auth.service</a> &gt; <span class="el_source">TokenHashService.java</span></div><h1>TokenHashService.java</h1><pre class="source lang-java linenums">package com.finflow.modules.auth.service;
+
+import org.springframework.stereotype.Service;
+
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Base64;
+
+/**
+ * Service for secure refresh token hashing and generation.
+ *
+ * &lt;p&gt;Refresh tokens are high-entropy random values (not JWTs) that are hashed
+ * with SHA-256 before storage. This ensures:&lt;/p&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;Raw tokens are never persisted — only hashes.&lt;/li&gt;
+ *   &lt;li&gt;Database compromise does not expose valid tokens.&lt;/li&gt;
+ *   &lt;li&gt;Constant-time comparison prevents timing attacks.&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * &lt;h3&gt;Security Design&lt;/h3&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;Token generation uses {@link SecureRandom} for cryptographic randomness.&lt;/li&gt;
+ *   &lt;li&gt;SHA-256 produces a fixed 32-byte (64 hex char) hash.&lt;/li&gt;
+ *   &lt;li&gt;Comparison uses {@link MessageDigest#isEqual} for constant-time behavior.&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * @author FinFlow Engineering
+ * @since 1.0.0
+ */
+@Service
+<span class="nc" id="L37">public class TokenHashService {</span>
+
+<span class="nc" id="L39">    private static final SecureRandom SECURE_RANDOM = new SecureRandom();</span>
+    private static final String SHA_256 = &quot;SHA-256&quot;;
+    private static final int TOKEN_BYTE_LENGTH = 48; // 384 bits of entropy
+
+    /**
+     * Generates a cryptographically secure random refresh token.
+     *
+     * &lt;p&gt;The token is a Base64URL-encoded string of 48 random bytes (384 bits).
+     * This exceeds the minimum 256-bit security recommendation for long-lived tokens.&lt;/p&gt;
+     *
+     * @return a URL-safe Base64-encoded refresh token
+     */
+    public String generateRefreshToken() {
+<span class="nc" id="L52">        byte[] tokenBytes = new byte[TOKEN_BYTE_LENGTH];</span>
+<span class="nc" id="L53">        SECURE_RANDOM.nextBytes(tokenBytes);</span>
+<span class="nc" id="L54">        return Base64.getUrlEncoder().withoutPadding().encodeToString(tokenBytes);</span>
+    }
+
+    /**
+     * Hashes a refresh token using SHA-256.
+     *
+     * &lt;p&gt;The raw token is never stored. Only the SHA-256 hash is persisted
+     * in the database and Redis cache.&lt;/p&gt;
+     *
+     * @param rawToken the raw refresh token to hash
+     * @return a 64-character lowercase hex string representing the SHA-256 hash
+     */
+    public String hashToken(String rawToken) {
+        try {
+<span class="nc" id="L68">            MessageDigest digest = MessageDigest.getInstance(SHA_256);</span>
+<span class="nc" id="L69">            byte[] hashBytes = digest.digest(rawToken.getBytes(StandardCharsets.UTF_8));</span>
+<span class="nc" id="L70">            return bytesToHex(hashBytes);</span>
+<span class="nc" id="L71">        } catch (NoSuchAlgorithmException e) {</span>
+            // SHA-256 is guaranteed to be available in all JVM implementations
+<span class="nc" id="L73">            throw new IllegalStateException(&quot;SHA-256 algorithm not available&quot;, e);</span>
+        }
+    }
+
+    /**
+     * Compares two token hashes using constant-time comparison.
+     *
+     * &lt;p&gt;Uses {@link MessageDigest#isEqual} to prevent timing attacks that
+     * could leak information about the hash value.&lt;/p&gt;
+     *
+     * @param hash1 the first hash (from database)
+     * @param hash2 the second hash (from presented token)
+     * @return {@code true} if the hashes match
+     */
+    public boolean constantTimeEquals(String hash1, String hash2) {
+<span class="nc bnc" id="L88" title="All 4 branches missed.">        if (hash1 == null || hash2 == null) {</span>
+<span class="nc" id="L89">            return false;</span>
+        }
+<span class="nc" id="L91">        return MessageDigestisEqual(hash1.getBytes(StandardCharsets.UTF_8),</span>
+<span class="nc" id="L92">                                     hash2.getBytes(StandardCharsets.UTF_8));</span>
+    }
+
+    /**
+     * Generates a UUID v4 for session and family identifiers.
+     *
+     * @return a random UUID string
+     */
+    public String generateSessionId() {
+<span class="nc" id="L101">        return java.util.UUID.randomUUID().toString();</span>
+    }
+
+    /**
+     * Generates a UUID v4 for token family identifiers.
+     *
+     * @return a random UUID string
+     */
+    public String generateFamilyId() {
+<span class="nc" id="L110">        return java.util.UUID.randomUUID().toString();</span>
+    }
+
+    private static boolean MessageDigestisEqual(byte[] a, byte[] b) {
+<span class="nc" id="L114">        return MessageDigest.isEqual(a, b);</span>
+    }
+
+    private static String bytesToHex(byte[] bytes) {
+<span class="nc" id="L118">        StringBuilder hex = new StringBuilder(bytes.length * 2);</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        for (byte b : bytes) {</span>
+<span class="nc" id="L120">            hex.append(String.format(&quot;%02x&quot;, b));</span>
+        }
+<span class="nc" id="L122">        return hex.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

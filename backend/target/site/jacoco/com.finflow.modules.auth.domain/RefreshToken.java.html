@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RefreshToken.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.auth.domain</a> &gt; <span class="el_source">RefreshToken.java</span></div><h1>RefreshToken.java</h1><pre class="source lang-java linenums">package com.finflow.modules.auth.domain;
+
+import com.finflow.shared.domain.BaseEntity;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.UUID;
+
+/**
+ * Persistent refresh token record for session management and security audit.
+ *
+ * &lt;p&gt;A {@code RefreshToken} represents an active user session on the FinFlow
+ * platform. The raw token is never stored — only its SHA-256 hash is persisted.
+ * Each token belongs to a {@link User} and tracks device context (IP, User-Agent).&lt;/p&gt;
+ *
+ * &lt;p&gt;Table: {@code finflow_auth.refresh_tokens}&lt;/p&gt;
+ *
+ * &lt;h3&gt;Security Design&lt;/h3&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;Raw refresh tokens are NEVER stored — only SHA-256 hashes.&lt;/li&gt;
+ *   &lt;li&gt;Token rotation creates a new record and revokes the old one.&lt;/li&gt;
+ *   &lt;li&gt;{@code family_id} links rotated tokens for reuse detection.&lt;/li&gt;
+ *   &lt;li&gt;If a revoked token is reused, it indicates a token theft — the entire
+ *       family must be revoked and a security alert triggered.&lt;/li&gt;
+ *   &lt;li&gt;Rows are soft-revoked (never deleted) to preserve audit trail.&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * &lt;h3&gt;Business Rules&lt;/h3&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;Refresh tokens expire after 30 days.&lt;/li&gt;
+ *   &lt;li&gt;Each refresh request generates new access + refresh tokens.&lt;/li&gt;
+ *   &lt;li&gt;The old refresh token is immediately revoked upon rotation.&lt;/li&gt;
+ *   &lt;li&gt;Reuse of a revoked token triggers revocation of the entire family.&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * @author FinFlow Engineering
+ * @since 1.0.0
+ */
+@Entity
+@Table(name = &quot;refresh_tokens&quot;, catalog = &quot;finflow_auth&quot;)
+@EntityListeners({com.finflow.shared.domain.BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
+public class RefreshToken extends BaseEntity {
+
+    /**
+     * The user who owns this refresh token.
+     */
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = &quot;user_id&quot;, nullable = false,
+                foreignKey = @ForeignKey(name = &quot;fk_rt_user&quot;))
+    private User user;
+
+    /**
+     * Unique session identifier linking this record to the Redis session cache.
+     * Generated as UUID v4 on token creation.
+     */
+    @Column(name = &quot;session_id&quot;, nullable = false, unique = true, length = 36)
+    private String sessionId;
+
+    /**
+     * Family identifier linking all tokens produced by rotation from the same
+     * original token. Used for reuse detection — if a revoked token is presented,
+     * all tokens in the same family are revoked.
+     */
+    @Column(name = &quot;family_id&quot;, nullable = false, length = 36)
+    private String familyId;
+
+    /**
+     * SHA-256 hash of the raw refresh token. The raw token is returned to the
+     * client exactly once and never stored.
+     */
+    @Column(name = &quot;refresh_token_hash&quot;, nullable = false, length = 64)
+    private String refreshTokenHash;
+
+    /**
+     * Soft revocation flag. When {@code true}, this token can no longer be used
+     * for refresh operations.
+     */
+<span class="fc" id="L78">    @Column(name = &quot;is_revoked&quot;, nullable = false)</span>
+<span class="fc" id="L79">    private Boolean isRevoked = false;</span>
+
+    /**
+     * Timestamp when the token was revoked. {@code null} if not yet revoked.
+     */
+    @Column(name = &quot;revoked_at&quot;)
+    private LocalDateTime revokedAt;
+
+    /**
+     * When the token expires. After this time, the token is automatically invalid.
+     */
+    @Column(name = &quot;expires_at&quot;, nullable = false)
+    private LocalDateTime expiresAt;
+
+    /**
+     * Client IP address at the time of token creation.
+     */
+    @Column(name = &quot;created_ip&quot;, length = 45)
+    private String createdIp;
+
+    /**
+     * HTTP User-Agent at the time of token creation.
+     */
+    @Column(name = &quot;created_user_agent&quot;, length = 500)
+    private String createdUserAgent;
+
+    /**
+     * Last time this token was used to refresh. Updated on each rotation.
+     */
+    @Column(name = &quot;last_used_at&quot;)
+    private LocalDateTime lastUsedAt;
+
+    /**
+     * IP address of the last refresh request using this token.
+     */
+    @Column(name = &quot;last_used_ip&quot;, length = 45)
+    private String lastUsedIp;
+
+    /** Default constructor required by JPA. */
+<span class="fc" id="L118">    protected RefreshToken() {}</span>
+
+    /**
+     * Creates a new refresh token record.
+     *
+     * @param user              the owning user
+     * @param sessionId         unique session identifier (UUID)
+     * @param familyId          token family identifier for reuse detection
+     * @param refreshTokenHash  SHA-256 hash of the raw token
+     * @param expiresAt         when this token expires
+     * @param createdIp         client IP at creation
+     * @param createdUserAgent  client User-Agent at creation
+     */
+    public RefreshToken(User user, String sessionId, String familyId,
+                        String refreshTokenHash, LocalDateTime expiresAt,
+<span class="fc" id="L133">                        String createdIp, String createdUserAgent) {</span>
+<span class="fc" id="L134">        this.user = user;</span>
+<span class="fc" id="L135">        this.sessionId = sessionId;</span>
+<span class="fc" id="L136">        this.familyId = familyId;</span>
+<span class="fc" id="L137">        this.refreshTokenHash = refreshTokenHash;</span>
+<span class="fc" id="L138">        this.expiresAt = expiresAt;</span>
+<span class="fc" id="L139">        this.createdIp = createdIp;</span>
+<span class="fc" id="L140">        this.createdUserAgent = createdUserAgent;</span>
+<span class="fc" id="L141">        this.isRevoked = false;</span>
+<span class="fc" id="L142">    }</span>
+
+    // ---- Business Methods ----
+
+    /**
+     * Marks this token as revoked.
+     *
+     * @throws IllegalStateException if the token is already revoked
+     */
+    public void revoke() {
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">        if (Boolean.TRUE.equals(this.isRevoked)) {</span>
+<span class="nc" id="L153">            throw new IllegalStateException(&quot;Token is already revoked: &quot; + this.sessionId);</span>
+        }
+<span class="fc" id="L155">        this.isRevoked = true;</span>
+<span class="fc" id="L156">        this.revokedAt = LocalDateTime.now();</span>
+<span class="fc" id="L157">    }</span>
+
+    /**
+     * Records that this token was used for a refresh operation.
+     *
+     * @param usedIp the IP address of the refresh request
+     */
+    public void recordUsage(String usedIp) {
+<span class="nc" id="L165">        this.lastUsedAt = LocalDateTime.now();</span>
+<span class="nc" id="L166">        this.lastUsedIp = usedIp;</span>
+<span class="nc" id="L167">    }</span>
+
+    /**
+     * Checks whether this token has expired.
+     *
+     * @return {@code true} if the current time is after the expiration time
+     */
+    public boolean isExpired() {
+<span class="nc" id="L175">        return LocalDateTime.now().isAfter(this.expiresAt);</span>
+    }
+
+    /**
+     * Checks whether this token is currently valid (not revoked and not expired).
+     *
+     * @return {@code true} if the token can be used for refresh operations
+     */
+    public boolean isValid() {
+<span class="nc bnc" id="L184" title="All 4 branches missed.">        return !Boolean.TRUE.equals(this.isRevoked) &amp;&amp; !isExpired();</span>
+    }
+
+    // ---- Getters ----
+
+    public User getUser() {
+<span class="nc" id="L190">        return user;</span>
+    }
+
+    public String getSessionId() {
+<span class="fc" id="L194">        return sessionId;</span>
+    }
+
+    public String getFamilyId() {
+<span class="nc" id="L198">        return familyId;</span>
+    }
+
+    public String getRefreshTokenHash() {
+<span class="fc" id="L202">        return refreshTokenHash;</span>
+    }
+
+    public Boolean getIsRevoked() {
+<span class="fc" id="L206">        return isRevoked;</span>
+    }
+
+    public LocalDateTime getRevokedAt() {
+<span class="nc" id="L210">        return revokedAt;</span>
+    }
+
+    public LocalDateTime getExpiresAt() {
+<span class="nc" id="L214">        return expiresAt;</span>
+    }
+
+    public String getCreatedIp() {
+<span class="nc" id="L218">        return createdIp;</span>
+    }
+
+    public String getCreatedUserAgent() {
+<span class="nc" id="L222">        return createdUserAgent;</span>
+    }
+
+    public LocalDateTime getLastUsedAt() {
+<span class="nc" id="L226">        return lastUsedAt;</span>
+    }
+
+    public String getLastUsedIp() {
+<span class="nc" id="L230">        return lastUsedIp;</span>
+    }
+
+    // ---- equals / hashCode ----
+
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L237" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L238" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc" id="L239">        RefreshToken that = (RefreshToken) o;</span>
+<span class="nc bnc" id="L240" title="All 4 branches missed.">        return getId() != null &amp;&amp; Objects.equals(getId(), that.getId());</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L245">        return getClass().hashCode();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

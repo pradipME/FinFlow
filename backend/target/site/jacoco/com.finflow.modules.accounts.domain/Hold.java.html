@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Hold.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.accounts.domain</a> &gt; <span class="el_source">Hold.java</span></div><h1>Hold.java</h1><pre class="source lang-java linenums">package com.finflow.modules.accounts.domain;
+
+import com.finflow.shared.domain.BaseEntity;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = &quot;holds&quot;, catalog = &quot;finflow_accounts&quot;)
+@EntityListeners({com.finflow.shared.domain.BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
+public class Hold extends BaseEntity {
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = &quot;account_id&quot;, nullable = false,
+                foreignKey = @ForeignKey(name = &quot;fk_holds_account&quot;))
+    private Account account;
+
+    @Column(name = &quot;amount_cents&quot;, nullable = false)
+    private Long amountCents;
+
+    @Column(name = &quot;reason&quot;, nullable = false, length = 500)
+    private String reason;
+
+    @Column(name = &quot;source_type&quot;, length = 50)
+    private String sourceType;
+
+    @Column(name = &quot;source_id&quot;, length = 36)
+    private String sourceId;
+
+<span class="fc" id="L29">    @Enumerated(EnumType.STRING)</span>
+    @Column(name = &quot;hold_status&quot;, nullable = false, length = 20)
+    private HoldStatus holdStatus = HoldStatus.ACTIVE;
+
+    @Column(name = &quot;released_at&quot;)
+    private LocalDateTime releasedAt;
+
+    @Column(name = &quot;released_by&quot;, length = 36)
+    private String releasedBy;
+
+    @Column(name = &quot;expires_at&quot;)
+    private LocalDateTime expiresAt;
+
+<span class="fc" id="L42">    protected Hold() {}</span>
+
+    public Hold(Account account, long amountCents, String reason,
+<span class="fc" id="L45">                String sourceType, String sourceId, LocalDateTime expiresAt) {</span>
+<span class="fc" id="L46">        this.account = account;</span>
+<span class="fc" id="L47">        this.amountCents = amountCents;</span>
+<span class="fc" id="L48">        this.reason = reason;</span>
+<span class="fc" id="L49">        this.sourceType = sourceType;</span>
+<span class="fc" id="L50">        this.sourceId = sourceId;</span>
+<span class="fc" id="L51">        this.holdStatus = HoldStatus.ACTIVE;</span>
+<span class="fc" id="L52">        this.expiresAt = expiresAt;</span>
+<span class="fc" id="L53">    }</span>
+
+    public void release(String releasedBy) {
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if (this.holdStatus != HoldStatus.ACTIVE) {</span>
+<span class="nc" id="L57">            throw new IllegalStateException(&quot;Only ACTIVE holds can be released&quot;);</span>
+        }
+<span class="fc" id="L59">        this.holdStatus = HoldStatus.RELEASED;</span>
+<span class="fc" id="L60">        this.releasedAt = LocalDateTime.now();</span>
+<span class="fc" id="L61">        this.releasedBy = releasedBy;</span>
+<span class="fc" id="L62">    }</span>
+
+    public void expire() {
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (this.holdStatus != HoldStatus.ACTIVE) {</span>
+<span class="nc" id="L66">            throw new IllegalStateException(&quot;Only ACTIVE holds can be expired&quot;);</span>
+        }
+<span class="nc" id="L68">        this.holdStatus = HoldStatus.EXPIRED;</span>
+<span class="nc" id="L69">        this.releasedAt = LocalDateTime.now();</span>
+<span class="nc" id="L70">    }</span>
+
+    public boolean isActive() {
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        return this.holdStatus == HoldStatus.ACTIVE;</span>
+    }
+
+    public boolean isExpired() {
+<span class="nc bnc" id="L77" title="All 4 branches missed.">        return this.expiresAt != null &amp;&amp; LocalDateTime.now().isAfter(this.expiresAt);</span>
+    }
+
+<span class="nc" id="L80">    public Account getAccount() { return account; }</span>
+<span class="fc" id="L81">    public Long getAmountCents() { return amountCents; }</span>
+<span class="nc" id="L82">    public String getReason() { return reason; }</span>
+<span class="nc" id="L83">    public String getSourceType() { return sourceType; }</span>
+<span class="nc" id="L84">    public String getSourceId() { return sourceId; }</span>
+<span class="nc" id="L85">    public HoldStatus getHoldStatus() { return holdStatus; }</span>
+<span class="nc" id="L86">    public LocalDateTime getReleasedAt() { return releasedAt; }</span>
+<span class="nc" id="L87">    public String getReleasedBy() { return releasedBy; }</span>
+<span class="nc" id="L88">    public LocalDateTime getExpiresAt() { return expiresAt; }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

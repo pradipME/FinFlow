@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlaceHoldRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.accounts.dto</a> &gt; <span class="el_source">PlaceHoldRequest.java</span></div><h1>PlaceHoldRequest.java</h1><pre class="source lang-java linenums">package com.finflow.modules.accounts.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
+
+@Schema(description = &quot;Request body for placing a hold on an account&quot;)
+<span class="fc" id="L7">public record PlaceHoldRequest(</span>
+    @Schema(description = &quot;Hold amount in cents&quot;, example = &quot;5000&quot;)
+    @NotNull(message = &quot;Amount is required&quot;)
+    Long amountCents,
+
+    @Schema(description = &quot;Reason for the hold&quot;, example = &quot;Pending transaction&quot;)
+    @NotNull(message = &quot;Reason is required&quot;)
+    String reason,
+
+    @Schema(description = &quot;Source type (e.g. TRANSACTION)&quot;, example = &quot;TRANSACTION&quot;)
+    String sourceType,
+
+    @Schema(description = &quot;Source ID&quot;, example = &quot;txn-123&quot;)
+    String sourceId,
+
+    @Schema(description = &quot;Hold expiry date-time (ISO-8601)&quot;, example = &quot;2026-01-15T12:00:00&quot;)
+    String expiresAt
+) {}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

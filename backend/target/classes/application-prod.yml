@@ -1,0 +1,105 @@
+# ===================================
+# FinFlow — Production Profile
+# ===================================
+#
+# REQUIRED ENVIRONMENT VARIABLES (secrets MUST be provided at runtime):
+#
+#   FINFLOW_JWT_SECRET          — Base64-encoded or raw string HMAC-SHA512 key (min 64 bytes / 512 bits)
+#   DB_USERNAME                 — MySQL database username
+#   DB_PASSWORD                 — MySQL database password
+#   REDIS_PASSWORD              — Redis authentication password (empty if no auth)
+#
+# OPTIONAL ENVIRONMENT VARIABLES:
+#
+#   DB_HOST                     — MySQL host (default: localhost)
+#   DB_PORT                     — MySQL port (default: 3306)
+#   DB_NAME                     — MySQL database name (default: finflow)
+#   REDIS_HOST                  — Redis host (default: localhost)
+#   REDIS_PORT                  — Redis port (default: 6379)
+#   FINFLOW_JWT_ACTIVE_KEY_ID   — Active signing key ID (default: primary)
+#
+# KEY ROTATION ENVIRONMENT VARIABLES (for rolling key updates):
+#
+#   FINFLOW_JWT_KEY_PREVIOUS    — Previous signing key (for validating tokens signed during rotation)
+#
+# DO NOT commit real secrets to version control.
+# Use a secrets manager (AWS Secrets Manager, HashiCorp Vault, Kubernetes Secrets).
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:finflow}?useSSL=true&requireSSL=true&verifyServerCertificate=true&serverTimezone=UTC
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      pool-name: finflow-prod-pool
+      maximum-pool-size: 30
+      minimum-idle: 10
+      idle-timeout: 300000
+      max-lifetime: 600000
+      connection-timeout: 10000
+      leak-detection-threshold: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: false
+    validate-on-migrate: true
+    clean-disabled: true
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 0
+      timeout: 5000ms
+      lettuce:
+        pool:
+          max-active: 16
+          max-idle: 8
+          min-idle: 4
+          max-wait: 5000ms
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+logging:
+  level:
+    com.finflow: INFO
+    org.springframework.web: WARN
+    org.hibernate.SQL: WARN
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+
+finflow:
+  jwt:
+    secret: ${FINFLOW_JWT_SECRET}
+    signing-keys:
+      primary: ${FINFLOW_JWT_SECRET}
+      ${FINFLOW_JWT_KEY_PREVIOUS:+previous}: ${FINFLOW_JWT_KEY_PREVIOUS:}
+    active-key-id: ${FINFLOW_JWT_ACTIVE_KEY_ID:primary}
+    access-token-expiration-ms: 900000
+    clock-skew-ms: 30000
+    issuer: finflow
+    audience: finflow-api

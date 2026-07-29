@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$UserRoleRepositoryTests
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.21 s -- in com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$UserRoleRepositoryTests

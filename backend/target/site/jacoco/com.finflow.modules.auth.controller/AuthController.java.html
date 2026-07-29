@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.auth.controller</a> &gt; <span class="el_source">AuthController.java</span></div><h1>AuthController.java</h1><pre class="source lang-java linenums">package com.finflow.modules.auth.controller;
+
+import com.finflow.modules.auth.dto.*;
+import com.finflow.modules.auth.service.AuthenticationService;
+import com.finflow.modules.auth.service.RefreshTokenService;
+import com.finflow.modules.auth.service.RegistrationService;
+import com.finflow.modules.auth.service.TokenHashService;
+import com.finflow.modules.auth.service.TokenRevocationService;
+import com.finflow.modules.auth.validator.RefreshTokenValidator;
+import com.finflow.shared.dto.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+/**
+ * REST controller for user registration and authentication.
+ *
+ * &lt;p&gt;Exposes unauthenticated endpoints for sign-up, login, token refresh,
+ * and token revocation.&lt;/p&gt;
+ *
+ * @author FinFlow Engineering
+ * @since 1.0.0
+ */
+@RestController
+@RequestMapping(&quot;/api/v1/auth&quot;)
+@Tag(name = &quot;Authentication&quot;, description = &quot;User registration, authentication, and token management endpoints&quot;)
+public class AuthController {
+
+<span class="fc" id="L40">    private static final Logger log = LoggerFactory.getLogger(AuthController.class);</span>
+
+    private final RegistrationService registrationService;
+    private final AuthenticationService authenticationService;
+    private final RefreshTokenService refreshTokenService;
+    private final TokenRevocationService tokenRevocationService;
+    private final RefreshTokenValidator refreshTokenValidator;
+    private final TokenHashService tokenHashService;
+
+    public AuthController(RegistrationService registrationService,
+                          AuthenticationService authenticationService,
+                          RefreshTokenService refreshTokenService,
+                          TokenRevocationService tokenRevocationService,
+                          RefreshTokenValidator refreshTokenValidator,
+<span class="fc" id="L54">                          TokenHashService tokenHashService) {</span>
+<span class="fc" id="L55">        this.registrationService = registrationService;</span>
+<span class="fc" id="L56">        this.authenticationService = authenticationService;</span>
+<span class="fc" id="L57">        this.refreshTokenService = refreshTokenService;</span>
+<span class="fc" id="L58">        this.tokenRevocationService = tokenRevocationService;</span>
+<span class="fc" id="L59">        this.refreshTokenValidator = refreshTokenValidator;</span>
+<span class="fc" id="L60">        this.tokenHashService = tokenHashService;</span>
+<span class="fc" id="L61">    }</span>
+
+    /**
+     * Registers a new user on the FinFlow platform.
+     */
+    @PostMapping(&quot;/register&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(
+            summary = &quot;Register a new user&quot;,
+            description = &quot;Creates a new user account. &quot;
+                    + &quot;Password must meet FinFlow security policy (min 8 chars, upper, lower, digit, special char).&quot;,
+            security = {}
+    )
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = &quot;201&quot;,
+                    description = &quot;User registered successfully&quot;,
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = &quot;400&quot;,
+                    description = &quot;Validation error&quot;,
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = &quot;409&quot;,
+                    description = &quot;Email or username already exists&quot;,
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class))
+            )
+    })
+    public ResponseEntity&lt;ApiResponse&lt;RegisterResponse&gt;&gt; register(
+            @Valid @RequestBody RegisterRequest request) {
+<span class="fc" id="L93">        log.info(&quot;Registration request for email={}&quot;, request.email());</span>
+<span class="fc" id="L94">        RegisterResponse response = registrationService.register(request);</span>
+<span class="fc" id="L95">        return ResponseEntity</span>
+<span class="fc" id="L96">                .status(HttpStatus.CREATED)</span>
+<span class="fc" id="L97">                .body(ApiResponse.ok(response, &quot;User registered successfully&quot;));</span>
+    }
+
+    /**
+     * Authenticates a user with email/username and password.
+     *
+     * &lt;p&gt;Returns an access token and a refresh token. The client must store
+     * both tokens and use the refresh token to obtain new access tokens.&lt;/p&gt;
+     */
+    @PostMapping(&quot;/login&quot;)
+    @Operation(
+            summary = &quot;Authenticate a user&quot;,
+            description = &quot;Authenticates a user with email address or username and password. &quot;
+                    + &quot;Returns access token and refresh token.&quot;,
+            security = {}
+    )
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = &quot;200&quot;,
+                    description = &quot;Authentication successful&quot;,
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = &quot;400&quot;,
+                    description = &quot;Validation error or account locked&quot;,
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = &quot;401&quot;,
+                    description = &quot;Invalid credentials&quot;,
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class))
+            )
+    })
+    public ResponseEntity&lt;ApiResponse&lt;RefreshTokenResponse&gt;&gt; login(
+            @Valid @RequestBody LoginRequest request,
+            HttpServletRequest httpRequest) {
+
+<span class="nc" id="L134">        String ipAddress = extractClientIp(httpRequest);</span>
+<span class="nc" id="L135">        String userAgent = httpRequest.getHeader(&quot;User-Agent&quot;);</span>
+
+<span class="nc" id="L137">        log.info(&quot;Login request for identifier={}&quot;, request.identifier());</span>
+<span class="nc" id="L138">        RefreshTokenResponse result = authenticationService.authenticateWithRefresh(request, ipAddress, userAgent);</span>
+<span class="nc" id="L139">        return ResponseEntity.ok(ApiResponse.ok(result, &quot;Authentication successful&quot;));</span>
+    }
+
+    /**
+     * Refreshes the access token using a valid refresh token.
+     *
+     * &lt;p&gt;Implements mandatory token rotation: the old refresh token is revoked
+     * and a new refresh token is issued along with the new access token.&lt;/p&gt;
+     */
+    @PostMapping(&quot;/refresh&quot;)
+    @Operation(
+            summary = &quot;Refresh access token&quot;,
+            description = &quot;Exchanges a valid refresh token for a new access token and refresh token. &quot;
+                    + &quot;The old refresh token is immediately revoked (mandatory rotation).&quot;,
+            security = {}
+    )
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = &quot;200&quot;,
+                    description = &quot;Token refreshed successfully&quot;,
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = &quot;401&quot;,
+                    description = &quot;Invalid, expired, or revoked refresh token&quot;,
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class))
+            )
+    })
+    public ResponseEntity&lt;ApiResponse&lt;RefreshTokenResponse&gt;&gt; refresh(
+            @Valid @RequestBody RefreshTokenRequest request,
+            HttpServletRequest httpRequest) {
+
+<span class="nc" id="L171">        String ipAddress = extractClientIp(httpRequest);</span>
+<span class="nc" id="L172">        String userAgent = httpRequest.getHeader(&quot;User-Agent&quot;);</span>
+
+<span class="nc" id="L174">        log.info(&quot;Token refresh request from ip={}&quot;, ipAddress);</span>
+<span class="nc" id="L175">        refreshTokenValidator.validateRefreshToken(request.refreshToken());</span>
+
+<span class="nc" id="L177">        RefreshTokenService.RefreshResult refreshResult =</span>
+<span class="nc" id="L178">                refreshTokenService.refresh(request.refreshToken(), ipAddress, userAgent);</span>
+
+<span class="nc" id="L180">        RefreshTokenResponse response = RefreshTokenResponse.of(</span>
+<span class="nc" id="L181">                refreshResult.accessToken(),</span>
+<span class="nc" id="L182">                refreshResult.refreshToken(),</span>
+                900);
+
+<span class="nc" id="L185">        return ResponseEntity.ok(ApiResponse.ok(response, &quot;Token refreshed successfully&quot;));</span>
+    }
+
+    /**
+     * Revokes a specific refresh token.
+     *
+     * &lt;p&gt;The revoked token can no longer be used for refresh operations.
+     * The associated session is terminated.&lt;/p&gt;
+     */
+    @PostMapping(&quot;/revoke&quot;)
+    @Operation(
+            summary = &quot;Revoke a refresh token&quot;,
+            description = &quot;Revokes a specific refresh token, terminating the associated session. &quot;
+                    + &quot;The revoked token cannot be used for future refresh operations.&quot;,
+            security = {}
+    )
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = &quot;200&quot;,
+                    description = &quot;Token revoked successfully&quot;,
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = &quot;400&quot;,
+                    description = &quot;Invalid or missing refresh token&quot;,
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class))
+            )
+    })
+    public ResponseEntity&lt;ApiResponse&lt;Map&lt;String, Boolean&gt;&gt;&gt; revoke(
+            @Valid @RequestBody RevokeTokenRequest request,
+            HttpServletRequest httpRequest) {
+
+<span class="nc" id="L217">        String ipAddress = extractClientIp(httpRequest);</span>
+<span class="nc" id="L218">        refreshTokenValidator.validateRevokeRequest(request.refreshToken());</span>
+
+<span class="nc" id="L220">        log.info(&quot;Token revocation request from ip={}&quot;, ipAddress);</span>
+<span class="nc" id="L221">        boolean revoked = tokenRevocationService.revokeByTokenHash(</span>
+<span class="nc" id="L222">                tokenHashService.hashToken(request.refreshToken()),</span>
+                ipAddress);
+
+<span class="nc" id="L225">        return ResponseEntity.ok(ApiResponse.ok(Map.of(&quot;revoked&quot;, revoked), &quot;Token revocation processed&quot;));</span>
+    }
+
+    /**
+     * Extracts the client IP address from the request, considering
+     * reverse-proxy headers.
+     */
+    private String extractClientIp(HttpServletRequest request) {
+<span class="nc" id="L233">        String xForwardedFor = request.getHeader(&quot;X-Forwarded-For&quot;);</span>
+<span class="nc bnc" id="L234" title="All 4 branches missed.">        if (xForwardedFor != null &amp;&amp; !xForwardedFor.isBlank()) {</span>
+<span class="nc" id="L235">            return xForwardedFor.split(&quot;,&quot;)[0].trim();</span>
+        }
+<span class="nc" id="L237">        String xRealIp = request.getHeader(&quot;X-Real-IP&quot;);</span>
+<span class="nc bnc" id="L238" title="All 4 branches missed.">        if (xRealIp != null &amp;&amp; !xRealIp.isBlank()) {</span>
+<span class="nc" id="L239">            return xRealIp.trim();</span>
+        }
+<span class="nc" id="L241">        return request.getRemoteAddr();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

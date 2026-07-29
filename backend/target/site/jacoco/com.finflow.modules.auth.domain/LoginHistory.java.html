@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoginHistory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.auth.domain</a> &gt; <span class="el_source">LoginHistory.java</span></div><h1>LoginHistory.java</h1><pre class="source lang-java linenums">package com.finflow.modules.auth.domain;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+/**
+ * Immutable record of a single authentication attempt on the FinFlow platform.
+ *
+ * &lt;p&gt;Every login attempt — whether successful or failed — is recorded in this
+ * table for security monitoring, forensic investigation, and regulatory compliance
+ * (PCI-DSS SAQ-D, SOC 2 CC6.1). The entity is append-only: rows are never
+ * updated or deleted.&lt;/p&gt;
+ *
+ * &lt;p&gt;Table: {@code finflow_auth.login_history}&lt;/p&gt;
+ *
+ * &lt;h3&gt;Design Notes&lt;/h3&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;Uses {@code BIGINT AUTO_INCREMENT} instead of UUID because this is a
+ *       high-volume, append-only event log where monotonic ordering and compact
+ *       storage outweigh distributed-system benefits of UUIDs.&lt;/li&gt;
+ *   &lt;li&gt;{@code user_id} is nullable because attempts for non-existent emails
+ *       must still be logged for brute-force detection, but there is no
+ *       user FK to reference.&lt;/li&gt;
+ *   &lt;li&gt;Extends {@code BaseEntity} is intentionally avoided — the table has no
+ *       {@code updated_at}, {@code version}, or soft-delete columns.&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * &lt;h3&gt;Business Rules&lt;/h3&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;Rows are immutable — no UPDATE or DELETE operations.&lt;/li&gt;
+ *   &lt;li&gt;{@code failure_reason} is NULL on success, populated on failure.&lt;/li&gt;
+ *   &lt;li&gt;{@code identifier} stores the raw input (email or username) for
+ *       forensic lookup even when {@code user_id} is NULL.&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * @author FinFlow Engineering
+ * @since 1.0.0
+ * @see User
+ * @see UserCredential
+ */
+@Entity
+@Table(name = &quot;login_history&quot;, catalog = &quot;finflow_auth&quot;)
+public class LoginHistory {
+
+    /**
+     * Machine-readable classification of why a login attempt failed.
+     *
+     * &lt;p&gt;Values map to distinct rejection paths in the authentication flow.
+     * The {@code code} field is stored in the {@code failure_reason} column
+     * and can be used by security tooling for automated threat response.&lt;/p&gt;
+     */
+<span class="fc" id="L53">    public enum FailureReason {</span>
+
+        /** Submitted credentials do not match any active credential. */
+<span class="fc" id="L56">        INVALID_CREDENTIALS(&quot;INVALID_CREDENTIALS&quot;),</span>
+
+        /** Account exists but email has not been verified. */
+<span class="fc" id="L59">        ACCOUNT_NOT_VERIFIED(&quot;ACCOUNT_NOT_VERIFIED&quot;),</span>
+
+        /** Account is temporarily locked due to excessive failed attempts. */
+<span class="fc" id="L62">        ACCOUNT_LOCKED(&quot;ACCOUNT_LOCKED&quot;),</span>
+
+        /** Account has been suspended by an administrator. */
+<span class="fc" id="L65">        ACCOUNT_SUSPENDED(&quot;ACCOUNT_SUSPENDED&quot;),</span>
+
+        /** Account has been permanently closed. */
+<span class="fc" id="L68">        ACCOUNT_CLOSED(&quot;ACCOUNT_CLOSED&quot;);</span>
+
+        private final String code;
+
+<span class="fc" id="L72">        FailureReason(String code) {</span>
+<span class="fc" id="L73">            this.code = code;</span>
+<span class="fc" id="L74">        }</span>
+
+        public String getCode() {
+<span class="nc" id="L77">            return code;</span>
+        }
+    }
+
+    // ---- Primary Key ----
+
+    /**
+     * Auto-incrementing surrogate key.
+     *
+     * &lt;p&gt;Uses {@code BIGINT IDENTITY} instead of UUID because login history
+     * is a high-volume, append-only log where sequential writes outperform
+     * random UUID distribution, and 8-byte keys reduce index size vs 36-byte
+     * UUIDs.&lt;/p&gt;
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = &quot;id&quot;, nullable = false, updatable = false)
+    private Long id;
+
+    // ---- Foreign Key (nullable) ----
+
+    /**
+     * The authenticated user, or {@code null} if the submitted identifier
+     * did not match any existing account.
+     *
+     * &lt;p&gt;Nullable by design: login attempts for non-existent emails must
+     * still be recorded for brute-force detection and rate limiting.
+     * {@code ON DELETE SET NULL} in the migration ensures historical rows
+     * survive user deletion.&lt;/p&gt;
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;user_id&quot;,
+                referencedColumnName = &quot;id&quot;,
+                foreignKey = @ForeignKey(name = &quot;fk_lh_user&quot;))
+    private User user;
+
+    // ---- Attempt Data ----
+
+    /**
+     * The raw identifier submitted by the user (email address or username).
+     *
+     * &lt;p&gt;Stored for forensic lookup and brute-force analysis even when
+     * {@code user_id} is NULL. Normalized to lowercase if the input was
+     * an email address.&lt;/p&gt;
+     */
+    @Column(name = &quot;identifier&quot;, nullable = false, length = 254)
+    private String identifier;
+
+    /**
+     * Whether the authentication attempt was successful.
+     *
+     * &lt;p&gt;{@code true} = credentials verified and account was active.
+     * {@code false} = some rejection occurred (see {@link #failureReason}).&lt;/p&gt;
+     */
+    @Column(name = &quot;success&quot;, nullable = false)
+    private Boolean success;
+
+    /**
+     * Machine-readable reason for failure, or {@code null} on success.
+     *
+     * @see FailureReason
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(name = &quot;failure_reason&quot;, length = 50)
+    private FailureReason failureReason;
+
+    // ---- Client Context ----
+
+    /**
+     * Client IP address (IPv4 or IPv6) from the {@code X-Forwarded-For}
+     * or {@code RemoteAddr} header.
+     *
+     * &lt;p&gt;Max 45 characters to accommodate the longest possible IPv6
+     * representation ({@code 0000:0000:0000:0000:0000:0000:0000:0000}).&lt;/p&gt;
+     */
+    @Column(name = &quot;ip_address&quot;, length = 45)
+    private String ipAddress;
+
+    /**
+     * HTTP {@code User-Agent} header value for device fingerprinting.
+     *
+     * &lt;p&gt;Truncated to 500 characters to prevent abuse via oversized headers.
+     * Useful for detecting credential-stuffing tools, bots, and anomalous
+     * client software.&lt;/p&gt;
+     */
+    @Column(name = &quot;user_agent&quot;, length = 500)
+    private String userAgent;
+
+    // ---- Timestamp ----
+
+    /**
+     * Microsecond-precision timestamp of when the attempt occurred.
+     *
+     * &lt;p&gt;Set automatically via {@link #onCreate()} at persist time.
+     * Uses {@code DATETIME(6)} for sub-second precision required by
+     * high-frequency security analytics.&lt;/p&gt;
+     */
+    @Column(name = &quot;created_at&quot;, nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    // ---- JPA Lifecycle ----
+
+    @PrePersist
+    protected void onCreate() {
+<span class="nc" id="L181">        this.createdAt = LocalDateTime.now();</span>
+<span class="nc" id="L182">    }</span>
+
+    // ---- Constructors ----
+
+    /** Default constructor required by JPA. */
+<span class="fc" id="L187">    protected LoginHistory() {}</span>
+
+    /**
+     * Creates a login history record for an attempt against a known user.
+     *
+     * @param user           the user who attempted to authenticate (must not be null)
+     * @param identifier     the raw email or username submitted
+     * @param success        whether the attempt was successful
+     * @param failureReason  the reason for failure, or {@code null} on success
+     * @param ipAddress      client IP address, or {@code null} if unavailable
+     * @param userAgent      HTTP User-Agent header, or {@code null} if unavailable
+     */
+    public LoginHistory(User user, String identifier, boolean success,
+<span class="nc" id="L200">                        FailureReason failureReason, String ipAddress, String userAgent) {</span>
+<span class="nc" id="L201">        this.user = user;</span>
+<span class="nc" id="L202">        this.identifier = identifier;</span>
+<span class="nc" id="L203">        this.success = success;</span>
+<span class="nc" id="L204">        this.failureReason = failureReason;</span>
+<span class="nc" id="L205">        this.ipAddress = ipAddress;</span>
+<span class="nc" id="L206">        this.userAgent = userAgent;</span>
+<span class="nc" id="L207">    }</span>
+
+    /**
+     * Creates a login history record for an attempt against a non-existent user.
+     *
+     * &lt;p&gt;Used when the submitted identifier does not match any account.
+     * {@code user_id} will be NULL in the database.&lt;/p&gt;
+     *
+     * @param identifier     the raw email or username submitted
+     * @param ipAddress      client IP address, or {@code null} if unavailable
+     * @param userAgent      HTTP User-Agent header, or {@code null} if unavailable
+     * @return a new LoginHistory with {@code success=false} and
+     *         {@code failureReason=INVALID_CREDENTIALS}
+     */
+    public static LoginHistory failedAttempt(String identifier, String ipAddress, String userAgent) {
+<span class="nc" id="L222">        return new LoginHistory(null, identifier, false,</span>
+                FailureReason.INVALID_CREDENTIALS, ipAddress, userAgent);
+    }
+
+    /**
+     * Creates a login history record for a successful authentication.
+     *
+     * @param user       the authenticated user
+     * @param identifier the raw email or username submitted
+     * @param ipAddress  client IP address
+     * @param userAgent  HTTP User-Agent header
+     * @return a new LoginHistory with {@code success=true}
+     */
+    public static LoginHistory successfulAttempt(User user, String identifier,
+                                                  String ipAddress, String userAgent) {
+<span class="nc" id="L237">        return new LoginHistory(user, identifier, true, null, ipAddress, userAgent);</span>
+    }
+
+    // ---- Getters ----
+
+    public Long getId() {
+<span class="nc" id="L243">        return id;</span>
+    }
+
+    public User getUser() {
+<span class="nc" id="L247">        return user;</span>
+    }
+
+    public String getIdentifier() {
+<span class="nc" id="L251">        return identifier;</span>
+    }
+
+    public Boolean getSuccess() {
+<span class="nc" id="L255">        return success;</span>
+    }
+
+    public FailureReason getFailureReason() {
+<span class="nc" id="L259">        return failureReason;</span>
+    }
+
+    public String getIpAddress() {
+<span class="nc" id="L263">        return ipAddress;</span>
+    }
+
+    public String getUserAgent() {
+<span class="nc" id="L267">        return userAgent;</span>
+    }
+
+    public LocalDateTime getCreatedAt() {
+<span class="nc" id="L271">        return createdAt;</span>
+    }
+
+    // ---- equals / hashCode ----
+
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L278" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L279" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc" id="L280">        LoginHistory that = (LoginHistory) o;</span>
+<span class="nc bnc" id="L281" title="All 4 branches missed.">        return id != null &amp;&amp; Objects.equals(id, that.id);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L286">        return getClass().hashCode();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

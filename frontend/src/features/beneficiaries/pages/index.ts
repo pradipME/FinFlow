@@ -1,0 +1,1 @@
+export { BeneficiariesPage } from "./BeneficiariesPage";

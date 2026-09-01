@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserStatus.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.auth.domain</a> &gt; <span class="el_source">UserStatus.java</span></div><h1>UserStatus.java</h1><pre class="source lang-java linenums">package com.finflow.modules.auth.domain;
+
+/**
+ * Represents the lifecycle status of a user account on the FinFlow platform.
+ *
+ * &lt;p&gt;Users begin in {@link #PENDING_VERIFICATION} after registration and
+ * transition to {@link #ACTIVE} once their email address is verified.
+ * Accounts may be {@link #SUSPENDED} for security reasons or {@link #CLOSED}
+ * at the user's request.&lt;/p&gt;
+ *
+ * @author FinFlow Engineering
+ * @since 1.0.0
+ */
+<span class="fc" id="L14">public enum UserStatus {</span>
+
+    /** Initial state after registration; email verification pending. */
+<span class="fc" id="L17">    PENDING_VERIFICATION,</span>
+
+    /** Fully verified and active user. */
+<span class="fc" id="L20">    ACTIVE,</span>
+
+    /** Temporarily restricted due to security concerns. */
+<span class="fc" id="L23">    SUSPENDED,</span>
+
+    /** Permanently closed by user or admin action. */
+<span class="fc" id="L26">    CLOSED</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BeneficiaryResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.beneficiaries.dto</a> &gt; <span class="el_source">BeneficiaryResponse.java</span></div><h1>BeneficiaryResponse.java</h1><pre class="source lang-java linenums">package com.finflow.modules.beneficiaries.dto;
+
+import com.finflow.modules.beneficiaries.domain.BeneficiaryStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = &quot;Beneficiary response DTO&quot;)
+<span class="fc" id="L7">public record BeneficiaryResponse(</span>
+    @Schema(description = &quot;Beneficiary ID&quot;)
+    String id,
+
+    @Schema(description = &quot;Nickname&quot;)
+    String nickname,
+
+    @Schema(description = &quot;Beneficiary name&quot;)
+    String beneficiaryName,
+
+    @Schema(description = &quot;Email&quot;)
+    String email,
+
+    @Schema(description = &quot;Bank name&quot;)
+    String bankName,
+
+    @Schema(description = &quot;Account number&quot;)
+    String accountNumber,
+
+    @Schema(description = &quot;Routing number&quot;)
+    String routingNumber,
+
+    @Schema(description = &quot;IBAN&quot;)
+    String iban,
+
+    @Schema(description = &quot;SWIFT code&quot;)
+    String swiftCode,
+
+    @Schema(description = &quot;Currency code&quot;)
+    String currency,
+
+    @Schema(description = &quot;Beneficiary status&quot;)
+    BeneficiaryStatus beneficiaryStatus,
+
+    @Schema(description = &quot;Created timestamp&quot;)
+    String createdAt,
+
+    @Schema(description = &quot;Updated timestamp&quot;)
+    String updatedAt
+) {}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

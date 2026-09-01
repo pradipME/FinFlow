@@ -25,7 +25,7 @@ import jakarta.persistence.*;
  * @see CredentialType
  */
 @Entity
-@Table(name = "user_credentials", catalog = "finflow_auth")
+@Table(name = "user_credentials", schema = "finflow_auth")
 @EntityListeners({com.finflow.shared.domain.BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class UserCredential extends BaseSoftDeletableEntity {
 

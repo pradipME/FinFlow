@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotificationMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.notifications.mapper</a> &gt; <span class="el_source">NotificationMapper.java</span></div><h1>NotificationMapper.java</h1><pre class="source lang-java linenums">package com.finflow.modules.notifications.mapper;
+
+import com.finflow.modules.notifications.domain.Notification;
+import com.finflow.modules.notifications.dto.NotificationResponse;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Component
+<span class="nc" id="L13">public class NotificationMapper {</span>
+
+<span class="fc" id="L15">    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;</span>
+
+    public NotificationResponse toResponse(Notification notification) {
+<span class="nc" id="L18">        return new NotificationResponse(</span>
+<span class="nc" id="L19">                notification.getId().toString(),</span>
+<span class="nc" id="L20">                notification.getOwnerId(),</span>
+<span class="nc" id="L21">                notification.getNotificationType(),</span>
+<span class="nc" id="L22">                notification.getTitle(),</span>
+<span class="nc" id="L23">                notification.getMessage(),</span>
+<span class="nc" id="L24">                notification.getReferenceType(),</span>
+<span class="nc" id="L25">                notification.getReferenceId(),</span>
+<span class="nc" id="L26">                notification.getIsRead(),</span>
+<span class="nc" id="L27">                formatDateTime(notification.getReadAt()),</span>
+<span class="nc" id="L28">                formatDateTime(notification.getCreatedAt()),</span>
+<span class="nc" id="L29">                formatDateTime(notification.getUpdatedAt())</span>
+        );
+    }
+
+    public List&lt;NotificationResponse&gt; toResponseList(List&lt;Notification&gt; notifications) {
+<span class="nc" id="L34">        return notifications.stream()</span>
+<span class="nc" id="L35">                .map(this::toResponse)</span>
+<span class="nc" id="L36">                .collect(Collectors.toList());</span>
+    }
+
+    private String formatDateTime(LocalDateTime dateTime) {
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        if (dateTime == null) return null;</span>
+<span class="nc" id="L41">        return dateTime.format(FORMATTER);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -40,7 +40,7 @@ import java.util.Objects;
  * @see UserCredential
  */
 @Entity
-@Table(name = "login_history", catalog = "finflow_auth")
+@Table(name = "login_history", schema = "finflow_auth")
 public class LoginHistory {
 
     /**

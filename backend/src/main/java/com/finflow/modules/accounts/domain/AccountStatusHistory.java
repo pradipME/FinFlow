@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "account_status_history", catalog = "finflow_accounts")
+@Table(name = "account_status_history", schema = "finflow_accounts")
 @EntityListeners({com.finflow.shared.domain.BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class AccountStatusHistory {
 

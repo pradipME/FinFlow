@@ -5,7 +5,7 @@ import com.finflow.shared.domain.BaseEntityListener;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "user_settings", catalog = "finflow_settings")
+@Table(name = "user_settings", schema = "finflow_settings")
 @EntityListeners({BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class UserSetting extends BaseEntity {
 

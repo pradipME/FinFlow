@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "transactions", catalog = "finflow_transactions")
+@Table(name = "transactions", schema = "finflow_transactions")
 @EntityListeners({BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class Transaction extends BaseEntity {
 

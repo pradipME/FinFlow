@@ -17,7 +17,7 @@ import jakarta.persistence.*;
  * @see UserRole
  */
 @Entity
-@Table(name = "roles", catalog = "finflow_auth")
+@Table(name = "roles", schema = "finflow_auth")
 @EntityListeners({com.finflow.shared.domain.BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class Role extends BaseEntity {
 

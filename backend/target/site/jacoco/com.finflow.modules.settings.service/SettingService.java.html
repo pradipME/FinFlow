@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SettingService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.settings.service</a> &gt; <span class="el_source">SettingService.java</span></div><h1>SettingService.java</h1><pre class="source lang-java linenums">package com.finflow.modules.settings.service;
+
+import com.finflow.modules.settings.domain.UserSetting;
+import com.finflow.modules.settings.dto.BulkUpdateSettingsRequest;
+import com.finflow.modules.settings.dto.SettingResponse;
+import com.finflow.modules.settings.dto.UpdateSettingRequest;
+import com.finflow.modules.settings.mapper.SettingMapper;
+import com.finflow.modules.settings.repository.UserSettingRepository;
+import com.finflow.shared.exception.BusinessRuleException;
+import com.finflow.shared.exception.ResourceNotFoundException;
+import com.finflow.shared.exception.ValidationException;
+import com.finflow.shared.util.SecurityUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+@Service
+@Transactional
+public class SettingService {
+
+<span class="fc" id="L25">    private static final Logger log = LoggerFactory.getLogger(SettingService.class);</span>
+
+<span class="fc" id="L27">    private static final Set&lt;String&gt; BOOLEAN_KEYS = Set.of(</span>
+        &quot;notification_email&quot;, &quot;notification_sms&quot;, &quot;two_factor_enabled&quot;
+    );
+
+<span class="fc" id="L31">    private static final Set&lt;String&gt; LANGUAGE_VALUES = Set.of(&quot;en&quot;, &quot;es&quot;, &quot;fr&quot;, &quot;de&quot;);</span>
+
+<span class="fc" id="L33">    private static final Set&lt;String&gt; CURRENCY_VALUES = Set.of(&quot;USD&quot;, &quot;EUR&quot;, &quot;GBP&quot;);</span>
+
+<span class="fc" id="L35">    private static final Set&lt;String&gt; THEME_VALUES = Set.of(&quot;light&quot;, &quot;dark&quot;, &quot;system&quot;);</span>
+
+<span class="fc" id="L37">    private static final Set&lt;String&gt; VALID_KEYS = Set.of(</span>
+        &quot;notification_email&quot;, &quot;notification_sms&quot;, &quot;two_factor_enabled&quot;,
+        &quot;language&quot;, &quot;currency_display&quot;, &quot;theme&quot;
+    );
+
+    private final UserSettingRepository repository;
+    private final SettingMapper mapper;
+
+<span class="fc" id="L45">    public SettingService(UserSettingRepository repository, SettingMapper mapper) {</span>
+<span class="fc" id="L46">        this.repository = repository;</span>
+<span class="fc" id="L47">        this.mapper = mapper;</span>
+<span class="fc" id="L48">    }</span>
+
+    @Transactional(readOnly = true)
+    public List&lt;SettingResponse&gt; getSettings(String userId) {
+<span class="fc" id="L52">        List&lt;UserSetting&gt; settings = repository.findByUserId(userId);</span>
+<span class="fc" id="L53">        return mapper.toResponseList(settings);</span>
+    }
+
+    @Transactional(readOnly = true)
+    public SettingResponse getSetting(String userId, String key) {
+<span class="fc" id="L58">        validateSettingKey(key);</span>
+<span class="fc" id="L59">        UserSetting setting = repository.findByUserIdAndSettingKey(userId, key)</span>
+<span class="fc" id="L60">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Setting&quot;, key));</span>
+<span class="fc" id="L61">        return mapper.toResponse(setting);</span>
+    }
+
+    public SettingResponse updateSetting(String userId, String key, UpdateSettingRequest request) {
+<span class="fc" id="L65">        validateSettingKey(key);</span>
+<span class="fc" id="L66">        validateSettingValue(key, request.settingValue());</span>
+
+<span class="fc" id="L68">        Optional&lt;UserSetting&gt; existing = repository.findByUserIdAndSettingKey(userId, key);</span>
+        UserSetting setting;
+
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (existing.isPresent()) {</span>
+<span class="fc" id="L72">            setting = existing.get();</span>
+<span class="fc" id="L73">            setting.setSettingValue(request.settingValue());</span>
+        } else {
+<span class="fc" id="L75">            setting = new UserSetting(userId, key, request.settingValue());</span>
+        }
+
+<span class="fc" id="L78">        setting = repository.save(setting);</span>
+<span class="fc" id="L79">        log.info(&quot;Setting updated: userId={}, key={}, value={}&quot;, userId, key, request.settingValue());</span>
+<span class="fc" id="L80">        return mapper.toResponse(setting);</span>
+    }
+
+    public List&lt;SettingResponse&gt; bulkUpdate(String userId, BulkUpdateSettingsRequest request) {
+<span class="fc" id="L84">        Map&lt;String, String&gt; settingsMap = request.settings();</span>
+
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        for (Map.Entry&lt;String, String&gt; entry : settingsMap.entrySet()) {</span>
+<span class="fc" id="L87">            validateSettingKey(entry.getKey());</span>
+<span class="fc" id="L88">            validateSettingValue(entry.getKey(), entry.getValue());</span>
+<span class="fc" id="L89">        }</span>
+
+<span class="fc" id="L91">        List&lt;UserSetting&gt; results = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        for (Map.Entry&lt;String, String&gt; entry : settingsMap.entrySet()) {</span>
+<span class="fc" id="L94">            String key = entry.getKey();</span>
+<span class="fc" id="L95">            String value = entry.getValue();</span>
+
+<span class="fc" id="L97">            Optional&lt;UserSetting&gt; existing = repository.findByUserIdAndSettingKey(userId, key);</span>
+            UserSetting setting;
+
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">            if (existing.isPresent()) {</span>
+<span class="nc" id="L101">                setting = existing.get();</span>
+<span class="nc" id="L102">                setting.setSettingValue(value);</span>
+            } else {
+<span class="fc" id="L104">                setting = new UserSetting(userId, key, value);</span>
+            }
+
+<span class="fc" id="L107">            results.add(repository.save(setting));</span>
+<span class="fc" id="L108">        }</span>
+
+<span class="fc" id="L110">        log.info(&quot;Bulk settings updated: userId={}, count={}&quot;, userId, results.size());</span>
+<span class="fc" id="L111">        return mapper.toResponseList(results);</span>
+    }
+
+    public void deleteSetting(String userId, String key) {
+<span class="fc" id="L115">        validateSettingKey(key);</span>
+<span class="fc" id="L116">        UserSetting setting = repository.findByUserIdAndSettingKey(userId, key)</span>
+<span class="fc" id="L117">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Setting&quot;, key));</span>
+<span class="fc" id="L118">        repository.delete(setting);</span>
+<span class="fc" id="L119">        log.info(&quot;Setting deleted: userId={}, key={}&quot;, userId, key);</span>
+<span class="fc" id="L120">    }</span>
+
+    private void validateSettingKey(String key) {
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        if (!VALID_KEYS.contains(key)) {</span>
+<span class="fc" id="L124">            throw new ValidationException(&quot;Invalid setting key: &quot; + key);</span>
+        }
+<span class="fc" id="L126">    }</span>
+
+    private void validateSettingValue(String key, String value) {
+<span class="pc bpc" id="L129" title="2 of 4 branches missed.">        if (value == null || value.isBlank()) {</span>
+<span class="nc" id="L130">            throw new ValidationException(&quot;Setting value cannot be empty&quot;);</span>
+        }
+
+<span class="fc bfc" id="L133" title="All 2 branches covered.">        if (BOOLEAN_KEYS.contains(key)) {</span>
+<span class="pc bpc" id="L134" title="1 of 4 branches missed.">            if (!&quot;true&quot;.equals(value) &amp;&amp; !&quot;false&quot;.equals(value)) {</span>
+<span class="fc" id="L135">                throw new BusinessRuleException(&quot;INVALID_SETTING_VALUE&quot;,</span>
+                    &quot;Value for '&quot; + key + &quot;' must be 'true' or 'false'&quot;);
+            }
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">        } else if (&quot;language&quot;.equals(key)) {</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">            if (!LANGUAGE_VALUES.contains(value)) {</span>
+<span class="fc" id="L140">                throw new BusinessRuleException(&quot;INVALID_SETTING_VALUE&quot;,</span>
+                    &quot;Language must be one of: &quot; + LANGUAGE_VALUES);
+            }
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        } else if (&quot;currency_display&quot;.equals(key)) {</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">            if (!CURRENCY_VALUES.contains(value)) {</span>
+<span class="nc" id="L145">                throw new BusinessRuleException(&quot;INVALID_SETTING_VALUE&quot;,</span>
+                    &quot;Currency must be one of: &quot; + CURRENCY_VALUES);
+            }
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        } else if (&quot;theme&quot;.equals(key)) {</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">            if (!THEME_VALUES.contains(value)) {</span>
+<span class="nc" id="L150">                throw new BusinessRuleException(&quot;INVALID_SETTING_VALUE&quot;,</span>
+                    &quot;Theme must be one of: &quot; + THEME_VALUES);
+            }
+        }
+<span class="fc" id="L154">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "notifications", catalog = "finflow_notifications")
+@Table(name = "notifications", schema = "finflow_notifications")
 public class Notification extends BaseAuditableEntity {
 
     @Column(name = "owner_id", nullable = false, length = 36)

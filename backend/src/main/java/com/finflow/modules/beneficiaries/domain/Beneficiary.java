@@ -5,7 +5,7 @@ import com.finflow.shared.domain.BaseEntityListener;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "beneficiaries", catalog = "finflow_accounts",
+@Table(name = "beneficiaries", schema = "finflow_accounts",
        uniqueConstraints = @UniqueConstraint(name = "uk_beneficiary_account",
            columnNames = {"owner_id", "account_number"}))
 @EntityListeners({BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})

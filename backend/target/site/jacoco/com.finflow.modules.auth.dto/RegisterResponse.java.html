@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RegisterResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.auth.dto</a> &gt; <span class="el_source">RegisterResponse.java</span></div><h1>RegisterResponse.java</h1><pre class="source lang-java linenums">package com.finflow.modules.auth.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+/**
+ * Response payload returned after successful user registration.
+ *
+ * @author FinFlow Engineering
+ * @since 1.0.0
+ */
+@Schema(description = &quot;Response returned after successful user registration&quot;)
+<span class="fc" id="L15">public record RegisterResponse(</span>
+
+        @Schema(description = &quot;Unique user identifier (UUID v4)&quot;,
+                example = &quot;550e8400-e29b-41d4-a716-446655440000&quot;)
+        UUID id,
+
+        @Schema(description = &quot;User's email address&quot;,
+                example = &quot;user@finflow.com&quot;)
+        String email,
+
+        @Schema(description = &quot;Chosen username&quot;,
+                example = &quot;john_doe&quot;)
+        String username,
+
+        @Schema(description = &quot;Account status&quot;,
+                example = &quot;ACTIVE&quot;)
+        String status,
+
+        @Schema(description = &quot;Whether email has been verified&quot;,
+                example = &quot;true&quot;)
+        Boolean emailVerified,
+
+        @Schema(description = &quot;Timestamp of account creation (ISO 8601)&quot;,
+                example = &quot;2026-07-13T16:30:00Z&quot;)
+        LocalDateTime createdAt
+) {}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

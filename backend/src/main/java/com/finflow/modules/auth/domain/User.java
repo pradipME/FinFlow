@@ -31,7 +31,7 @@ import java.util.Set;
  * @see com.finflow.modules.auth.domain.UserRole
  */
 @Entity
-@Table(name = "users", catalog = "finflow_auth")
+@Table(name = "users", schema = "finflow_auth")
 @EntityListeners({com.finflow.shared.domain.BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class User extends BaseSoftDeletableEntity {
 

@@ -37,7 +37,7 @@ import java.util.UUID;
  * @since 1.0.0
  */
 @Entity
-@Table(name = "refresh_tokens", catalog = "finflow_auth")
+@Table(name = "refresh_tokens", schema = "finflow_auth")
 @EntityListeners({com.finflow.shared.domain.BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class RefreshToken extends BaseEntity {
 

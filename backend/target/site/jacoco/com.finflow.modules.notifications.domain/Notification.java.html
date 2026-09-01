@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Notification.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.notifications.domain</a> &gt; <span class="el_source">Notification.java</span></div><h1>Notification.java</h1><pre class="source lang-java linenums">package com.finflow.modules.notifications.domain;
+
+import com.finflow.shared.domain.BaseAuditableEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = &quot;notifications&quot;, schema = &quot;finflow_notifications&quot;)
+public class Notification extends BaseAuditableEntity {
+
+    @Column(name = &quot;owner_id&quot;, nullable = false, length = 36)
+    private String ownerId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = &quot;notification_type&quot;, nullable = false, length = 50)
+    private NotificationType notificationType;
+
+    @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false, columnDefinition = &quot;TEXT&quot;)
+    private String message;
+
+    @Column(name = &quot;reference_type&quot;, length = 50)
+    private String referenceType;
+
+    @Column(name = &quot;reference_id&quot;, length = 36)
+    private String referenceId;
+
+<span class="fc" id="L35">    @Column(name = &quot;is_read&quot;, nullable = false)</span>
+<span class="fc" id="L36">    private Boolean isRead = false;</span>
+
+    @Column(name = &quot;read_at&quot;)
+    private LocalDateTime readAt;
+
+<span class="fc" id="L41">    public Notification() {}</span>
+
+<span class="fc" id="L43">    public Notification(String ownerId, NotificationType notificationType, String title, String message) {</span>
+<span class="fc" id="L44">        this.ownerId = ownerId;</span>
+<span class="fc" id="L45">        this.notificationType = notificationType;</span>
+<span class="fc" id="L46">        this.title = title;</span>
+<span class="fc" id="L47">        this.message = message;</span>
+<span class="fc" id="L48">        this.isRead = false;</span>
+<span class="fc" id="L49">    }</span>
+
+<span class="nc" id="L51">    public String getOwnerId() { return ownerId; }</span>
+<span class="nc" id="L52">    public void setOwnerId(String ownerId) { this.ownerId = ownerId; }</span>
+
+<span class="nc" id="L54">    public NotificationType getNotificationType() { return notificationType; }</span>
+<span class="nc" id="L55">    public void setNotificationType(NotificationType notificationType) { this.notificationType = notificationType; }</span>
+
+<span class="nc" id="L57">    public String getTitle() { return title; }</span>
+<span class="nc" id="L58">    public void setTitle(String title) { this.title = title; }</span>
+
+<span class="nc" id="L60">    public String getMessage() { return message; }</span>
+<span class="nc" id="L61">    public void setMessage(String message) { this.message = message; }</span>
+
+<span class="nc" id="L63">    public String getReferenceType() { return referenceType; }</span>
+<span class="nc" id="L64">    public void setReferenceType(String referenceType) { this.referenceType = referenceType; }</span>
+
+<span class="nc" id="L66">    public String getReferenceId() { return referenceId; }</span>
+<span class="nc" id="L67">    public void setReferenceId(String referenceId) { this.referenceId = referenceId; }</span>
+
+<span class="fc" id="L69">    public Boolean getIsRead() { return isRead; }</span>
+<span class="fc" id="L70">    public void setIsRead(Boolean isRead) { this.isRead = isRead; }</span>
+
+<span class="fc" id="L72">    public LocalDateTime getReadAt() { return readAt; }</span>
+<span class="fc" id="L73">    public void setReadAt(LocalDateTime readAt) { this.readAt = readAt; }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

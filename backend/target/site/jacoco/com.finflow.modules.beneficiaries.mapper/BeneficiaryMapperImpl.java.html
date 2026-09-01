@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BeneficiaryMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.beneficiaries.mapper</a> &gt; <span class="el_source">BeneficiaryMapperImpl.java</span></div><h1>BeneficiaryMapperImpl.java</h1><pre class="source lang-java linenums">package com.finflow.modules.beneficiaries.mapper;
+
+import com.finflow.modules.beneficiaries.domain.Beneficiary;
+import com.finflow.modules.beneficiaries.domain.BeneficiaryStatus;
+import com.finflow.modules.beneficiaries.dto.BeneficiaryResponse;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+    date = &quot;2026-09-01T20:12:00+0530&quot;,
+    comments = &quot;version: 1.6.3, compiler: javac, environment: Java 21.0.11 (Eclipse Adoptium)&quot;
+)
+@Component
+<span class="nc" id="L17">public class BeneficiaryMapperImpl implements BeneficiaryMapper {</span>
+
+    @Override
+    public BeneficiaryResponse toResponse(Beneficiary beneficiary) {
+<span class="nc bnc" id="L21" title="All 2 branches missed.">        if ( beneficiary == null ) {</span>
+<span class="nc" id="L22">            return null;</span>
+        }
+
+<span class="nc" id="L25">        String id = null;</span>
+<span class="nc" id="L26">        String nickname = null;</span>
+<span class="nc" id="L27">        String beneficiaryName = null;</span>
+<span class="nc" id="L28">        String email = null;</span>
+<span class="nc" id="L29">        String bankName = null;</span>
+<span class="nc" id="L30">        String accountNumber = null;</span>
+<span class="nc" id="L31">        String routingNumber = null;</span>
+<span class="nc" id="L32">        String iban = null;</span>
+<span class="nc" id="L33">        String swiftCode = null;</span>
+<span class="nc" id="L34">        String currency = null;</span>
+<span class="nc" id="L35">        BeneficiaryStatus beneficiaryStatus = null;</span>
+<span class="nc" id="L36">        String createdAt = null;</span>
+<span class="nc" id="L37">        String updatedAt = null;</span>
+
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if ( beneficiary.getId() != null ) {</span>
+<span class="nc" id="L40">            id = beneficiary.getId().toString();</span>
+        }
+<span class="nc" id="L42">        nickname = beneficiary.getNickname();</span>
+<span class="nc" id="L43">        beneficiaryName = beneficiary.getBeneficiaryName();</span>
+<span class="nc" id="L44">        email = beneficiary.getEmail();</span>
+<span class="nc" id="L45">        bankName = beneficiary.getBankName();</span>
+<span class="nc" id="L46">        accountNumber = beneficiary.getAccountNumber();</span>
+<span class="nc" id="L47">        routingNumber = beneficiary.getRoutingNumber();</span>
+<span class="nc" id="L48">        iban = beneficiary.getIban();</span>
+<span class="nc" id="L49">        swiftCode = beneficiary.getSwiftCode();</span>
+<span class="nc" id="L50">        currency = beneficiary.getCurrency();</span>
+<span class="nc" id="L51">        beneficiaryStatus = beneficiary.getBeneficiaryStatus();</span>
+<span class="nc" id="L52">        createdAt = formatDateTime( beneficiary.getCreatedAt() );</span>
+<span class="nc" id="L53">        updatedAt = formatDateTime( beneficiary.getUpdatedAt() );</span>
+
+<span class="nc" id="L55">        BeneficiaryResponse beneficiaryResponse = new BeneficiaryResponse( id, nickname, beneficiaryName, email, bankName, accountNumber, routingNumber, iban, swiftCode, currency, beneficiaryStatus, createdAt, updatedAt );</span>
+
+<span class="nc" id="L57">        return beneficiaryResponse;</span>
+    }
+
+    @Override
+    public List&lt;BeneficiaryResponse&gt; toResponseList(List&lt;Beneficiary&gt; beneficiaries) {
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if ( beneficiaries == null ) {</span>
+<span class="nc" id="L63">            return null;</span>
+        }
+
+<span class="nc" id="L66">        List&lt;BeneficiaryResponse&gt; list = new ArrayList&lt;BeneficiaryResponse&gt;( beneficiaries.size() );</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        for ( Beneficiary beneficiary : beneficiaries ) {</span>
+<span class="nc" id="L68">            list.add( toResponse( beneficiary ) );</span>
+<span class="nc" id="L69">        }</span>
+
+<span class="nc" id="L71">        return list;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotificationResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.notifications.dto</a> &gt; <span class="el_source">NotificationResponse.java</span></div><h1>NotificationResponse.java</h1><pre class="source lang-java linenums">package com.finflow.modules.notifications.dto;
+
+import com.finflow.modules.notifications.domain.NotificationType;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = &quot;Notification response payload&quot;)
+<span class="fc" id="L7">public record NotificationResponse(</span>
+        @Schema(description = &quot;Notification ID&quot;) String id,
+        @Schema(description = &quot;Owner ID&quot;) String ownerId,
+        @Schema(description = &quot;Type&quot;) NotificationType notificationType,
+        @Schema(description = &quot;Title&quot;) String title,
+        @Schema(description = &quot;Message&quot;) String message,
+        @Schema(description = &quot;Reference type&quot;) String referenceType,
+        @Schema(description = &quot;Reference ID&quot;) String referenceId,
+        @Schema(description = &quot;Is read&quot;) Boolean isRead,
+        @Schema(description = &quot;Read at&quot;) String readAt,
+        @Schema(description = &quot;Created at&quot;) String createdAt,
+        @Schema(description = &quot;Updated at&quot;) String updatedAt
+) {}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

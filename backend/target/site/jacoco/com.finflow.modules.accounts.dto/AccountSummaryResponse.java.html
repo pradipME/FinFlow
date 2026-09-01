@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AccountSummaryResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.accounts.dto</a> &gt; <span class="el_source">AccountSummaryResponse.java</span></div><h1>AccountSummaryResponse.java</h1><pre class="source lang-java linenums">package com.finflow.modules.accounts.dto;
+
+import com.finflow.modules.accounts.domain.AccountStatus;
+import com.finflow.modules.accounts.domain.AccountType;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = &quot;Account summary DTO for list views&quot;)
+<span class="nc" id="L8">public record AccountSummaryResponse(</span>
+    @Schema(description = &quot;Account ID&quot;, example = &quot;550e8400-e29b-41d4-a716-446655440000&quot;)
+    String id,
+
+    @Schema(description = &quot;Masked account number&quot;, example = &quot;****1234&quot;)
+    String accountNumber,
+
+    @Schema(description = &quot;Account type&quot;)
+    AccountType accountType,
+
+    @Schema(description = &quot;Account status&quot;)
+    AccountStatus accountStatus,
+
+    @Schema(description = &quot;Account nickname&quot;, example = &quot;My Checking&quot;)
+    String nickname,
+
+    @Schema(description = &quot;Currency code&quot;, example = &quot;USD&quot;)
+    String currency,
+
+    @Schema(description = &quot;Available balance in cents&quot;, example = &quot;125000&quot;)
+    Long availableBalanceCents,
+
+    @Schema(description = &quot;Date the account was created&quot;)
+    String createdAt
+) {}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

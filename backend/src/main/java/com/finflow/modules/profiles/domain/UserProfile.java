@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "user_profiles", catalog = "finflow_profiles")
+@Table(name = "user_profiles", schema = "finflow_profiles")
 @EntityListeners({com.finflow.shared.domain.BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class UserProfile extends BaseAuditableEntity {
 

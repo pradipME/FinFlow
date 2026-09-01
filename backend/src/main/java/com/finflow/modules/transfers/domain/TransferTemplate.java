@@ -5,7 +5,7 @@ import com.finflow.shared.domain.BaseEntityListener;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "transfer_templates", catalog = "finflow_transfers")
+@Table(name = "transfer_templates", schema = "finflow_transfers")
 @EntityListeners({BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class TransferTemplate extends BaseEntity {
 

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransactionController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.transactions.controller</a> &gt; <span class="el_source">TransactionController.java</span></div><h1>TransactionController.java</h1><pre class="source lang-java linenums">package com.finflow.modules.transactions.controller;
+
+import com.finflow.modules.transactions.domain.TransactionStatus;
+import com.finflow.modules.transactions.domain.TransactionType;
+import com.finflow.modules.transactions.dto.*;
+import com.finflow.modules.transactions.service.TransactionService;
+import com.finflow.shared.constants.RequestHeaders;
+import com.finflow.shared.dto.ApiResponse;
+import com.finflow.shared.dto.PageResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@RestController
+@RequestMapping(&quot;/api/v1/transactions&quot;)
+@Tag(name = &quot;Transactions&quot;, description = &quot;Transaction management endpoints&quot;)
+public class TransactionController {
+
+<span class="nc" id="L31">    private static final Logger log = LoggerFactory.getLogger(TransactionController.class);</span>
+
+    private final TransactionService transactionService;
+
+<span class="nc" id="L35">    public TransactionController(TransactionService transactionService) {</span>
+<span class="nc" id="L36">        this.transactionService = transactionService;</span>
+<span class="nc" id="L37">    }</span>
+
+    @PostMapping(&quot;/deposit&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = &quot;Create a deposit&quot;, description = &quot;Deposits funds into an account.&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;TransactionDetailResponse&gt;&gt; createDeposit(
+            @Valid @RequestBody DepositRequest request,
+            @RequestHeader(value = RequestHeaders.IDEMPOTENCY_KEY, required = false) String idempotencyKey) {
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        if (idempotencyKey != null) {</span>
+<span class="nc" id="L46">            request = new DepositRequest(request.accountId(), request.amountCents(),</span>
+<span class="nc" id="L47">                    request.currency(), request.description(), idempotencyKey);</span>
+        }
+<span class="nc" id="L49">        log.info(&quot;Deposit request: accountId={}, amountCents={}&quot;, request.accountId(), request.amountCents());</span>
+<span class="nc" id="L50">        TransactionDetailResponse response = transactionService.createDeposit(request);</span>
+<span class="nc" id="L51">        return ResponseEntity.status(HttpStatus.CREATED)</span>
+<span class="nc" id="L52">                .body(ApiResponse.ok(response, &quot;Deposit completed successfully&quot;));</span>
+    }
+
+    @PostMapping(&quot;/withdrawal&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = &quot;Create a withdrawal&quot;, description = &quot;Withdraws funds from an account.&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;TransactionDetailResponse&gt;&gt; createWithdrawal(
+            @Valid @RequestBody WithdrawalRequest request,
+            @RequestHeader(value = RequestHeaders.IDEMPOTENCY_KEY, required = false) String idempotencyKey) {
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (idempotencyKey != null) {</span>
+<span class="nc" id="L62">            request = new WithdrawalRequest(request.accountId(), request.amountCents(),</span>
+<span class="nc" id="L63">                    request.currency(), request.description(), idempotencyKey);</span>
+        }
+<span class="nc" id="L65">        log.info(&quot;Withdrawal request: accountId={}, amountCents={}&quot;, request.accountId(), request.amountCents());</span>
+<span class="nc" id="L66">        TransactionDetailResponse response = transactionService.createWithdrawal(request);</span>
+<span class="nc" id="L67">        return ResponseEntity.status(HttpStatus.CREATED)</span>
+<span class="nc" id="L68">                .body(ApiResponse.ok(response, &quot;Withdrawal completed successfully&quot;));</span>
+    }
+
+    @PostMapping(&quot;/transfer&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = &quot;Create a transfer&quot;, description = &quot;Transfers funds between two accounts.&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;TransactionDetailResponse&gt;&gt; createTransfer(
+            @Valid @RequestBody TransferRequest request,
+            @RequestHeader(value = RequestHeaders.IDEMPOTENCY_KEY, required = false) String idempotencyKey) {
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (idempotencyKey != null) {</span>
+<span class="nc" id="L78">            request = new TransferRequest(request.sourceAccountId(), request.targetAccountId(),</span>
+<span class="nc" id="L79">                    request.amountCents(), request.currency(), request.description(), idempotencyKey);</span>
+        }
+<span class="nc" id="L81">        log.info(&quot;Transfer request: source={}, target={}, amountCents={}&quot;,</span>
+<span class="nc" id="L82">                request.sourceAccountId(), request.targetAccountId(), request.amountCents());</span>
+<span class="nc" id="L83">        TransactionDetailResponse response = transactionService.createTransfer(request);</span>
+<span class="nc" id="L84">        return ResponseEntity.status(HttpStatus.CREATED)</span>
+<span class="nc" id="L85">                .body(ApiResponse.ok(response, &quot;Transfer completed successfully&quot;));</span>
+    }
+
+    @GetMapping(&quot;/{transactionId}&quot;)
+    @Operation(summary = &quot;Get transaction details&quot;, description = &quot;Returns full details for a transaction.&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;TransactionDetailResponse&gt;&gt; getTransaction(
+            @PathVariable UUID transactionId) {
+<span class="nc" id="L92">        TransactionDetailResponse response = transactionService.getTransaction(transactionId);</span>
+<span class="nc" id="L93">        return ResponseEntity.ok(ApiResponse.ok(response));</span>
+    }
+
+    @GetMapping
+    @Operation(summary = &quot;List my transactions&quot;, description = &quot;Returns a paginated, filtered list of transactions.&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;PageResponse&lt;TransactionSummaryResponse&gt;&gt;&gt; getMyTransactions(
+            @RequestParam(required = false) TransactionType type,
+            @RequestParam(required = false) TransactionStatus status,
+            @RequestParam(required = false) String accountId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDate,
+            @RequestParam(defaultValue = &quot;0&quot;) int page,
+            @RequestParam(defaultValue = &quot;20&quot;) int size) {
+<span class="nc" id="L106">        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, &quot;createdAt&quot;));</span>
+<span class="nc" id="L107">        PageResponse&lt;TransactionSummaryResponse&gt; response = transactionService.getMyTransactions(</span>
+                type, status, accountId, fromDate, toDate, pageable);
+<span class="nc" id="L109">        return ResponseEntity.ok(ApiResponse.ok(response));</span>
+    }
+
+    @PostMapping(&quot;/{transactionId}/cancel&quot;)
+    @Operation(summary = &quot;Cancel a pending transaction&quot;, description = &quot;Cancels a pending transaction.&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;TransactionDetailResponse&gt;&gt; cancelTransaction(
+            @PathVariable UUID transactionId) {
+<span class="nc" id="L116">        log.info(&quot;Cancel request: transactionId={}&quot;, transactionId);</span>
+<span class="nc" id="L117">        TransactionDetailResponse response = transactionService.cancelTransaction(transactionId);</span>
+<span class="nc" id="L118">        return ResponseEntity.ok(ApiResponse.ok(response, &quot;Transaction cancelled successfully&quot;));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

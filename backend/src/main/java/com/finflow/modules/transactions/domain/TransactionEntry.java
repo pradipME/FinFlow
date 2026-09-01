@@ -5,7 +5,7 @@ import com.finflow.shared.domain.BaseEntityListener;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "transaction_entries", catalog = "finflow_transactions")
+@Table(name = "transaction_entries", schema = "finflow_transactions")
 @EntityListeners({BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class TransactionEntry extends BaseEntity {
 

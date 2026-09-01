@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "savings_goals", catalog = "finflow_savings")
+@Table(name = "savings_goals", schema = "finflow_savings")
 @EntityListeners({BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class SavingsGoal extends BaseEntity {
 

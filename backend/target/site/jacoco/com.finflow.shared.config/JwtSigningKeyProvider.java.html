@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JwtSigningKeyProvider.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.shared.config</a> &gt; <span class="el_source">JwtSigningKeyProvider.java</span></div><h1>JwtSigningKeyProvider.java</h1><pre class="source lang-java linenums">package com.finflow.shared.config;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+@Component
+public class JwtSigningKeyProvider {
+
+<span class="fc" id="L18">    private static final Logger log = LoggerFactory.getLogger(JwtSigningKeyProvider.class);</span>
+
+    private final JwtProperties jwtProperties;
+<span class="fc" id="L21">    private final Map&lt;String, SecretKey&gt; keyCache = new ConcurrentHashMap&lt;&gt;();</span>
+    private volatile SecretKey activeKey;
+    private volatile String activeKeyId;
+
+<span class="fc" id="L25">    public JwtSigningKeyProvider(JwtProperties jwtProperties) {</span>
+<span class="fc" id="L26">        this.jwtProperties = jwtProperties;</span>
+<span class="fc" id="L27">        reloadKeys();</span>
+<span class="fc" id="L28">    }</span>
+
+    public void reloadKeys() {
+<span class="fc" id="L31">        keyCache.clear();</span>
+<span class="fc" id="L32">        Map&lt;String, String&gt; configuredKeys = jwtProperties.signingKeys();</span>
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">        if (configuredKeys != null) {</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">            for (Map.Entry&lt;String, String&gt; entry : configuredKeys.entrySet()) {</span>
+<span class="fc" id="L35">                byte[] keyBytes = entry.getValue().getBytes(StandardCharsets.UTF_8);</span>
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">                if (keyBytes.length &lt; 64) {</span>
+<span class="nc" id="L37">                    log.warn(&quot;JWT signing key '{}' is below minimum 512 bits ({} bytes). &quot; +</span>
+<span class="nc" id="L38">                             &quot;This may cause security issues.&quot;, entry.getKey(), keyBytes.length);</span>
+                }
+<span class="fc" id="L40">                keyCache.put(entry.getKey(), Keys.hmacShaKeyFor(keyBytes));</span>
+<span class="fc" id="L41">            }</span>
+        }
+
+<span class="fc" id="L44">        String activeId = jwtProperties.activeKeyId();</span>
+<span class="pc bpc" id="L45" title="2 of 4 branches missed.">        if (activeId == null || !keyCache.containsKey(activeId)) {</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">            if (!keyCache.isEmpty()) {</span>
+<span class="nc" id="L47">                activeId = keyCache.keySet().iterator().next();</span>
+<span class="nc" id="L48">                log.warn(&quot;Configured activeKeyId '{}' not found in signing keys. Using '{}'.&quot;,</span>
+<span class="nc" id="L49">                         jwtProperties.activeKeyId(), activeId);</span>
+            } else {
+<span class="nc" id="L51">                throw new IllegalStateException(&quot;No JWT signing keys configured&quot;);</span>
+            }
+        }
+
+<span class="fc" id="L55">        this.activeKeyId = activeId;</span>
+<span class="fc" id="L56">        this.activeKey = keyCache.get(activeId);</span>
+<span class="fc" id="L57">        log.info(&quot;JWT signing keys loaded. Active key: '{}', total keys: {}&quot;,</span>
+<span class="fc" id="L58">                 activeId, keyCache.size());</span>
+<span class="fc" id="L59">    }</span>
+
+    public SecretKey getActiveKey() {
+<span class="fc" id="L62">        return activeKey;</span>
+    }
+
+    public String getActiveKeyId() {
+<span class="fc" id="L66">        return activeKeyId;</span>
+    }
+
+    public SecretKey getKeyForSigning() {
+<span class="fc" id="L70">        return activeKey;</span>
+    }
+
+    public SecretKey resolveKey(String kid) {
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if (kid == null) {</span>
+<span class="nc" id="L75">            log.debug(&quot;No kid header found, using active key&quot;);</span>
+<span class="nc" id="L76">            return activeKey;</span>
+        }
+<span class="fc" id="L78">        SecretKey key = keyCache.get(kid);</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if (key == null) {</span>
+<span class="nc" id="L80">            log.warn(&quot;Unknown kid '{}' in JWT header. Rejecting token.&quot;, kid);</span>
+<span class="nc" id="L81">            return null;</span>
+        }
+<span class="fc" id="L83">        return key;</span>
+    }
+
+    public SecretKey resolveKeyFromToken(String token) {
+        try {
+<span class="fc" id="L88">            var parsed = Jwts.parser()</span>
+<span class="fc" id="L89">                .verifyWith(activeKey)</span>
+<span class="fc" id="L90">                .build()</span>
+<span class="fc" id="L91">                .parseSignedClaims(token);</span>
+<span class="fc" id="L92">            String kid = parsed.getHeader().getKeyId();</span>
+<span class="fc" id="L93">            return resolveKey(kid);</span>
+<span class="fc" id="L94">        } catch (Exception e) {</span>
+<span class="fc" id="L95">            log.debug(&quot;Could not extract kid from token: {}&quot;, e.getMessage());</span>
+<span class="fc" id="L96">            return null;</span>
+        }
+    }
+
+    public boolean isKeyKnown(String kid) {
+<span class="nc bnc" id="L101" title="All 4 branches missed.">        return kid != null &amp;&amp; keyCache.containsKey(kid);</span>
+    }
+
+    public Map&lt;String, SecretKey&gt; getAllKeys() {
+<span class="nc" id="L105">        return Map.copyOf(keyCache);</span>
+    }
+
+    public int getKeyCount() {
+<span class="nc" id="L109">        return keyCache.size();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

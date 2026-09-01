@@ -4,7 +4,7 @@ import com.finflow.shared.domain.BaseSoftDeletableEntity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "accounts", catalog = "finflow_accounts")
+@Table(name = "accounts", schema = "finflow_accounts")
 @EntityListeners({com.finflow.shared.domain.BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class Account extends BaseSoftDeletableEntity {
 

@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "scheduled_transfers", catalog = "finflow_transfers")
+@Table(name = "scheduled_transfers", schema = "finflow_transfers")
 @EntityListeners({BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class ScheduledTransfer extends BaseEntity {
 

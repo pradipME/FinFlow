@@ -28,14 +28,16 @@ COPY --from=frontend-build /app/frontend/dist ./frontend/dist
 # Copy backend jar
 COPY --from=backend-build /app/backend/target/*.jar ./backend/app.jar
 
-# Copy frontend nginx config
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Install nginx
+# Install nginx (must happen before overwriting its main config below)
 RUN apk add --no-cache nginx
 
-# Set ownership
-RUN chown -R finflow:finflow /app
+# Copy frontend nginx config (main config with writable /tmp runtime paths)
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Set ownership and create a writable runtime dir for the non-root nginx user
+RUN chown -R finflow:finflow /app \
+    && mkdir -p /tmp/nginx \
+    && chown finflow:finflow /tmp/nginx
 
 EXPOSE 80 8080
 

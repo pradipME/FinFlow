@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CardService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.cards.service</a> &gt; <span class="el_source">CardService.java</span></div><h1>CardService.java</h1><pre class="source lang-java linenums">package com.finflow.modules.cards.service;
+
+import com.finflow.modules.cards.domain.Card;
+import com.finflow.modules.cards.domain.CardStatus;
+import com.finflow.modules.cards.domain.CardType;
+import com.finflow.modules.cards.dto.*;
+import com.finflow.modules.cards.mapper.CardMapper;
+import com.finflow.modules.cards.repository.CardRepository;
+import com.finflow.shared.exception.BusinessRuleException;
+import com.finflow.shared.exception.ResourceNotFoundException;
+import com.finflow.shared.exception.ValidationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
+
+@Service
+@Transactional
+public class CardService {
+
+    private final CardRepository cardRepository;
+    private final CardMapper mapper;
+
+<span class="fc" id="L26">    public CardService(CardRepository cardRepository, CardMapper mapper) {</span>
+<span class="fc" id="L27">        this.cardRepository = cardRepository;</span>
+<span class="fc" id="L28">        this.mapper = mapper;</span>
+<span class="fc" id="L29">    }</span>
+
+    @Transactional(readOnly = true)
+    public Page&lt;CardResponse&gt; getCards(String ownerId, Pageable pageable) {
+<span class="fc" id="L33">        return cardRepository.findByOwnerId(ownerId, pageable).map(mapper::toCardResponse);</span>
+    }
+
+    @Transactional(readOnly = true)
+    public CardResponse getCardById(String ownerId, UUID cardId) {
+<span class="fc" id="L38">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
+<span class="fc" id="L39">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
+<span class="fc" id="L40">        return mapper.toCardResponse(card);</span>
+    }
+
+    public CardResponse createCard(String ownerId, CreateCardRequest req) {
+<span class="pc bpc" id="L44" title="2 of 6 branches missed.">        if (req.cardType() == null || req.cardholderName() == null || req.cardholderName().isBlank())</span>
+<span class="fc" id="L45">            throw new ValidationException(&quot;Cardholder name and card type are required&quot;);</span>
+
+        CardType cardType;
+        try {
+<span class="fc" id="L49">            cardType = CardType.valueOf(req.cardType());</span>
+<span class="nc" id="L50">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L51">            throw new ValidationException(&quot;Invalid card type: &quot; + req.cardType());</span>
+<span class="fc" id="L52">        }</span>
+
+<span class="fc" id="L54">        String hash = UUID.randomUUID().toString().replace(&quot;-&quot;, &quot;&quot;);</span>
+<span class="fc" id="L55">        String lastFour = hash.substring(hash.length() - 4);</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        String currency = req.currency() != null ? req.currency() : &quot;USD&quot;;</span>
+
+<span class="fc" id="L58">        Card card = new Card(ownerId, req.accountId(), hash, lastFour, cardType,</span>
+<span class="fc" id="L59">            req.cardholderName(), 12, 2028, currency);</span>
+<span class="fc" id="L60">        card.setCreditLimitCents(req.creditLimitCents());</span>
+<span class="fc" id="L61">        card.setDailyLimitCents(req.dailyLimitCents());</span>
+<span class="fc" id="L62">        card.setMonthlyLimitCents(req.monthlyLimitCents());</span>
+
+<span class="fc" id="L64">        card.activate();</span>
+<span class="fc" id="L65">        return mapper.toCardResponse(cardRepository.save(card));</span>
+    }
+
+    public CardResponse updateCard(String ownerId, UUID cardId, UpdateCardRequest req) {
+<span class="nc" id="L69">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
+<span class="nc" id="L70">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (req.cardholderName() != null) card.setCardholderName(req.cardholderName());</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (req.dailyLimitCents() != null) card.setDailyLimitCents(req.dailyLimitCents());</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (req.monthlyLimitCents() != null) card.setMonthlyLimitCents(req.monthlyLimitCents());</span>
+<span class="nc" id="L74">        return mapper.toCardResponse(cardRepository.save(card));</span>
+    }
+
+    public CardResponse freezeCard(String ownerId, UUID cardId) {
+<span class="fc" id="L78">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
+<span class="pc" id="L79">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
+<span class="fc" id="L80">        card.freeze();</span>
+<span class="fc" id="L81">        return mapper.toCardResponse(cardRepository.save(card));</span>
+    }
+
+    public CardResponse unfreezeCard(String ownerId, UUID cardId) {
+<span class="fc" id="L85">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
+<span class="pc" id="L86">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
+<span class="fc" id="L87">        card.unfreeze();</span>
+<span class="fc" id="L88">        return mapper.toCardResponse(cardRepository.save(card));</span>
+    }
+
+    public CardResponse blockCard(String ownerId, UUID cardId) {
+<span class="fc" id="L92">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
+<span class="pc" id="L93">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
+<span class="fc" id="L94">        card.block();</span>
+<span class="fc" id="L95">        return mapper.toCardResponse(cardRepository.save(card));</span>
+    }
+
+    public void cancelCard(String ownerId, UUID cardId) {
+<span class="fc" id="L99">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
+<span class="pc" id="L100">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
+<span class="fc" id="L101">        card.cancel();</span>
+<span class="fc" id="L102">        cardRepository.save(card);</span>
+<span class="fc" id="L103">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

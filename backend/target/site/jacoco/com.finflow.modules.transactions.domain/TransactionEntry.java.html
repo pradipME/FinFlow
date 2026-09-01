@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransactionEntry.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.transactions.domain</a> &gt; <span class="el_source">TransactionEntry.java</span></div><h1>TransactionEntry.java</h1><pre class="source lang-java linenums">package com.finflow.modules.transactions.domain;
+
+import com.finflow.shared.domain.BaseEntity;
+import com.finflow.shared.domain.BaseEntityListener;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = &quot;transaction_entries&quot;, schema = &quot;finflow_transactions&quot;)
+@EntityListeners({BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
+public class TransactionEntry extends BaseEntity {
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = &quot;transaction_id&quot;, nullable = false,
+            foreignKey = @ForeignKey(name = &quot;fk_txn_entry_transaction&quot;))
+    private Transaction transaction;
+
+    @Column(name = &quot;account_id&quot;, nullable = false, length = 36)
+    private String accountId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = &quot;entry_type&quot;, nullable = false, length = 10)
+    private EntryType entryType;
+
+    @Column(name = &quot;amount_cents&quot;, nullable = false)
+    private Long amountCents;
+
+    @Column(name = &quot;currency&quot;, nullable = false, length = 3)
+    private String currency;
+
+    @Column(name = &quot;balance_before_cents&quot;, nullable = false)
+    private Long balanceBeforeCents;
+
+    @Column(name = &quot;balance_after_cents&quot;, nullable = false)
+    private Long balanceAfterCents;
+
+    @Column(name = &quot;description&quot;, length = 255)
+    private String description;
+
+<span class="fc" id="L39">    protected TransactionEntry() {}</span>
+
+    public TransactionEntry(String accountId, EntryType entryType, Long amountCents,
+                            String currency, Long balanceBeforeCents, Long balanceAfterCents,
+<span class="fc" id="L43">                            String description) {</span>
+<span class="fc" id="L44">        this.accountId = accountId;</span>
+<span class="fc" id="L45">        this.entryType = entryType;</span>
+<span class="fc" id="L46">        this.amountCents = amountCents;</span>
+<span class="fc" id="L47">        this.currency = currency;</span>
+<span class="fc" id="L48">        this.balanceBeforeCents = balanceBeforeCents;</span>
+<span class="fc" id="L49">        this.balanceAfterCents = balanceAfterCents;</span>
+<span class="fc" id="L50">        this.description = description;</span>
+<span class="fc" id="L51">    }</span>
+
+<span class="fc" id="L53">    public void setTransaction(Transaction transaction) { this.transaction = transaction; }</span>
+<span class="nc" id="L54">    public void setAccountId(String accountId) { this.accountId = accountId; }</span>
+<span class="nc" id="L55">    public void setEntryType(EntryType entryType) { this.entryType = entryType; }</span>
+<span class="nc" id="L56">    public void setAmountCents(Long amountCents) { this.amountCents = amountCents; }</span>
+<span class="nc" id="L57">    public void setCurrency(String currency) { this.currency = currency; }</span>
+<span class="nc" id="L58">    public void setBalanceBeforeCents(Long balanceBeforeCents) { this.balanceBeforeCents = balanceBeforeCents; }</span>
+<span class="nc" id="L59">    public void setBalanceAfterCents(Long balanceAfterCents) { this.balanceAfterCents = balanceAfterCents; }</span>
+<span class="nc" id="L60">    public void setDescription(String description) { this.description = description; }</span>
+
+<span class="nc" id="L62">    public Transaction getTransaction() { return transaction; }</span>
+<span class="nc" id="L63">    public String getAccountId() { return accountId; }</span>
+<span class="nc" id="L64">    public EntryType getEntryType() { return entryType; }</span>
+<span class="nc" id="L65">    public Long getAmountCents() { return amountCents; }</span>
+<span class="nc" id="L66">    public String getCurrency() { return currency; }</span>
+<span class="nc" id="L67">    public Long getBalanceBeforeCents() { return balanceBeforeCents; }</span>
+<span class="nc" id="L68">    public Long getBalanceAfterCents() { return balanceAfterCents; }</span>
+<span class="nc" id="L69">    public String getDescription() { return description; }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

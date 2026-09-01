@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
  * @since 1.0.0
  */
 @Entity
-@Table(name = "user_roles", catalog = "finflow_auth",
+@Table(name = "user_roles", schema = "finflow_auth",
        uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"}))
 @EntityListeners({com.finflow.shared.domain.BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class UserRole extends BaseEntity {

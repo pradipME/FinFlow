@@ -4,7 +4,7 @@ import com.finflow.shared.domain.BaseAuditableEntity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "admin_audit_log", catalog = "finflow_admin")
+@Table(name = "admin_audit_log", schema = "finflow_admin")
 public class AdminAuditLog extends BaseAuditableEntity {
 
     @Column(name = "admin_user_id", nullable = false, length = 36)

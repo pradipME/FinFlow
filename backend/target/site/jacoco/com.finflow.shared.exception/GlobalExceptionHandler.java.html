@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GlobalExceptionHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.shared.exception</a> &gt; <span class="el_source">GlobalExceptionHandler.java</span></div><h1>GlobalExceptionHandler.java</h1><pre class="source lang-java linenums">package com.finflow.shared.exception;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+@RestControllerAdvice
+<span class="fc" id="L17">public class GlobalExceptionHandler {</span>
+
+<span class="fc" id="L19">    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);</span>
+
+    @ExceptionHandler(FinFlowException.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleFinFlowException(FinFlowException ex, WebRequest request) {
+<span class="fc" id="L23">        String requestId = extractRequestId(request);</span>
+
+<span class="fc" id="L25">        log.error(&quot;[{}] {} - {} (code: {}, status: {})&quot;,</span>
+<span class="fc" id="L26">                requestId, ex.getClass().getSimpleName(), ex.getMessage(), ex.getCode(), ex.getHttpStatus());</span>
+
+<span class="fc" id="L28">        ErrorResponse error = ErrorResponse.builder()</span>
+<span class="fc" id="L29">                .code(ex.getCode())</span>
+<span class="fc" id="L30">                .message(ex.getMessage())</span>
+<span class="fc" id="L31">                .target(ex.getTarget())</span>
+<span class="fc" id="L32">                .requestId(requestId)</span>
+<span class="fc" id="L33">                .timestamp(LocalDateTime.now())</span>
+<span class="fc" id="L34">                .build();</span>
+
+<span class="fc" id="L36">        return ResponseEntity.status(ex.getHttpStatus()).body(error);</span>
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleValidationException(MethodArgumentNotValidException ex, WebRequest request) {
+<span class="fc" id="L41">        String requestId = extractRequestId(request);</span>
+
+<span class="fc" id="L43">        List&lt;ErrorResponse.FieldErrorDetail&gt; fieldErrors = ex.getBindingResult().getFieldErrors().stream()</span>
+<span class="fc" id="L44">                .map(fieldError -&gt; new ErrorResponse.FieldErrorDetail(</span>
+<span class="fc" id="L45">                        fieldError.getField(),</span>
+                        &quot;INVALID_VALUE&quot;,
+<span class="fc" id="L47">                        fieldError.getDefaultMessage()))</span>
+<span class="fc" id="L48">                .toList();</span>
+
+<span class="fc" id="L50">        log.warn(&quot;[{}] Validation failed: {} field errors&quot;, requestId, fieldErrors.size());</span>
+
+<span class="fc" id="L52">        ErrorResponse error = ErrorResponse.builder()</span>
+<span class="fc" id="L53">                .code(&quot;VALIDATION_ERROR&quot;)</span>
+<span class="fc" id="L54">                .message(&quot;Request validation failed&quot;)</span>
+<span class="fc" id="L55">                .requestId(requestId)</span>
+<span class="fc" id="L56">                .timestamp(LocalDateTime.now())</span>
+<span class="fc" id="L57">                .details(fieldErrors)</span>
+<span class="fc" id="L58">                .build();</span>
+
+<span class="fc" id="L60">        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);</span>
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleGenericException(Exception ex, WebRequest request) {
+<span class="nc" id="L65">        String requestId = extractRequestId(request);</span>
+
+<span class="nc" id="L67">        log.error(&quot;[{}] Unexpected error: {}&quot;, requestId, ex.getMessage(), ex);</span>
+
+<span class="nc" id="L69">        ErrorResponse error = ErrorResponse.builder()</span>
+<span class="nc" id="L70">                .code(&quot;INTERNAL_ERROR&quot;)</span>
+<span class="nc" id="L71">                .message(&quot;An unexpected error occurred. Please try again later.&quot;)</span>
+<span class="nc" id="L72">                .requestId(requestId)</span>
+<span class="nc" id="L73">                .timestamp(LocalDateTime.now())</span>
+<span class="nc" id="L74">                .build();</span>
+
+<span class="nc" id="L76">        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);</span>
+    }
+
+    private String extractRequestId(WebRequest request) {
+<span class="fc" id="L80">        String requestId = request.getHeader(&quot;X-Request-Id&quot;);</span>
+<span class="pc bpc" id="L81" title="3 of 4 branches missed.">        if (requestId == null || requestId.isBlank()) {</span>
+<span class="fc" id="L82">            requestId = UUID.randomUUID().toString();</span>
+        }
+<span class="fc" id="L84">        return requestId;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

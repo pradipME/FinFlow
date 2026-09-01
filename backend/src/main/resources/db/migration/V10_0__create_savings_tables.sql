@@ -9,12 +9,13 @@ CREATE TABLE finflow_savings.savings_goals (
     goal_status      VARCHAR(20)    NOT NULL DEFAULT 'ACTIVE',
     deadline         DATE           NULL,
     description      VARCHAR(255)   NULL,
-    created_at       DATETIME(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    updated_at       DATETIME(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    created_at       TIMESTAMP(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at       TIMESTAMP(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by       VARCHAR(36)    NOT NULL DEFAULT 'system',
     modified_by      VARCHAR(36)    NOT NULL DEFAULT 'system',
     version          BIGINT         NOT NULL DEFAULT 0,
     PRIMARY KEY (id),
-    INDEX idx_savings_goals_owner (owner_id),
     CONSTRAINT fk_savings_goal_account FOREIGN KEY (account_id) REFERENCES finflow_accounts.accounts(id) ON DELETE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
+
+CREATE INDEX idx_savings_goals_owner ON finflow_savings.savings_goals (owner_id);

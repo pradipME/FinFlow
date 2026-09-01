@@ -47,13 +47,14 @@ describe("GuestRoute", () => {
     );
 
     const { loginApi } = await import("../../api");
-    vi.mocked(loginApi).mockResolvedValue({
-      accessToken:
-        "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjM0IiwiZW1haWwiOiJ0ZXN0QGV4YW1wbGUuY29tIiwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsInN0YXR1cyI6IkFDVElERSIsImVtYWlsVmVyaWZpZWQiOnRydWUsImlhdCI6MTcwMDAwMDAwMH0.abc123",
-      refreshToken: "new-refresh",
-      tokenType: "Bearer",
-      expiresIn: 900,
-    });
+      vi.mocked(loginApi).mockResolvedValue({
+        accessToken:
+          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjM0IiwiZW1haWwiOiJ0ZXN0QGV4YW1wbGUuY29tIiwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsInN0YXR1cyI6IkFDVElERSIsImVtYWlsVmVyaWZpZWQiOnRydWUsImlhdCI6MTcwMDAwMDAwMH0.abc123",
+        refreshToken: "new-refresh",
+        tokenType: "Bearer",
+        expiresIn: 900,
+        issuedAt: new Date().toISOString(),
+      });
 
     const { refreshApi } = await import("../../api");
     vi.mocked(refreshApi).mockResolvedValue({

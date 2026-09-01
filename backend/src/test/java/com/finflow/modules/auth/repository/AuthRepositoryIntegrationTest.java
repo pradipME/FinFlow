@@ -21,13 +21,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Integration tests for auth module repositories.
  *
  * <p>Uses H2 in-memory database to verify repository queries without
- * requiring a running MySQL instance.</p>
+ * requiring a running PostgreSQL instance.</p>
  */
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 @ActiveProfiles("test")
 @TestPropertySource(properties = {
-        "spring.datasource.url=jdbc:h2:mem:finflow_auth_test;DB_CLOSE_DELAY=-1;MODE=MYSQL",
+        "spring.datasource.url=jdbc:h2:mem:finflow_auth_test;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE",
         "spring.datasource.driver-class-name=org.h2.Driver",
         "spring.jpa.hibernate.ddl-auto=create-drop",
         "spring.flyway.enabled=false",

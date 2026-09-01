@@ -21,7 +21,8 @@ export type ButtonVariant =
   | "success"
   | "glass"
   | "gradient"
-  | "link";
+  | "link"
+  | "neutral";
 
 // ── Sizes ────────────────────────────────────────────────────────
 

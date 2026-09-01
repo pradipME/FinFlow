@@ -25,19 +25,11 @@
  *   Motion presets from @/shared/motion (toastEnter, toastExit)
  *   useReducedMotion() for graceful degradation
  */
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-  type ReactNode,
-} from "react";
-import { motion, AnimatePresence, type PanInfo } from "framer-motion";
-import { useReducedMotion, toastEnter } from "@/shared/motion";
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from "react";
+
+import { motion, AnimatePresence, type PanInfo, type Variants } from "framer-motion";
+import { useReducedMotion } from "@/shared/motion";
+
 import {
   DEFAULT_AUTO_CLOSE,
   DEFAULT_MAX_VISIBLE,
@@ -122,7 +114,7 @@ function CloseIcon() {
 
 // ── Variant → Icon Map ───────────────────────────────────────────
 
-const VARIANT_ICONS: Record<ToastVariant, () => JSX.Element> = {
+const VARIANT_ICONS: Record<ToastVariant, () => React.ReactNode> = {
   success: CheckIcon,
   info: InfoIcon,
   warning: WarningIcon,
@@ -301,19 +293,23 @@ export function useToast(): { toast: ToastMethods } {
 // ── ToastItem ────────────────────────────────────────────────────
 
 function ToastItemComponent({ toast: t, position, gap, index }: ToastItemProps) {
+  // Prevent unused variable warnings
+  void index;
   const reduced = useReducedMotion();
   const { dispatch } = useToastContext();
   const [hovered, setHovered] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+
   const Icon = VARIANT_ICONS[t.variant];
 
   // ── Auto-close timer ────────────────────────────────────────
   useEffect(() => {
-    if (t.autoClose === false || hovered || t.variant === "loading") {
+    const autoClose = t.autoClose ?? DEFAULT_AUTO_CLOSE;
+    if (autoClose === false || hovered || t.variant === "loading") {
       return;
     }
-    const remaining =
-      t.autoClose - (Date.now() - t.createdAt);
+    const remaining = autoClose - (Date.now() - t.createdAt);
     if (remaining <= 0) {
       dispatch({ type: "REMOVE", id: t.id });
       return;
@@ -321,7 +317,6 @@ function ToastItemComponent({ toast: t, position, gap, index }: ToastItemProps) 
     timerRef.current = setTimeout(() => {
       dispatch({ type: "REMOVE", id: t.id });
     }, remaining);
-
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
@@ -343,13 +338,16 @@ function ToastItemComponent({ toast: t, position, gap, index }: ToastItemProps) 
   };
 
   // ── Stack offset ────────────────────────────────────────────
-  const yOffset = index * (72 + gap);
+
+ // eslint-disable-next-line @typescript-eslint/no-unused-vars
+ // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 
   // ── Animation variants (direction-aware) ────────────────────
   const isTop = position.startsWith("top");
   const xOffset = position.includes("left") ? -80 : position.includes("right") ? 80 : 0;
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: {
       opacity: 0,
       x: reduced ? 0 : xOffset,
@@ -373,7 +371,8 @@ function ToastItemComponent({ toast: t, position, gap, index }: ToastItemProps) 
         ? { duration: 0 }
         : { duration: 0.2, ease: [0.4, 0, 1, 1] },
     },
-  };
+  } as const; // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 
   return (
     <motion.div
@@ -389,7 +388,7 @@ function ToastItemComponent({ toast: t, position, gap, index }: ToastItemProps) 
       onDragEnd={handleDragEnd}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className={getToastItemClasses(t.variant, position)}
+       className={getToastItemClasses(t.variant)}
       role="status"
       aria-live={t.variant === "danger" ? "assertive" : "polite"}
       aria-atomic="true"

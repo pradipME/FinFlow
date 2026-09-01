@@ -17,7 +17,7 @@ export const scheduledTransferSchema = z.object({
   targetBeneficiaryId: z.string().optional().or(z.literal("")),
   amountCents: z.number("Amount is required").min(1, "Amount must be at least 1 cent"),
   description: z.string().max(255, "Description too long").optional().or(z.literal("")),
-  scheduleType: z.enum(["ONE_TIME", "RECURRING"], { required_error: "Schedule type is required" }),
+  scheduleType: z.enum(["ONE_TIME", "RECURRING"]),
   frequency: z.enum(["DAILY", "WEEKLY", "BIWEEKLY", "MONTHLY", "QUARTERLY", "YEARLY"]).optional(),
   nextExecution: z.string().min(1, "Next execution date is required"),
   endDate: z.string().optional().or(z.literal("")),

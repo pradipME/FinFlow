@@ -1,5 +1,5 @@
 import { Check, Trash2 } from "lucide-react";
-import { Button } from "@/shared/components";
+import { cn } from "@/shared/utils";
 import { formatRelativeTime } from "@/shared/lib/format";
 import type { Notification } from "../types";
 import { NotificationTypeIcon } from "./NotificationTypeIcon";
@@ -8,45 +8,81 @@ interface NotificationItemProps {
   notification: Notification;
   onMarkRead?: (id: string) => void;
   onDelete?: (id: string) => void;
+  hideActions?: boolean;
 }
 
-export function NotificationItem({ notification, onMarkRead, onDelete }: NotificationItemProps) {
+export function NotificationItem({
+  notification,
+  onMarkRead,
+  onDelete,
+  hideActions,
+}: NotificationItemProps) {
   return (
-    <div className="flex items-start gap-4 rounded-lg border border-gray-200 bg-white p-4 transition hover:shadow-sm">
-      <div className="mt-0.5 shrink-0">
-        <NotificationTypeIcon type={notification.notificationType} />
-      </div>
+    <div
+      className={cn(
+        "group relative flex items-start gap-4 overflow-hidden rounded-xl border p-4 transition-colors duration-200",
+        notification.isRead
+          ? "border-border-default bg-surface-primary"
+          : "border-brand-primary/30 bg-brand-primary-subtle",
+      )}
+    >
+      {!notification.isRead && (
+        <span className="absolute inset-y-0 left-0 w-0.5 bg-brand-primary" aria-hidden="true" />
+      )}
+
+      <NotificationTypeIcon type={notification.notificationType} />
 
       <div className="min-w-0 flex-1">
-        <h3 className={`text-sm ${notification.isRead ? "font-normal text-gray-700" : "font-semibold text-gray-900"}`}>
-          {notification.title}
-        </h3>
-        <p className="mt-1 line-clamp-2 text-sm text-gray-500">{notification.message}</p>
-        <p className="mt-1 text-xs text-gray-400">{formatRelativeTime(notification.createdAt)}</p>
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <h3
+            className={cn(
+              "text-sm",
+              notification.isRead
+                ? "font-medium text-text-secondary"
+                : "font-semibold text-text-primary",
+            )}
+          >
+            {notification.title}
+          </h3>
+          {!notification.isRead && (
+            <span
+              className="rounded-full bg-brand-primary-subtle px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-brand-primary"
+              aria-label="Unread"
+            >
+              New
+            </span>
+          )}
+        </div>
+        <p className="mt-0.5 line-clamp-2 text-sm text-text-tertiary">{notification.message}</p>
+        <p className="mt-1.5 text-xs text-text-tertiary/70">
+          {formatRelativeTime(notification.createdAt)}
+        </p>
       </div>
 
-      <div className="flex shrink-0 items-center gap-1">
-        {!notification.isRead && onMarkRead && (
-          <Button
-            variant="outline"
-            size="xs"
-            leftIcon={<Check size={14} />}
-            onClick={() => onMarkRead(notification.id)}
-          >
-            Read
-          </Button>
-        )}
-        {onDelete && (
-          <Button
-            variant="outline"
-            size="xs"
-            leftIcon={<Trash2 size={14} />}
-            onClick={() => onDelete(notification.id)}
-          >
-            Delete
-          </Button>
-        )}
-      </div>
+      {!hideActions && (
+        <div className="flex shrink-0 flex-col gap-1.5 opacity-60 transition-opacity duration-200 group-hover:opacity-100 sm:flex-row sm:items-center">
+          {!notification.isRead && onMarkRead && (
+            <button
+              type="button"
+              onClick={() => onMarkRead(notification.id)}
+              className="flex items-center gap-1.5 rounded-lg border border-border-default px-2.5 py-1.5 text-xs font-medium text-text-secondary transition-colors hover:border-brand-primary/40 hover:bg-brand-primary-subtle hover:text-brand-primary"
+            >
+              <Check size={13} />
+              Mark read
+            </button>
+          )}
+          {onDelete && (
+            <button
+              type="button"
+              onClick={() => onDelete(notification.id)}
+              className="flex items-center gap-1.5 rounded-lg border border-border-default px-2.5 py-1.5 text-xs font-medium text-text-tertiary transition-colors hover:border-danger/40 hover:bg-danger-subtle hover:text-danger"
+            >
+              <Trash2 size={13} />
+              Delete
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

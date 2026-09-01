@@ -60,7 +60,7 @@ public class AccountService {
         String accountNumber = generateUniqueAccountNumber();
         Account account = new Account(currentUserId, accountNumber, request.accountType(), request.currency());
 
-        accountRepository.save(account);
+        account = accountRepository.save(account);
         log.info("Account created: id={}, owner={}, type={}", account.getId(), currentUserId, request.accountType());
 
         AccountHolder holder = new AccountHolder(account, currentUserId, OwnershipType.PRIMARY);

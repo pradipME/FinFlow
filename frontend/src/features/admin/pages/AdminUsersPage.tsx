@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ChevronLeft, ChevronRight, Users } from "lucide-react";
 import { PageHeader } from "@/shared/layout";
 import { Button, EmptyState, ErrorState, Skeleton } from "@/shared/components";
 import { useAdminUsers } from "../hooks";
@@ -35,6 +36,7 @@ export function AdminUsersPage() {
   }
 
   const users = data?.content ?? [];
+  const totalPages = data?.totalPages ?? 0;
 
   return (
     <div className="space-y-6">
@@ -47,32 +49,45 @@ export function AdminUsersPage() {
         />
       ) : (
         <>
-          <div className="overflow-x-auto rounded-xl border border-border-default">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-border-default bg-surface-active/50">
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">Name</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">Email</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">Role</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">Status</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">Registered</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <UserManagementRow key={user.id} user={user} />
-                ))}
-              </tbody>
-            </table>
+          <div className="overflow-hidden rounded-2xl border border-border-default bg-surface-primary">
+            <header className="flex items-center justify-between gap-3 border-b border-border-subtle px-5 py-4">
+              <div className="flex items-center gap-2.5">
+                <Users size={16} className="text-brand-primary" />
+                <h2 className="text-sm font-semibold text-text-primary">Registered users</h2>
+              </div>
+              <span className="rounded-full bg-surface-active px-2.5 py-1 text-xs font-medium text-text-secondary">
+                Page {page + 1} of {Math.max(totalPages, 1)}
+              </span>
+            </header>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-border-subtle bg-surface-active/40">
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">Name</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">Email</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">Role</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">Status</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">Registered</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border-subtle">
+                  {users.map((user) => (
+                    <UserManagementRow key={user.id} user={user} />
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
+
           <div className="flex items-center justify-between">
             <p className="text-sm text-text-tertiary">
-              Page {page + 1} of {data?.totalPages ?? 1}
+              {users.length} user{users.length === 1 ? "" : "s"} on this page
             </p>
             <div className="flex gap-2">
               <Button
                 variant="outline"
                 size="sm"
+                leftIcon={<ChevronLeft size={15} />}
                 isDisabled={page === 0}
                 onClick={() => setPage((p) => Math.max(0, p - 1))}
               >
@@ -81,7 +96,8 @@ export function AdminUsersPage() {
               <Button
                 variant="outline"
                 size="sm"
-                isDisabled={(data?.totalPages ?? 1) <= page + 1}
+                rightIcon={<ChevronRight size={15} />}
+                isDisabled={totalPages <= page + 1}
                 onClick={() => setPage((p) => p + 1)}
               >
                 Next

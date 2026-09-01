@@ -11,27 +11,28 @@ CREATE TABLE finflow_transactions.transactions (
     target_account_id  CHAR(36)     NULL,
     fee_amount_cents   BIGINT       NOT NULL DEFAULT 0,
     user_id          CHAR(36)       NOT NULL,
-    completed_at     DATETIME(6)    NULL,
+    completed_at     TIMESTAMP(6)    NULL,
     failed_reason    VARCHAR(500)   NULL,
     metadata_json    TEXT           NULL,
-    created_at       DATETIME(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    updated_at       DATETIME(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    created_at       TIMESTAMP(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at       TIMESTAMP(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by       VARCHAR(36)    NOT NULL DEFAULT 'system',
     modified_by      VARCHAR(36)    NOT NULL DEFAULT 'system',
     version          BIGINT         NOT NULL DEFAULT 0,
 
     PRIMARY KEY (id),
-    INDEX idx_transactions_user_id (user_id),
-    INDEX idx_transactions_source_account (source_account_id),
-    INDEX idx_transactions_target_account (target_account_id),
-    INDEX idx_transactions_status (transaction_status),
-    INDEX idx_transactions_type (transaction_type),
-    INDEX idx_transactions_created_at (created_at),
     CONSTRAINT fk_txn_source_account FOREIGN KEY (source_account_id)
         REFERENCES finflow_accounts.accounts(id) ON DELETE RESTRICT,
     CONSTRAINT fk_txn_target_account FOREIGN KEY (target_account_id)
         REFERENCES finflow_accounts.accounts(id) ON DELETE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
+
+CREATE INDEX idx_transactions_user_id ON finflow_transactions.transactions (user_id);
+CREATE INDEX idx_transactions_source_account ON finflow_transactions.transactions (source_account_id);
+CREATE INDEX idx_transactions_target_account ON finflow_transactions.transactions (target_account_id);
+CREATE INDEX idx_transactions_status ON finflow_transactions.transactions (transaction_status);
+CREATE INDEX idx_transactions_type ON finflow_transactions.transactions (transaction_type);
+CREATE INDEX idx_transactions_created_at ON finflow_transactions.transactions (created_at);
 
 CREATE TABLE finflow_transactions.transaction_entries (
     id               CHAR(36)       NOT NULL,
@@ -43,17 +44,18 @@ CREATE TABLE finflow_transactions.transaction_entries (
     balance_before_cents BIGINT     NOT NULL DEFAULT 0,
     balance_after_cents  BIGINT     NOT NULL DEFAULT 0,
     description      VARCHAR(255)   NULL,
-    created_at       DATETIME(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    updated_at       DATETIME(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    created_at       TIMESTAMP(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at       TIMESTAMP(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by       VARCHAR(36)    NOT NULL DEFAULT 'system',
     modified_by      VARCHAR(36)    NOT NULL DEFAULT 'system',
     version          BIGINT         NOT NULL DEFAULT 0,
 
     PRIMARY KEY (id),
-    INDEX idx_txn_entries_transaction (transaction_id),
-    INDEX idx_txn_entries_account (account_id),
     CONSTRAINT fk_txn_entry_transaction FOREIGN KEY (transaction_id)
         REFERENCES finflow_transactions.transactions(id) ON DELETE RESTRICT,
     CONSTRAINT fk_txn_entry_account FOREIGN KEY (account_id)
         REFERENCES finflow_accounts.accounts(id) ON DELETE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
+
+CREATE INDEX idx_txn_entries_transaction ON finflow_transactions.transaction_entries (transaction_id);
+CREATE INDEX idx_txn_entries_account ON finflow_transactions.transaction_entries (account_id);

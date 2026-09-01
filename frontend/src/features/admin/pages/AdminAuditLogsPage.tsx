@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ChevronLeft, ChevronRight, ShieldCheck } from "lucide-react";
 import { PageHeader } from "@/shared/layout";
 import { Button, EmptyState, ErrorState, Skeleton } from "@/shared/components";
 import { useAdminAuditLogs } from "../hooks";
@@ -35,6 +36,7 @@ export function AdminAuditLogsPage() {
   }
 
   const logs = data?.content ?? [];
+  const totalPages = data?.totalPages ?? 0;
 
   return (
     <div className="space-y-6">
@@ -47,32 +49,45 @@ export function AdminAuditLogsPage() {
         />
       ) : (
         <>
-          <div className="overflow-x-auto rounded-xl border border-border-default">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-border-default bg-surface-active/50">
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">Action</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">Target Type</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">Target ID</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">Admin User</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {logs.map((log) => (
-                  <AuditLogRow key={log.id} log={log} />
-                ))}
-              </tbody>
-            </table>
+          <div className="overflow-hidden rounded-2xl border border-border-default bg-surface-primary">
+            <header className="flex items-center justify-between gap-3 border-b border-border-subtle px-5 py-4">
+              <div className="flex items-center gap-2.5">
+                <ShieldCheck size={16} className="text-brand-primary" />
+                <h2 className="text-sm font-semibold text-text-primary">Admin activity</h2>
+              </div>
+              <span className="rounded-full bg-surface-active px-2.5 py-1 text-xs font-medium text-text-secondary">
+                Page {page + 1} of {Math.max(totalPages, 1)}
+              </span>
+            </header>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-border-subtle bg-surface-active/40">
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">Action</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">Target Type</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">Target ID</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">Admin User</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">Date</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border-subtle">
+                  {logs.map((log) => (
+                    <AuditLogRow key={log.id} log={log} />
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
+
           <div className="flex items-center justify-between">
             <p className="text-sm text-text-tertiary">
-              Page {page + 1} of {data?.totalPages ?? 1}
+              {logs.length} log{logs.length === 1 ? "" : "s"} on this page
             </p>
             <div className="flex gap-2">
               <Button
                 variant="outline"
                 size="sm"
+                leftIcon={<ChevronLeft size={15} />}
                 isDisabled={page === 0}
                 onClick={() => setPage((p) => Math.max(0, p - 1))}
               >
@@ -81,7 +96,8 @@ export function AdminAuditLogsPage() {
               <Button
                 variant="outline"
                 size="sm"
-                isDisabled={(data?.totalPages ?? 1) <= page + 1}
+                rightIcon={<ChevronRight size={15} />}
+                isDisabled={totalPages <= page + 1}
                 onClick={() => setPage((p) => p + 1)}
               >
                 Next

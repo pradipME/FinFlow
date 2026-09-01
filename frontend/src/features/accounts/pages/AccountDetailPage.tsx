@@ -49,7 +49,7 @@ export function AccountDetailPage() {
         actions={
           <div className="flex items-center gap-3">
             <Button
-              variant="secondary"
+              variant="neutral"
               leftIcon={<ArrowLeft className="h-4 w-4" />}
               onClick={() => navigate(ROUTES.ACCOUNTS)}
             >
@@ -61,11 +61,20 @@ export function AccountDetailPage() {
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-6">
-          <div className="rounded-xl border border-border-default bg-surface-primary p-6">
-            <div className="flex items-start justify-between">
+          <div
+            className="relative overflow-hidden rounded-xl border border-border-default p-6"
+            style={{ background: "linear-gradient(135deg, #0C1219 0%, #0A0F16 60%, #0E1A22 100%)" }}
+          >
+            <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+              <div
+                className="absolute -right-16 -top-20 h-64 w-64 rounded-full opacity-25"
+                style={{ background: "radial-gradient(closest-side, var(--ff-color-primary, #2fd6a3), transparent)" }}
+              />
+            </div>
+            <div className="relative flex items-start justify-between">
               <div>
                 <p className="text-sm font-medium text-text-secondary">Available Balance</p>
-                <p className="mt-1 text-3xl font-bold text-text-primary">
+                <p className="font-tabular mt-1 text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
                   {formatCurrency(account.availableBalanceCents / 100, account.currency)}
                 </p>
                 {account.ledgerBalanceCents !== account.availableBalanceCents && (
@@ -77,32 +86,32 @@ export function AccountDetailPage() {
               <AccountStatusBadge status={account.accountStatus} />
             </div>
 
-            <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              <div className="flex items-center gap-3 rounded-lg bg-surface-secondary p-3">
-                <CreditCard className="h-5 w-5 text-text-tertiary" />
+            <div className="relative mt-6 grid gap-3 sm:grid-cols-2">
+              <div className="flex items-center gap-3 rounded-lg border border-border-subtle bg-surface-secondary/60 px-3 py-3 backdrop-blur-sm">
+                <CreditCard className="h-5 w-5 text-brand-primary" />
                 <div>
-                  <p className="text-xs text-text-tertiary">Account Number</p>
-                  <p className="text-sm font-medium text-text-primary">{account.accountNumber}</p>
+                  <p className="text-[11px] uppercase tracking-wider text-text-tertiary">Account Number</p>
+                  <p className="font-mono text-sm font-medium text-text-primary">{account.accountNumber}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 rounded-lg bg-surface-secondary p-3">
-                <Shield className="h-5 w-5 text-text-tertiary" />
+              <div className="flex items-center gap-3 rounded-lg border border-border-subtle bg-surface-secondary/60 px-3 py-3 backdrop-blur-sm">
+                <Shield className="h-5 w-5 text-brand-primary" />
                 <div>
-                  <p className="text-xs text-text-tertiary">Currency</p>
+                  <p className="text-[11px] uppercase tracking-wider text-text-tertiary">Currency</p>
                   <p className="text-sm font-medium text-text-primary">{account.currency}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 rounded-lg bg-surface-secondary p-3">
-                <Clock className="h-5 w-5 text-text-tertiary" />
+              <div className="flex items-center gap-3 rounded-lg border border-border-subtle bg-surface-secondary/60 px-3 py-3 backdrop-blur-sm">
+                <Clock className="h-5 w-5 text-brand-primary" />
                 <div>
-                  <p className="text-xs text-text-tertiary">Opened</p>
+                  <p className="text-[11px] uppercase tracking-wider text-text-tertiary">Opened</p>
                   <p className="text-sm font-medium text-text-primary">{formatDate(account.createdAt)}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 rounded-lg bg-surface-secondary p-3">
-                <Clock className="h-5 w-5 text-text-tertiary" />
+              <div className="flex items-center gap-3 rounded-lg border border-border-subtle bg-surface-secondary/60 px-3 py-3 backdrop-blur-sm">
+                <Clock className="h-5 w-5 text-brand-primary" />
                 <div>
-                  <p className="text-xs text-text-tertiary">Last Updated</p>
+                  <p className="text-[11px] uppercase tracking-wider text-text-tertiary">Last Updated</p>
                   <p className="text-sm font-medium text-text-primary">{formatDate(account.updatedAt)}</p>
                 </div>
               </div>

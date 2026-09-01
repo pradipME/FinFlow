@@ -112,7 +112,7 @@ class SessionServiceTest {
         }
 
         @Test
-        @DisplayName("returns empty when token not found in MySQL and not revoked")
+        @DisplayName("returns empty when token not found in PostgreSQL and not revoked")
         void returnsEmptyWhenNotFound() {
             when(tokenHashService.hashToken("raw-token")).thenReturn("hash-123");
             when(redisSessionCache.isRevoked("hash-123")).thenReturn(false);
@@ -148,7 +148,7 @@ class SessionServiceTest {
     class RevokeSession {
 
         @Test
-        @DisplayName("revokes token and updates both MySQL and Redis")
+        @DisplayName("revokes token and updates both PostgreSQL and Redis")
         void revokesSuccessfully() {
             when(tokenHashService.hashToken("raw-token")).thenReturn("hash-123");
             when(refreshTokenRepository.findByTokenHash("hash-123"))
@@ -180,7 +180,7 @@ class SessionServiceTest {
     class RevokeAllUserSessions {
 
         @Test
-        @DisplayName("revokes all user tokens in MySQL and clears Redis")
+        @DisplayName("revokes all user tokens in PostgreSQL and clears Redis")
         void revokesAll() {
             UUID userId = testUser.getId();
 

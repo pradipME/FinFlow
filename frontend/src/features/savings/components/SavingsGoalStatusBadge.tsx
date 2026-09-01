@@ -1,10 +1,10 @@
 import type { SavingsGoalStatus } from "../types";
 
 const statusStyles: Record<SavingsGoalStatus, string> = {
-  ACTIVE: "bg-green-100 text-green-800",
-  PAUSED: "bg-yellow-100 text-yellow-800",
-  COMPLETED: "bg-blue-100 text-blue-800",
-  CANCELLED: "bg-gray-100 text-gray-800",
+  ACTIVE: "bg-success-subtle text-success",
+  PAUSED: "bg-warning-subtle text-chart-4",
+  COMPLETED: "bg-info-subtle text-chart-3",
+  CANCELLED: "bg-surface-active text-text-secondary",
 };
 
 export function SavingsGoalStatusBadge({ status }: { status: SavingsGoalStatus }) {

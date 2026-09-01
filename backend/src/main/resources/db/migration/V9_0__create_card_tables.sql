@@ -14,17 +14,18 @@ CREATE TABLE finflow_accounts.cards (
     monthly_limit_cents BIGINT      NULL,
     currency         CHAR(3)        NOT NULL DEFAULT 'USD',
     pin_set          BOOLEAN        NOT NULL DEFAULT FALSE,
-    created_at       DATETIME(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    updated_at       DATETIME(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    created_at       TIMESTAMP(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at       TIMESTAMP(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by       VARCHAR(36)    NOT NULL DEFAULT 'system',
     modified_by      VARCHAR(36)    NOT NULL DEFAULT 'system',
     version          BIGINT         NOT NULL DEFAULT 0,
     PRIMARY KEY (id),
-    INDEX idx_cards_owner (owner_id),
-    INDEX idx_cards_account (account_id),
-    INDEX idx_cards_last_four (card_last_four),
     CONSTRAINT fk_card_account FOREIGN KEY (account_id) REFERENCES finflow_accounts.accounts(id) ON DELETE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
+
+CREATE INDEX idx_cards_owner ON finflow_accounts.cards (owner_id);
+CREATE INDEX idx_cards_account ON finflow_accounts.cards (account_id);
+CREATE INDEX idx_cards_last_four ON finflow_accounts.cards (card_last_four);
 
 CREATE TABLE finflow_accounts.card_transactions (
     id               CHAR(36)       NOT NULL,
@@ -36,12 +37,13 @@ CREATE TABLE finflow_accounts.card_transactions (
     merchant_category VARCHAR(50)   NULL,
     status           VARCHAR(20)    NOT NULL,
     authorization_code VARCHAR(20)  NULL,
-    created_at       DATETIME(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    updated_at       DATETIME(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    created_at       TIMESTAMP(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at       TIMESTAMP(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by       VARCHAR(36)    NOT NULL DEFAULT 'system',
     modified_by      VARCHAR(36)    NOT NULL DEFAULT 'system',
     version          BIGINT         NOT NULL DEFAULT 0,
     PRIMARY KEY (id),
-    INDEX idx_card_txn_card (card_id),
     CONSTRAINT fk_card_txn_card FOREIGN KEY (card_id) REFERENCES finflow_accounts.cards(id) ON DELETE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
+
+CREATE INDEX idx_card_txn_card ON finflow_accounts.card_transactions (card_id);

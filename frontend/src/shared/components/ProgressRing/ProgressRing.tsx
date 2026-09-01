@@ -7,7 +7,6 @@ import {
   DEFAULT_SIZE,
   DEFAULT_VARIANT,
   SIZE_MAP,
-  TRACK_COLOR,
 } from "./constants";
 import { getRingBarClasses, getRingValueClasses } from "./styles";
 

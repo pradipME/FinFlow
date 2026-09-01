@@ -5,8 +5,6 @@ import {
   getToastItemClasses,
   getToastIconClasses,
   getToastContainerClasses,
-  ACTION_BUTTON_CLASSES,
-  CLOSE_BUTTON_CLASSES,
 } from "./styles";
 import {
   DEFAULT_AUTO_CLOSE,
@@ -14,8 +12,11 @@ import {
   DEFAULT_GAP,
   DEFAULT_POSITION,
   SWIPE_THRESHOLD,
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
   VARIANT_CLASSES,
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
   ACCENT_CLASSES,
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
   POSITION_CLASSES,
 } from "./constants";
 import type { ToastVariant, ToastPosition } from "./types";
@@ -54,11 +55,7 @@ vi.mock("framer-motion", () => {
 
 // ── Test Helper: Component that calls useToast ───────────────────
 
-function ToastTrigger({
-  onReady,
-}: {
-  onReady: (toast: ReturnType<typeof useToast>["toast"]) => void;
-}) {
+function ToastTrigger() {
   const { toast } = useToast();
   // Expose the toast methods to tests via a ref-like pattern
   (globalThis as Record<string, unknown>).__toast = toast;
@@ -71,7 +68,7 @@ function renderWithProvider(
 ) {
   return render(
     <ToastProvider {...providerProps}>
-      {ui ?? <ToastTrigger onReady={() => {}} />}
+      {ui ?? <ToastTrigger />}
     </ToastProvider>,
   );
 }
@@ -127,7 +124,7 @@ describe("Toast", () => {
     it("success() creates a toast", () => {
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).success("Saved!");
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).success("Saved!");
       });
       expect(getToast()).toBeTruthy();
       expect(screen.getByText("Saved!")).toBeTruthy();
@@ -136,7 +133,7 @@ describe("Toast", () => {
     it("info() creates a toast", () => {
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).info("Heads up");
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).info("Heads up");
       });
       expect(screen.getByText("Heads up")).toBeTruthy();
       expect(getToast()!.dataset.variant).toBe("info");
@@ -145,7 +142,7 @@ describe("Toast", () => {
     it("warning() creates a toast", () => {
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).warning("Careful");
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).warning("Careful");
       });
       expect(getToast()!.dataset.variant).toBe("warning");
     });
@@ -153,7 +150,7 @@ describe("Toast", () => {
     it("error() creates a danger toast", () => {
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).error("Oops");
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).error("Oops");
       });
       expect(getToast()!.dataset.variant).toBe("danger");
     });
@@ -161,7 +158,7 @@ describe("Toast", () => {
     it("loading() creates a loading toast", () => {
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).loading("Working…");
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).loading("Working…");
       });
       expect(getToast()!.dataset.variant).toBe("loading");
     });
@@ -170,11 +167,11 @@ describe("Toast", () => {
       renderWithProvider();
       let id = "";
       act(() => {
-        id = (globalThis.__toast as ReturnType<typeof useToast>["toast"]).success("Gone");
+        id = ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).success("Gone");
       });
       expect(getToast()).toBeTruthy();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).dismiss(id);
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).dismiss(id);
       });
       expect(getToast()).toBeNull();
     });
@@ -182,14 +179,14 @@ describe("Toast", () => {
     it("dismissAll() removes all toasts", () => {
       renderWithProvider();
       act(() => {
-        const t = globalThis.__toast as ReturnType<typeof useToast>["toast"];
+        const t = (globalThis as any).__toast as ReturnType<typeof useToast>["toast"];
         t.success("One");
         t.info("Two");
         t.warning("Three");
       });
       expect(getAllToasts()).toHaveLength(3);
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).dismissAll();
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).dismissAll();
       });
       expect(screen.queryAllByRole("status")).toHaveLength(0);
     });
@@ -198,11 +195,11 @@ describe("Toast", () => {
       renderWithProvider();
       let id = "";
       act(() => {
-        id = (globalThis.__toast as ReturnType<typeof useToast>["toast"]).loading("Loading…");
+        id = ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).loading("Loading…");
       });
       expect(screen.getByText("Loading…")).toBeTruthy();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).update(id, {
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).update(id, {
           variant: "success",
           message: "Done!",
         });
@@ -221,7 +218,7 @@ describe("Toast", () => {
       it(`renders ${variant} variant with correct data attribute`, () => {
         renderWithProvider();
         act(() => {
-          const t = globalThis.__toast as ReturnType<typeof useToast>["toast"];
+          const t = (globalThis as any).__toast as ReturnType<typeof useToast>["toast"];
           if (variant === "danger") {
             t.error("Test");
           } else {
@@ -260,7 +257,7 @@ describe("Toast", () => {
     it("auto-closes after default delay", () => {
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).success("Auto");
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).success("Auto");
       });
       expect(getToast()).toBeTruthy();
       act(() => {
@@ -272,7 +269,7 @@ describe("Toast", () => {
     it("auto-closes after custom delay", () => {
       renderWithProvider(null, { defaultAutoClose: 2000 });
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).success("Fast");
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).success("Fast");
       });
       act(() => {
         vi.advanceTimersByTime(2000);
@@ -283,7 +280,7 @@ describe("Toast", () => {
     it("does not auto-close when autoClose=false", () => {
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).success("Sticky", {
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).success("Sticky", {
           autoClose: false,
         });
       });
@@ -296,7 +293,7 @@ describe("Toast", () => {
     it("pauses auto-close on hover", () => {
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).success("Pause");
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).success("Pause");
       });
       const toast = getToast()!;
       // Hover pauses the timer
@@ -311,7 +308,7 @@ describe("Toast", () => {
     it("loading toasts do not auto-close", () => {
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).loading("Wait…");
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).loading("Wait…");
       });
       act(() => {
         vi.advanceTimersByTime(30000);
@@ -326,7 +323,7 @@ describe("Toast", () => {
     it("renders close button by default", () => {
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).success("Closeable");
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).success("Closeable");
       });
       expect(screen.getByLabelText("Dismiss notification")).toBeTruthy();
     });
@@ -334,7 +331,7 @@ describe("Toast", () => {
     it("dismisses on close button click", () => {
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).success("Click X");
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).success("Click X");
       });
       fireEvent.click(screen.getByLabelText("Dismiss notification"));
       expect(getToast()).toBeNull();
@@ -343,7 +340,7 @@ describe("Toast", () => {
     it("hides close button when closable=false", () => {
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).success("No X", {
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).success("No X", {
           closable: false,
         });
       });
@@ -358,7 +355,7 @@ describe("Toast", () => {
       const onClick = vi.fn();
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).success("Actionable", {
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).success("Actionable", {
           action: { label: "Undo", onClick },
         });
       });
@@ -375,7 +372,7 @@ describe("Toast", () => {
     it("renders description when provided", () => {
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).success(
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).success(
           "Title",
           { description: "Details here" },
         );
@@ -391,7 +388,7 @@ describe("Toast", () => {
       renderWithProvider();
       const p = Promise.resolve("data");
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).promise(p, {
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).promise(p, {
           loading: "Saving…",
           success: "Saved!",
           error: "Failed",
@@ -409,7 +406,7 @@ describe("Toast", () => {
       renderWithProvider();
       const p = Promise.reject(new Error("bad"));
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).promise(p, {
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).promise(p, {
           loading: "Uploading…",
           success: "Done",
           error: "Upload failed",
@@ -426,7 +423,7 @@ describe("Toast", () => {
       renderWithProvider();
       const p = Promise.resolve({ name: "invoice" });
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).promise(p, {
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).promise(p, {
           loading: "Processing…",
           success: (data: unknown) => `${(data as { name: string }).name} created`,
           error: (err: unknown) => `Error: ${(err as Error).message}`,
@@ -445,7 +442,7 @@ describe("Toast", () => {
     it("limits visible toasts", () => {
       renderWithProvider(null, { maxVisible: 2 });
       act(() => {
-        const t = globalThis.__toast as ReturnType<typeof useToast>["toast"];
+        const t = (globalThis as any).__toast as ReturnType<typeof useToast>["toast"];
         t.success("One");
         t.info("Two");
         t.warning("Three");
@@ -460,7 +457,7 @@ describe("Toast", () => {
     it("toast has role=status", () => {
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).success("A11y");
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).success("A11y");
       });
       expect(getToast()).toHaveAttribute("role", "status");
     });
@@ -468,7 +465,7 @@ describe("Toast", () => {
     it("success toast has aria-live=polite", () => {
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).success("Polite");
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).success("Polite");
       });
       expect(getToast()).toHaveAttribute("aria-live", "polite");
     });
@@ -476,7 +473,7 @@ describe("Toast", () => {
     it("danger toast has aria-live=assertive", () => {
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).error("Alert!");
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).error("Alert!");
       });
       expect(getToast()).toHaveAttribute("aria-live", "assertive");
     });
@@ -493,7 +490,7 @@ describe("Toast", () => {
     it("dismisses on sufficient drag right", () => {
       renderWithProvider();
       act(() => {
-        (globalThis.__toast as ReturnType<typeof useToast>["toast"]).success("Draggable");
+        ((globalThis as any).__toast as ReturnType<typeof useToast>["toast"]).success("Draggable");
       });
       const toast = getToast()!;
       // Simulate drag end with sufficient offset
@@ -513,7 +510,7 @@ describe("Toast", () => {
     it("renders multiple toasts in order", () => {
       renderWithProvider(null, { position: "top-right" });
       act(() => {
-        const t = globalThis.__toast as ReturnType<typeof useToast>["toast"];
+        const t = (globalThis as any).__toast as ReturnType<typeof useToast>["toast"];
         t.success("First");
         t.info("Second");
         t.warning("Third");
@@ -532,18 +529,18 @@ describe("Toast", () => {
 describe("Toast styles", () => {
   describe("getToastItemClasses", () => {
     it("returns string containing base classes", () => {
-      const result = getToastItemClasses("success", "bottom-right");
+      const result = getToastItemClasses("success");
       expect(result).toContain("flex");
       expect(result).toContain("rounded-card");
     });
 
     it("includes variant-specific classes", () => {
-      const result = getToastItemClasses("danger", "bottom-right");
+      const result = getToastItemClasses("danger");
       expect(result).toContain("border-danger/20");
     });
 
     it("includes accent border", () => {
-      const result = getToastItemClasses("success", "top-right");
+      const result = getToastItemClasses("success");
       expect(result).toContain("border-l-4");
     });
   });

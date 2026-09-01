@@ -8,10 +8,10 @@ spring:
       on-profile: dev
 
   datasource:
-    url: jdbc:mysql://localhost:3306/finflow_auth?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-    username: finflow
-    password: finflowpassword
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:finflow}
+    username: ${DB_USERNAME:finflow}
+    password: ${DB_PASSWORD:finflowpassword}
+    driver-class-name: org.postgresql.Driver
     hikari:
       pool-name: finflow-dev-pool
       maximum-pool-size: 10
@@ -29,13 +29,12 @@ spring:
       hibernate:
         format_sql: true
         use_sql_comments: true
-        dialect: org.hibernate.dialect.MySQLDialect
-        type.preferred_uuid_type: org.hibernate.type.StringUuidType
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        type.preferred_uuid_type: org.hibernate.type.PostgresUUIDType
 
   flyway:
     enabled: true
     locations: classpath:db/migration
-    schemas: finflow_auth,finflow_accounts,finflow_transactions,finflow_transfers,finflow_savings,finflow_notifications,finflow_profiles,finflow_admin,finflow_settings
     baseline-on-migrate: true
     baseline-version: 0
     out-of-order: false
@@ -69,8 +68,6 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
-# NOTE: In development, secrets can be in application-dev.yml.
-# NEVER put real secrets in code control. Use environment variables for staging/production.
 finflow:
   jwt:
     secret: ${FINFLOW_JWT_SECRET:dev-only-not-for-production-use-at-all-64-bytes-minimum!!}
@@ -81,6 +78,8 @@ finflow:
     clock-skew-ms: 30000
     issuer: finflow
     audience: finflow-api
+  cors:
+    allowed-origins: http://localhost:3000
   session:
     max-active-sessions: 5
     refresh-token-ttl-days: 30

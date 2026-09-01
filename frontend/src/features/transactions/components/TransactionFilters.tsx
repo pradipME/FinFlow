@@ -1,3 +1,4 @@
+import { Select } from "@/shared/components";
 import type { TransactionType, TransactionStatus } from "../types";
 
 interface TransactionFiltersProps {
@@ -29,28 +30,25 @@ export function TransactionFilters({
   onStatusChange,
 }: TransactionFiltersProps) {
   return (
-    <div className="flex flex-wrap gap-3">
-      <select
+    <div className="flex flex-wrap items-center gap-3">
+      <Select
         value={typeFilter}
         onChange={(e) => onTypeChange(e.target.value as TransactionType | "")}
-        className="rounded-lg border border-border-default bg-surface-primary px-3 py-1.5 text-sm text-text-primary focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary"
-      >
-        <option value="">All Types</option>
-        {TYPES.map((t) => (
-          <option key={t.value} value={t.value}>{t.label}</option>
-        ))}
-      </select>
-
-      <select
+        className="w-44"
+        options={[
+          { value: "", label: "All types" },
+          ...TYPES.map((t) => ({ value: t.value, label: t.label })),
+        ]}
+      />
+      <Select
         value={statusFilter}
         onChange={(e) => onStatusChange(e.target.value as TransactionStatus | "")}
-        className="rounded-lg border border-border-default bg-surface-primary px-3 py-1.5 text-sm text-text-primary focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary"
-      >
-        <option value="">All Statuses</option>
-        {STATUSES.map((s) => (
-          <option key={s.value} value={s.value}>{s.label}</option>
-        ))}
-      </select>
+        className="w-44"
+        options={[
+          { value: "", label: "All statuses" },
+          ...STATUSES.map((s) => ({ value: s.value, label: s.label })),
+        ]}
+      />
     </div>
   );
 }

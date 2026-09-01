@@ -1,52 +1,63 @@
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/shared/constants";
-import { formatCurrency, formatDate } from "@/shared/lib/format";
-import type { TransactionSummary } from "../types";
+import { formatCurrency, formatRelativeTime } from "@/shared/lib/format";
+import type { TransactionSummary, TransactionType } from "../types";
 import { TransactionStatusBadge } from "./TransactionStatusBadge";
-import type { TransactionType } from "../types";
+import { ArrowDownToLine, ArrowUpFromLine, ArrowRightLeft, RotateCcw, Receipt } from "lucide-react";
+import { cn } from "@/shared/utils";
 
-const TYPE_LABELS: Record<TransactionType, { label: string; sign: "+" | "-" | "" }> = {
-  DEPOSIT: { label: "Deposit", sign: "+" },
-  WITHDRAWAL: { label: "Withdrawal", sign: "-" },
-  TRANSFER: { label: "Transfer", sign: "" },
-  FEE: { label: "Fee", sign: "-" },
-  REVERSAL: { label: "Reversal", sign: "+" },
+const TYPE_META: Record<TransactionType, { label: string; sign: "+" | "-" | ""; icon: typeof Receipt; tone: string }> = {
+  DEPOSIT: { label: "Deposit", sign: "+", icon: ArrowDownToLine, tone: "bg-success-subtle text-credit" },
+  WITHDRAWAL: { label: "Withdrawal", sign: "-", icon: ArrowUpFromLine, tone: "bg-danger-subtle text-debit" },
+  TRANSFER: { label: "Transfer", sign: "", icon: ArrowRightLeft, tone: "bg-info-subtle text-info" },
+  FEE: { label: "Fee", sign: "-", icon: Receipt, tone: "bg-warning-subtle text-pending" },
+  REVERSAL: { label: "Reversal", sign: "+", icon: RotateCcw, tone: "bg-info-subtle text-info" },
 };
 
 interface TransactionRowProps {
   transaction: TransactionSummary;
 }
 
-export function TransactionRow({ transaction }: TransactionRowProps) {
+export function TransactionRow({ transaction }: TransactionRowProps): React.ReactNode {
   const navigate = useNavigate();
-  const typeInfo = TYPE_LABELS[transaction.transactionType] ?? { label: transaction.transactionType, sign: "" };
+  const meta = TYPE_META[transaction.transactionType] ?? {
+    label: transaction.transactionType,
+    sign: "",
+    icon: Receipt,
+    tone: "bg-bg-tertiary text-text-secondary",
+  };
+  const Icon = meta.icon;
 
   return (
     <button
       type="button"
       onClick={() => navigate(`${ROUTES.TRANSACTIONS}/${transaction.id}`)}
-      className="flex w-full items-center justify-between rounded-lg border border-border-subtle bg-surface-primary p-4 text-left transition-colors hover:bg-surface-hover focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
+      className="flex w-full items-center justify-between gap-3 px-3 py-3 text-left transition-colors hover:bg-bg-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
     >
-      <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-2">
-          <p className="text-sm font-medium text-text-primary">{typeInfo.label}</p>
-          <TransactionStatusBadge status={transaction.transactionStatus} />
+      <div className="flex min-w-0 flex-1 items-center gap-3">
+        <span className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-lg", meta.tone)}>
+          <Icon size={16} />
+        </span>
+        <div className="min-w-0">
+          <div className="flex items-center gap-2">
+            <p className="truncate text-sm font-medium text-text-primary">{meta.label}</p>
+            <TransactionStatusBadge status={transaction.transactionStatus} />
+          </div>
+          <p className="mt-0.5 truncate text-xs text-text-tertiary">
+            {transaction.description ?? transaction.referenceNumber ?? "No description"}
+            <span className="text-text-disabled"> · {formatRelativeTime(transaction.createdAt)}</span>
+          </p>
         </div>
-        <p className="mt-0.5 truncate text-xs text-text-tertiary">
-          {transaction.description ?? transaction.referenceNumber ?? "No description"}
-        </p>
       </div>
-      <div className="text-right">
-        <p
-          className={`text-sm font-semibold ${
-            typeInfo.sign === "+" ? "text-success" : typeInfo.sign === "-" ? "text-danger" : "text-text-primary"
-          }`}
-        >
-          {typeInfo.sign}
-          {formatCurrency(transaction.amountCents / 100, transaction.currency)}
-        </p>
-        <p className="text-xs text-text-tertiary">{formatDate(transaction.createdAt)}</p>
-      </div>
+      <span
+        className={cn(
+          "font-tabular shrink-0 text-sm font-semibold",
+          meta.sign === "+" ? "text-credit" : meta.sign === "-" ? "text-text-primary" : "text-text-secondary",
+        )}
+      >
+        {meta.sign}
+        {formatCurrency(transaction.amountCents / 100, transaction.currency)}
+      </span>
     </button>
   );
 }

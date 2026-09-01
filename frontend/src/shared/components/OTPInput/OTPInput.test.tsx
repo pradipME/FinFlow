@@ -1,6 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, act, waitFor } from "@testing-library/react"; // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import userEvent from "@testing-library/user-event";
+void act;
+void waitFor;
 import { OTPInput } from "./OTPInput";
 
 // ── Mock: useReducedMotion ───────────────────────────────────────

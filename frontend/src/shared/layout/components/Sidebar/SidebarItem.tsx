@@ -58,12 +58,15 @@ export function SidebarItem({
       title={showTooltip ? label : undefined}
       className={({ isActive }) =>
         cn(
-          "group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium",
+          "group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium",
           "transition-colors duration-150",
           "outline-none focus-visible:ring-2 focus-visible:ring-brand-primary",
+          "before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2",
+          "before:h-5 before:w-0.5 before:rounded-r-full before:bg-brand-primary",
+          "before:transition-opacity before:duration-150",
           isActive
-            ? "bg-brand-primary-subtle text-brand-primary"
-            : "text-text-secondary hover:bg-bg-tertiary hover:text-text-primary",
+            ? "bg-brand-primary-subtle text-brand-primary before:opacity-100"
+            : "text-text-secondary before:opacity-0 hover:bg-bg-tertiary hover:text-text-primary",
           disabled && "pointer-events-none opacity-50",
           isCollapsed && "justify-center px-2",
         )

@@ -1,9 +1,7 @@
 import { z } from "zod";
 
 export const createAccountSchema = z.object({
-  accountType: z.enum(["CHECKING", "SAVINGS", "CREDIT_CARD"], {
-    error: "Account type is required",
-  }),
+  accountType: z.enum(["CHECKING", "SAVINGS", "CREDIT_CARD"]),
   nickname: z
     .string()
     .max(50, "Nickname must be at most 50 characters")
@@ -30,9 +28,7 @@ export const updateAccountSchema = z.object({
 export type UpdateAccountFormData = z.infer<typeof updateAccountSchema>;
 
 export const changeStatusSchema = z.object({
-  newStatus: z.enum(["ACTIVE", "FROZEN", "CLOSED"], {
-    error: "New status is required",
-  }),
+  newStatus: z.enum(["ACTIVE", "FROZEN", "CLOSED"]),
   reason: z
     .string()
     .max(255, "Reason must be at most 255 characters")

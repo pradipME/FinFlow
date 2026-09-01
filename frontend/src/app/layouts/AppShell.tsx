@@ -1,10 +1,11 @@
 /**
  * AppShell — The primary authenticated layout.
  *
- * Composes: Sidebar + Header + Content + CommandPalette.
- * Used by DashboardLayout and most authenticated pages.
+ * Composes: Sidebar + Header + Content + CommandPalette + MobileNav.
+ * Renders real profile/auth data instead of placeholder values.
  */
 import { useState, useCallback, type ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 import type { NavGroup } from "@/shared/layout/types";
 import {
   Sidebar,
@@ -19,6 +20,9 @@ import {
   useBreakpoint,
 } from "@/shared/layout";
 import { MobileNavigation } from "@/shared/layout/components/Navigation/MobileNavigation";
+import { useAuth } from "@/features/auth/hooks";
+import { useProfile } from "@/features/profile/hooks";
+import { useUnreadNotificationCount } from "@/features/notifications/hooks";
 import {
   Home,
   Wallet,
@@ -30,10 +34,27 @@ import {
   Bell,
   Shield,
   Settings,
+  ChartPie,
+  ScanSearch,
   type LucideIcon,
 } from "lucide-react";
 
-// ── Default nav data (will be replaced by real auth data later) ──
+// ── Brand mark ────────────────────────────────────────────────────
+
+export function BrandMark({ size = 28 }: { size?: number }): ReactNode {
+  return (
+    <span
+      className="relative inline-flex shrink-0 items-center justify-center rounded-[10px] bg-gradient-to-br from-chart-1 via-brand-primary to-chart-3 shadow-elevation-md"
+      style={{ width: size, height: size }}
+      aria-hidden="true"
+    >
+      <span className="text-[0.55em] font-bold tracking-tighter text-bg-primary">FF</span>
+      <span className="pointer-events-none absolute inset-0 rounded-[10px] ring-1 ring-inset ring-white/25" />
+    </span>
+  );
+}
+
+// ── Navigation ────────────────────────────────────────────────────
 
 const defaultGroups: NavGroup[] = [
   {
@@ -45,16 +66,18 @@ const defaultGroups: NavGroup[] = [
       { id: "transactions", label: "Transactions", href: "/transactions", icon: ArrowLeftRight },
       { id: "transfers", label: "Transfers", href: "/transfers", icon: Send },
       { id: "cards", label: "Cards", href: "/cards", icon: CreditCard },
-      { id: "beneficiaries", label: "Beneficiaries", href: "/beneficiaries", icon: Users },
       { id: "savings", label: "Savings", href: "/budgets", icon: PiggyBank },
+      { id: "analytics", label: "Analytics", href: "/analytics", icon: ChartPie },
+      { id: "beneficiaries", label: "Beneficiaries", href: "/beneficiaries", icon: Users },
     ],
   },
   {
     id: "account",
     label: "Account",
     items: [
-      { id: "notifications-page", label: "Notifications", href: "/notifications", icon: Bell },
       { id: "profile-page", label: "Profile", href: "/profile", icon: Shield },
+      { id: "security", label: "Security Center", href: "/security", icon: ScanSearch },
+      { id: "notifications-page", label: "Notifications", href: "/notifications", icon: Bell },
       { id: "settings-page", label: "Settings", href: "/settings", icon: Settings },
     ],
   },
@@ -68,14 +91,11 @@ const mobileTabs: { href: string; label: string; icon: LucideIcon }[] = [
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
-// ── Component ────────────────────────────────────────────────────
+// ── Component ─────────────────────────────────────────────────────
 
 interface AppShellProps {
-  /** Page content */
   children: ReactNode;
-  /** Navigation groups override */
   navGroups?: NavGroup[];
-  /** Header actions override */
   headerActions?: ReactNode;
 }
 
@@ -84,10 +104,19 @@ export function AppShell({ children, navGroups, headerActions }: AppShellProps):
   const { width: vpWidth } = useBreakpoint();
   const [commandOpen, setCommandOpen] = useState(false);
 
+  const { user, logout } = useAuth();
+  const { data: profile } = useProfile();
+  const { data: unreadCount } = useUnreadNotificationCount();
+  const navigate = useNavigate();
+
   const openCommand = useCallback(() => setCommandOpen(true), []);
   const closeCommand = useCallback(() => setCommandOpen(false), []);
 
-  // Sidebar offset for content area
+  const handleLogout = useCallback(async () => {
+    await logout();
+    navigate("/login", { replace: true });
+  }, [logout, navigate]);
+
   const sidebarOffset =
     sidebar.mode === "overlay" || sidebar.mode === "offscreen" || vpWidth < 768
       ? 0
@@ -95,29 +124,34 @@ export function AppShell({ children, navGroups, headerActions }: AppShellProps):
         ? 240
         : 64;
 
+  const fullName = [profile?.firstName, profile?.lastName].filter(Boolean).join(" ");
+  const displayName = fullName || user?.username || "Account Holder";
+  const displayEmail = user?.email ?? "";
+
   return (
     <div className="min-h-screen bg-bg-secondary">
-      {/* Sidebar */}
       <Sidebar
         groups={navGroups ?? defaultGroups}
         mode={sidebar.mode}
         isOpen={sidebar.isOpen}
         onToggle={sidebar.toggle}
         onClose={sidebar.close}
-        logo={<span className="text-lg font-bold text-text-primary">FinFlow</span>}
+        logo={
+          <span className="flex items-center gap-2.5">
+            <BrandMark size={28} />
+            <span className="text-lg font-bold tracking-tight text-text-primary">FinFlow</span>
+          </span>
+        }
         footer={
           <UserMenu
-            name="John Doe"
-            email="john@example.com"
+            name={displayName}
+            email={displayEmail}
             role="Account Holder"
-            onLogout={() => {
-              /* logout */
-            }}
+            onLogout={handleLogout}
           />
         }
       />
 
-      {/* Header */}
       <Header
         left={
           sidebar.mode === "offscreen" || sidebar.mode === "overlay" ? (
@@ -135,19 +169,16 @@ export function AppShell({ children, navGroups, headerActions }: AppShellProps):
         right={
           <>
             {headerActions}
-            <NotificationButton count={3} />
+            <NotificationButton count={unreadCount ?? 0} onClick={() => navigate("/notifications")} />
             <ThemeSwitcher />
           </>
         }
       />
 
-      {/* Content */}
       <Content sidebarOffset={sidebarOffset}>{children}</Content>
 
-      {/* Mobile bottom nav */}
       {vpWidth < 768 && <MobileNavigation items={mobileTabs} />}
 
-      {/* Command palette */}
       <CommandPalette isOpen={commandOpen} onClose={closeCommand} />
     </div>
   );

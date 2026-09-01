@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Configuration
@@ -21,9 +22,14 @@ public class JwtPropertiesConfiguration {
         String audience = env.getRequiredProperty("finflow.jwt.audience");
         long clockSkewMs = env.getProperty("finflow.jwt.clock-skew-ms", Long.class, 30_000L);
 
-        Map<String, String> signingKeys = binder
+        Map<String, String> signingKeys = new LinkedHashMap<>(binder
                 .bind("finflow.jwt.signing-keys", Bindable.mapOf(String.class, String.class))
-                .orElse(Map.of("primary", secret));
+                .orElse(Map.of("primary", secret)));
+
+        String previousSecret = env.getProperty("FINFLOW_JWT_KEY_PREVIOUS");
+        if (previousSecret != null && !previousSecret.isBlank()) {
+            signingKeys.put("previous", previousSecret);
+        }
 
         String activeKeyId = env.getProperty("finflow.jwt.active-key-id", "primary");
 

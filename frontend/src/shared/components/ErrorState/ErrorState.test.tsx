@@ -1,16 +1,8 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ErrorState } from "./ErrorState";
-import {
-  DEFAULT_TITLE,
-  DEFAULT_RETRY_LABEL,
-  WRAPPER_CLASSES,
-  ICON_CLASSES,
-  TITLE_CLASSES,
-  DESCRIPTION_CLASSES,
-  ERROR_CODE_CLASSES,
-  ACTIONS_CLASSES,
-} from "./constants";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { DEFAULT_TITLE, DEFAULT_RETRY_LABEL, ICON_CLASSES, ERROR_CODE_CLASSES } from "./constants";
 import {
   getErrorStateClasses,
   getErrorStateIconClasses,

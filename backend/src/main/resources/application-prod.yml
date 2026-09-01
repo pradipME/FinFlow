@@ -2,28 +2,39 @@
 # FinFlow — Production Profile
 # ===================================
 #
+# REQUIRED: SPRING_PROFILES_ACTIVE=prod MUST be set so this profile loads;
+# otherwise the default 'dev' profile (base application.yml) is used.
+#
 # REQUIRED ENVIRONMENT VARIABLES (secrets MUST be provided at runtime):
 #
 #   FINFLOW_JWT_SECRET          — Base64-encoded or raw string HMAC-SHA512 key (min 64 bytes / 512 bits)
-#   DB_USERNAME                 — MySQL database username
-#   DB_PASSWORD                 — MySQL database password
-#   REDIS_PASSWORD              — Redis authentication password (empty if no auth)
+#   DB_USERNAME                 — PostgreSQL database username
+#   DB_PASSWORD                 — PostgreSQL database password
 #
 # OPTIONAL ENVIRONMENT VARIABLES:
 #
-#   DB_HOST                     — MySQL host (default: localhost)
-#   DB_PORT                     — MySQL port (default: 3306)
-#   DB_NAME                     — MySQL database name (default: finflow)
+#   DATABASE_URL                — Full JDBC URL (overrides DB_HOST/DB_PORT/DB_NAME)
+#   DB_HOST                     — PostgreSQL host (default: localhost)
+#   DB_PORT                     — PostgreSQL port (default: 5432)
+#   DB_NAME                     — PostgreSQL database name (default: finflow)
 #   REDIS_HOST                  — Redis host (default: localhost)
 #   REDIS_PORT                  — Redis port (default: 6379)
+#   REDIS_PASSWORD              — Redis authentication password (empty if no auth)
+#   REDIS_ENABLED               — Set to false to fully disable Redis (default: true)
 #   FINFLOW_JWT_ACTIVE_KEY_ID   — Active signing key ID (default: primary)
+#   FRONTEND_URL                — Frontend URL for CORS (default: http://localhost:3000)
+#   PORT                        — Server port (default: 8080, Render sets this automatically)
 #
-# KEY ROTATION ENVIRONMENT VARIABLES (for rolling key updates):
+# KEY ROTATION ENVIRONMENT VARIABLES:
 #
 #   FINFLOW_JWT_KEY_PREVIOUS    — Previous signing key (for validating tokens signed during rotation)
 #
 # DO NOT commit real secrets to version control.
 # Use a secrets manager (AWS Secrets Manager, HashiCorp Vault, Kubernetes Secrets).
+
+server:
+  port: ${PORT:8080}
+  shutdown: graceful
 
 spring:
   config:
@@ -31,10 +42,10 @@ spring:
       on-profile: prod
 
   datasource:
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:finflow}?useSSL=true&requireSSL=true&verifyServerCertificate=true&serverTimezone=UTC
+    url: ${DATABASE_URL:jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:finflow}?sslmode=require}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.postgresql.Driver
     hikari:
       pool-name: finflow-prod-pool
       maximum-pool-size: 30
@@ -51,7 +62,8 @@ spring:
     properties:
       hibernate:
         format_sql: false
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        type.preferred_uuid_type: org.hibernate.type.PostgresUUIDType
 
   flyway:
     enabled: true
@@ -91,15 +103,21 @@ management:
     web:
       exposure:
         include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
 
 finflow:
   jwt:
     secret: ${FINFLOW_JWT_SECRET}
     signing-keys:
       primary: ${FINFLOW_JWT_SECRET}
-      ${FINFLOW_JWT_KEY_PREVIOUS:+previous}: ${FINFLOW_JWT_KEY_PREVIOUS:}
     active-key-id: ${FINFLOW_JWT_ACTIVE_KEY_ID:primary}
     access-token-expiration-ms: 900000
     clock-skew-ms: 30000
     issuer: finflow
     audience: finflow-api
+  cors:
+    allowed-origins: ${FRONTEND_URL:http://localhost:3000}
+  redis:
+    enabled: ${REDIS_ENABLED:true}

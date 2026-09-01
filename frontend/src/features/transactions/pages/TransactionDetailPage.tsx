@@ -70,7 +70,7 @@ export function TransactionDetailPage() {
               </Button>
             )}
             <Button
-              variant="secondary"
+              variant="neutral"
               leftIcon={<ArrowLeft className="h-4 w-4" />}
               onClick={() => navigate(ROUTES.TRANSACTIONS)}
             >

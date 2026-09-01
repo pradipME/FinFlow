@@ -1,3 +1,4 @@
+import { Bell, ShieldCheck, SlidersHorizontal } from "lucide-react";
 import { PageHeader } from "@/shared/layout/components/Content/PageHeader";
 import { ErrorState, Skeleton } from "@/shared/components";
 import { useSettings } from "../hooks";
@@ -75,6 +76,9 @@ export function SettingsPage() {
       <SettingsSection
         title="Notifications"
         description="Choose how you want to be notified"
+        icon={
+          <Bell size={16} />
+        }
       >
         <SettingToggle
           settingKey="notification_email"
@@ -93,6 +97,7 @@ export function SettingsPage() {
       <SettingsSection
         title="Security"
         description="Protect your account"
+        icon={<ShieldCheck size={16} />}
       >
         <SettingToggle
           settingKey="two_factor_enabled"
@@ -105,6 +110,7 @@ export function SettingsPage() {
       <SettingsSection
         title="Preferences"
         description="Customize your experience"
+        icon={<SlidersHorizontal size={16} />}
       >
         <SettingSelect
           settingKey="language"

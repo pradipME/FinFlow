@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import userEvent from "@testing-library/user-event";
 import { PasswordInput } from "./PasswordInput";
 

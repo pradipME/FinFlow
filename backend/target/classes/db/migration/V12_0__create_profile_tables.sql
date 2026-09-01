@@ -15,11 +15,12 @@ CREATE TABLE IF NOT EXISTS finflow_profiles.user_profiles (
     postal_code      VARCHAR(20)    NULL,
     country          CHAR(2)        NULL,
     avatar_url       VARCHAR(500)   NULL,
-    created_at       DATETIME(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    updated_at       DATETIME(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    created_at       TIMESTAMP(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at       TIMESTAMP(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by       VARCHAR(36)    NOT NULL DEFAULT 'system',
     modified_by      VARCHAR(36)    NOT NULL DEFAULT 'system',
     version          BIGINT         NOT NULL DEFAULT 0,
-    PRIMARY KEY (id),
-    UNIQUE INDEX idx_profile_user (user_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    PRIMARY KEY (id)
+);
+
+CREATE UNIQUE INDEX idx_profile_user ON finflow_profiles.user_profiles (user_id);

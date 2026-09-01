@@ -6,12 +6,13 @@ CREATE TABLE finflow_admin.admin_audit_log (
     target_id        CHAR(36)       NOT NULL,
     details          TEXT           NULL,
     ip_address       VARCHAR(45)    NULL,
-    created_at       DATETIME(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    updated_at       DATETIME(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    created_at       TIMESTAMP(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at       TIMESTAMP(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by       VARCHAR(36)    NOT NULL DEFAULT 'system',
     modified_by      VARCHAR(36)    NOT NULL DEFAULT 'system',
     version          BIGINT         NOT NULL DEFAULT 0,
-    PRIMARY KEY (id),
-    INDEX idx_audit_admin (admin_user_id),
-    INDEX idx_audit_target (target_type, target_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    PRIMARY KEY (id)
+);
+
+CREATE INDEX idx_audit_admin ON finflow_admin.admin_audit_log (admin_user_id);
+CREATE INDEX idx_audit_target ON finflow_admin.admin_audit_log (target_type, target_id);

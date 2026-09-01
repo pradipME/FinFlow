@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { Input, Button } from "@/shared/components";
+import { Input, Button, Modal, Select } from "@/shared/components";
 import { useCreateTransfer } from "../hooks";
 import { transferSchema } from "../schemas";
 import type { TransferFormData } from "../schemas";
@@ -24,8 +24,6 @@ export function TransferDialog({ open, onClose, accounts }: TransferDialogProps)
     defaultValues: { sourceAccountId: "", targetAccountId: "", amountCents: 0, description: "" },
   });
 
-  if (!open) return null;
-
   async function onSubmit(data: TransferFormData) {
     try {
       await createTransfer.mutateAsync({
@@ -43,63 +41,55 @@ export function TransferDialog({ open, onClose, accounts }: TransferDialogProps)
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="fixed inset-0 bg-black/50" onClick={onClose} />
-      <div className="relative z-10 w-full max-w-md rounded-xl border border-border-default bg-bg-primary p-6 shadow-elevation-xl">
-        <h2 className="text-lg font-semibold text-text-primary">Transfer Funds</h2>
-        <p className="mt-1 text-sm text-text-secondary">Transfer between accounts.</p>
+    <Modal
+      open={open}
+      onClose={onClose}
+      title="Transfer Funds"
+      description="Move money between your accounts."
+      footer={
+        <>
+          <Button type="button" variant="neutral" onClick={onClose}>Cancel</Button>
+          <Button type="submit" form="transfer-form" isLoading={isSubmitting}>Transfer</Button>
+        </>
+      }
+    >
+      <form id="transfer-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <Select
+          label="From Account"
+          {...register("sourceAccountId")}
+          error={errors.sourceAccountId?.message}
+          options={[
+            { value: "", label: "Select source..." },
+            ...accounts.map((a) => ({ value: a.id, label: a.nickname ?? a.accountNumber })),
+          ]}
+        />
 
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-text-secondary">From Account</label>
-            <select
-              {...register("sourceAccountId")}
-              className="w-full rounded-lg border border-border-default bg-surface-primary px-3 py-2 text-sm text-text-primary focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary"
-            >
-              <option value="">Select source...</option>
-              {accounts.map((a) => (
-                <option key={a.id} value={a.id}>{a.nickname ?? a.accountNumber}</option>
-              ))}
-            </select>
-            {errors.sourceAccountId && <p className="mt-1 text-xs text-danger">{errors.sourceAccountId.message}</p>}
-          </div>
+        <Select
+          label="To Account"
+          {...register("targetAccountId")}
+          error={errors.targetAccountId?.message}
+          options={[
+            { value: "", label: "Select target..." },
+            ...accounts.map((a) => ({ value: a.id, label: a.nickname ?? a.accountNumber })),
+          ]}
+        />
 
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-text-secondary">To Account</label>
-            <select
-              {...register("targetAccountId")}
-              className="w-full rounded-lg border border-border-default bg-surface-primary px-3 py-2 text-sm text-text-primary focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary"
-            >
-              <option value="">Select target...</option>
-              {accounts.map((a) => (
-                <option key={a.id} value={a.id}>{a.nickname ?? a.accountNumber}</option>
-              ))}
-            </select>
-            {errors.targetAccountId && <p className="mt-1 text-xs text-danger">{errors.targetAccountId.message}</p>}
-          </div>
+        <Input
+          label="Amount (USD)"
+          type="number"
+          step="0.01"
+          min="0.01"
+          errorText={errors.amountCents?.message}
+          {...register("amountCents", { valueAsNumber: true })}
+        />
 
-          <Input
-            label="Amount (USD)"
-            type="number"
-            step="0.01"
-            min="0.01"
-            errorText={errors.amountCents?.message}
-            {...register("amountCents", { valueAsNumber: true })}
-          />
-
-          <Input
-            label="Description (optional)"
-            placeholder="e.g. Rent payment"
-            errorText={errors.description?.message}
-            {...register("description")}
-          />
-
-          <div className="flex justify-end gap-3 pt-2">
-            <Button type="button" variant="secondary" onClick={onClose}>Cancel</Button>
-            <Button type="submit" isLoading={isSubmitting}>Transfer</Button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <Input
+          label="Description (optional)"
+          placeholder="e.g. Rent payment"
+          errorText={errors.description?.message}
+          {...register("description")}
+        />
+      </form>
+    </Modal>
   );
 }

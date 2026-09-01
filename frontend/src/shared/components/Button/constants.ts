@@ -54,10 +54,9 @@ export const VARIANT_CLASSES = {
     "hover:bg-surface-hover hover:border-border-strong " +
     "active:bg-surface-active",
 
-  outline:
-    "bg-transparent text-brand-primary border border-brand-primary " +
-    "hover:bg-brand-primary-subtle " +
-    "active:bg-brand-primary/10",
+  neutral: "bg-bg-tertiary text-text-primary border border-border-default hover:bg-surface-hover hover:border-border-strong active:bg-surface-active",
+  outline: "bg-transparent text-brand-primary border border-brand-primary hover:bg-brand-primary-subtle active:bg-brand-primary/10",
+
 
   ghost:
     "bg-transparent text-text-secondary " +

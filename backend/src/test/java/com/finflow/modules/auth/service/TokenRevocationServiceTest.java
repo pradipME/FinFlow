@@ -103,7 +103,7 @@ class TokenRevocationServiceTest {
     class RevokeAllForUser {
 
         @Test
-        @DisplayName("revokes all user tokens in MySQL and clears Redis")
+        @DisplayName("revokes all user tokens in PostgreSQL and clears Redis")
         void revokesAll() {
             UUID userId = testUser.getId();
 

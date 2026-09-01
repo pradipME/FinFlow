@@ -19,10 +19,15 @@ import java.util.concurrent.TimeUnit;
  *
  * <h3>Architecture</h3>
  * <ul>
- *   <li><strong>Write-through:</strong> Sessions are written to both Redis and MySQL.</li>
- *   <li><strong>Read-through:</strong> On Redis miss, the system falls back to MySQL.</li>
- *   <li><strong>Invalidation:</strong> On revocation, both Redis and MySQL are updated.</li>
+ *   <li><strong>Write-through:</strong> Sessions are written to both Redis and PostgreSQL.</li>
+ *   <li><strong>Read-through:</strong> On Redis miss, the system falls back to PostgreSQL.</li>
+ *   <li><strong>Invalidation:</strong> On revocation, both Redis and PostgreSQL are updated.</li>
  * </ul>
+ *
+ * <p><strong>Resilience:</strong> All operations are wrapped in try/catch and degrade
+ * gracefully. If Redis is unavailable, lookups return empty/absent results and writes
+ * are skipped — the application continues to function correctly via the database.
+ * This allows the service to start and run even when Redis is not provisioned.</p>
  *
  * <h3>Redis Key Structure</h3>
  * <pre>

@@ -9,7 +9,7 @@ import type { InputHTMLAttributes, ReactNode } from "react";
 
 // ── Input Type ───────────────────────────────────────────────────
 
-export type InputType = "text" | "email" | "password" | "number" | "tel" | "url";
+export type InputType = "text" | "email" | "password" | "number" | "tel" | "url" | "search" | "date";
 
 // ── Size ─────────────────────────────────────────────────────────
 
@@ -22,6 +22,8 @@ export type InputState = "default" | "invalid" | "success";
 // ── Props ────────────────────────────────────────────────────────
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "prefix"> {
+  /** Optional error text – alias for errorText */
+  error?: string;
   /** HTML input type */
   type?: InputType;
 

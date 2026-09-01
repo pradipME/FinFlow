@@ -52,6 +52,8 @@ describe("AuthProvider", () => {
       refreshToken: "test-refresh-token",
       tokenType: "Bearer",
       expiresIn: 900,
+      // added issuedAt for LoginResponse compatibility
+      issuedAt: new Date().toISOString(),
     });
 
     const { result } = renderHook(() => useAuth(), {

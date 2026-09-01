@@ -12,18 +12,19 @@ CREATE TABLE finflow_accounts.beneficiaries (
     currency         CHAR(3)        NOT NULL DEFAULT 'USD',
     beneficiary_status VARCHAR(20)  NOT NULL DEFAULT 'ACTIVE',
     is_deleted       BOOLEAN        NOT NULL DEFAULT FALSE,
-    deleted_at       DATETIME(6)    NULL,
+    deleted_at       TIMESTAMP(6)    NULL,
     deleted_by       CHAR(36)       NULL,
-    created_at       DATETIME(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    updated_at       DATETIME(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    created_at       TIMESTAMP(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at       TIMESTAMP(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by       VARCHAR(36)    NOT NULL DEFAULT 'system',
     modified_by      VARCHAR(36)    NOT NULL DEFAULT 'system',
     version          BIGINT         NOT NULL DEFAULT 0,
 
     PRIMARY KEY (id),
-    INDEX idx_beneficiaries_owner (owner_id),
-    INDEX idx_beneficiaries_status (beneficiary_status),
-    UNIQUE INDEX uk_beneficiary_account (owner_id, account_number),
     CONSTRAINT fk_beneficiary_owner FOREIGN KEY (owner_id)
         REFERENCES finflow_auth.users(id) ON DELETE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
+
+CREATE INDEX idx_beneficiaries_owner ON finflow_accounts.beneficiaries (owner_id);
+CREATE INDEX idx_beneficiaries_status ON finflow_accounts.beneficiaries (beneficiary_status);
+CREATE UNIQUE INDEX uk_beneficiary_account ON finflow_accounts.beneficiaries (owner_id, account_number);

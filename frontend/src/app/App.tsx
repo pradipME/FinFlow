@@ -1,30 +1,92 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ROUTES } from "@/shared/constants";
-import {
-  AuthProvider,
-  GuestRoute,
-  ProtectedRoute,
-  LoginPage,
-  RegisterPage,
-  ForgotPasswordPage,
-  ResetPasswordPage,
-  EmailVerificationPage,
-  OtpVerificationPage,
-} from "@/features/auth";
-import { AccountsPage, AccountDetailPage } from "@/features/accounts";
-import { TransactionsPage, TransactionDetailPage } from "@/features/transactions";
-import { BeneficiariesPage } from "@/features/beneficiaries";
-import { TransfersPage } from "@/features/transfers";
-import { CardsPage } from "@/features/cards";
-import { SavingsPage } from "@/features/savings";
-import { NotificationsPage } from "@/features/notifications";
-import { SettingsPage } from "@/features/settings";
-import { ProfilePage } from "@/features/profile";
-import { AdminDashboardPage, AdminAuditLogsPage, AdminUsersPage } from "@/features/admin";
+import { AuthProvider } from "@/features/auth/context";
+import { GuestRoute, ProtectedRoute } from "@/features/auth/components";
 import { AuthLayout } from "./layouts/AuthLayout";
 import { DashboardLayout } from "./layouts/DashboardLayout";
 import { HomePage } from "./pages/HomePage";
-import { DashboardPage } from "./pages/DashboardPage";
+
+const LoginPage = lazy(() =>
+  import("@/features/auth/pages/LoginPage").then((m) => ({ default: m.LoginPage })),
+);
+const RegisterPage = lazy(() =>
+  import("@/features/auth/pages/RegisterPage").then((m) => ({ default: m.RegisterPage })),
+);
+const ForgotPasswordPage = lazy(() =>
+  import("@/features/auth/pages/ForgotPasswordPage").then((m) => ({ default: m.ForgotPasswordPage })),
+);
+const ResetPasswordPage = lazy(() =>
+  import("@/features/auth/pages/ResetPasswordPage").then((m) => ({ default: m.ResetPasswordPage })),
+);
+const EmailVerificationPage = lazy(() =>
+  import("@/features/auth/pages/EmailVerificationPage").then((m) => ({ default: m.EmailVerificationPage })),
+);
+const OtpVerificationPage = lazy(() =>
+  import("@/features/auth/pages/OtpVerificationPage").then((m) => ({ default: m.OtpVerificationPage })),
+);
+const DashboardPage = lazy(() =>
+  import("./pages/DashboardPage").then((m) => ({ default: m.DashboardPage })),
+);
+const AnalyticsPage = lazy(() =>
+  import("./pages/AnalyticsPage").then((m) => ({ default: m.AnalyticsPage })),
+);
+const SecurityPage = lazy(() =>
+  import("./pages/SecurityPage").then((m) => ({ default: m.SecurityPage })),
+);
+const AccountsPage = lazy(() =>
+  import("@/features/accounts/pages/AccountsPage").then((m) => ({ default: m.AccountsPage })),
+);
+const AccountDetailPage = lazy(() =>
+  import("@/features/accounts/pages/AccountDetailPage").then((m) => ({ default: m.AccountDetailPage })),
+);
+const TransactionsPage = lazy(() =>
+  import("@/features/transactions/pages/TransactionsPage").then((m) => ({ default: m.TransactionsPage })),
+);
+const TransactionDetailPage = lazy(() =>
+  import("@/features/transactions/pages/TransactionDetailPage").then((m) => ({ default: m.TransactionDetailPage })),
+);
+const BeneficiariesPage = lazy(() =>
+  import("@/features/beneficiaries/pages/BeneficiariesPage").then((m) => ({ default: m.BeneficiariesPage })),
+);
+const TransfersPage = lazy(() =>
+  import("@/features/transfers/pages/TransfersPage").then((m) => ({ default: m.TransfersPage })),
+);
+const CardsPage = lazy(() =>
+  import("@/features/cards/pages/CardsPage").then((m) => ({ default: m.CardsPage })),
+);
+const SavingsPage = lazy(() =>
+  import("@/features/savings/pages/SavingsPage").then((m) => ({ default: m.SavingsPage })),
+);
+const NotificationsPage = lazy(() =>
+  import("@/features/notifications/pages/NotificationsPage").then((m) => ({ default: m.NotificationsPage })),
+);
+const SettingsPage = lazy(() =>
+  import("@/features/settings/pages/SettingsPage").then((m) => ({ default: m.SettingsPage })),
+);
+const ProfilePage = lazy(() =>
+  import("@/features/profile/pages/ProfilePage").then((m) => ({ default: m.ProfilePage })),
+);
+const AdminDashboardPage = lazy(() =>
+  import("@/features/admin/pages/AdminDashboardPage").then((m) => ({ default: m.AdminDashboardPage })),
+);
+const AdminAuditLogsPage = lazy(() =>
+  import("@/features/admin/pages/AdminAuditLogsPage").then((m) => ({ default: m.AdminAuditLogsPage })),
+);
+const AdminUsersPage = lazy(() =>
+  import("@/features/admin/pages/AdminUsersPage").then((m) => ({ default: m.AdminUsersPage })),
+);
+
+function PageFallback() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-bg-primary">
+      <div className="flex flex-col items-center gap-3">
+        <div className="h-9 w-9 animate-spin rounded-full border-2 border-brand-primary border-t-transparent" />
+        <p className="text-sm text-text-tertiary">Loading FinFlow…</p>
+      </div>
+    </div>
+  );
+}
 
 function AuthRoutes() {
   return (
@@ -100,6 +162,22 @@ function ProtectedRoutes() {
           element={
             <DashboardLayout>
               <DashboardPage />
+            </DashboardLayout>
+          }
+        />
+        <Route
+          path={ROUTES.ANALYTICS}
+          element={
+            <DashboardLayout>
+              <AnalyticsPage />
+            </DashboardLayout>
+          }
+        />
+        <Route
+          path={ROUTES.SECURITY}
+          element={
+            <DashboardLayout>
+              <SecurityPage />
             </DashboardLayout>
           }
         />
@@ -224,8 +302,10 @@ export function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <AuthRoutes />
-        <ProtectedRoutes />
+        <Suspense fallback={<PageFallback />}>
+          <AuthRoutes />
+          <ProtectedRoutes />
+        </Suspense>
       </AuthProvider>
     </BrowserRouter>
   );

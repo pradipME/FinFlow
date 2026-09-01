@@ -86,7 +86,7 @@ public class RefreshTokenService {
      * <p>Flow:</p>
      * <ol>
      *   <li>Validate the refresh token format.</li>
-     *   <li>Look up the session in Redis/MySQL.</li>
+     *   <li>Look up the session in Redis/PostgreSQL.</li>
      *   <li>Revoke the old refresh token.</li>
      *   <li>Generate new access token + new refresh token.</li>
      *   <li>Return both tokens to the client.</li>

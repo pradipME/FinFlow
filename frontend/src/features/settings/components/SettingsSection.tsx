@@ -1,25 +1,40 @@
 import type { ReactNode } from "react";
+import { cn } from "@/shared/utils";
 
 interface SettingsSectionProps {
   title: string;
   description?: string;
+  icon?: ReactNode;
   children: ReactNode;
+  className?: string;
 }
 
 export function SettingsSection({
   title,
   description,
+  icon,
   children,
+  className,
 }: SettingsSectionProps) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white">
-      <div className="border-b border-gray-200 px-6 py-4">
-        <h3 className="text-base font-semibold text-gray-900">{title}</h3>
-        {description && (
-          <p className="mt-1 text-sm text-gray-500">{description}</p>
+    <section
+      className={cn(
+        "overflow-hidden rounded-2xl border border-border-default bg-surface-primary",
+        className,
+      )}
+    >
+      <header className="flex items-center gap-3 border-b border-border-subtle px-6 py-5">
+        {icon && (
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-primary-subtle text-brand-primary">
+            {icon}
+          </div>
         )}
-      </div>
-      <div className="divide-y divide-gray-100 px-6">{children}</div>
-    </div>
+        <div>
+          <h3 className="text-sm font-semibold text-text-primary">{title}</h3>
+          {description && <p className="mt-0.5 text-xs text-text-tertiary">{description}</p>}
+        </div>
+      </header>
+      <div className="divide-y divide-border-subtle px-6">{children}</div>
+    </section>
   );
 }

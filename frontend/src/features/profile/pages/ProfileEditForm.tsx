@@ -72,6 +72,7 @@ export function ProfileEditForm({
           <Input
             label="Date of Birth"
             type="date"
+
             value={formData.dateOfBirth}
             onChange={handleChange("dateOfBirth")}
           />

@@ -64,10 +64,10 @@ export function TransactionsPage() {
             <Button leftIcon={<ArrowDownToLine className="h-4 w-4" />} onClick={() => setShowDeposit(true)}>
               Deposit
             </Button>
-            <Button leftIcon={<ArrowUpFromLine className="h-4 w-4" />} variant="secondary" onClick={() => setShowWithdrawal(true)}>
+            <Button leftIcon={<ArrowUpFromLine className="h-4 w-4" />} variant="neutral" onClick={() => setShowWithdrawal(true)}>
               Withdraw
             </Button>
-            <Button leftIcon={<ArrowRightLeft className="h-4 w-4" />} variant="secondary" onClick={() => setShowTransfer(true)}>
+            <Button leftIcon={<ArrowRightLeft className="h-4 w-4" />} variant="neutral" onClick={() => setShowTransfer(true)}>
               Transfer
             </Button>
           </div>
@@ -87,7 +87,7 @@ export function TransactionsPage() {
           description="No transactions found matching your filters."
         />
       ) : (
-        <div className="space-y-2">
+        <div className="divide-y divide-border-subtle overflow-hidden rounded-xl border border-border-default bg-surface-primary">
           {transactions.map((txn) => (
             <TransactionRow key={txn.id} transaction={txn} />
           ))}
@@ -101,7 +101,7 @@ export function TransactionsPage() {
           </p>
           <div className="flex gap-2">
             <Button
-              variant="secondary"
+              variant="neutral"
               size="sm"
               isDisabled={page === 0}
               onClick={() => setPage((p) => Math.max(0, p - 1))}
@@ -109,7 +109,7 @@ export function TransactionsPage() {
               Previous
             </Button>
             <Button
-              variant="secondary"
+              variant="neutral"
               size="sm"
               isDisabled={page >= totalPages - 1}
               onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}

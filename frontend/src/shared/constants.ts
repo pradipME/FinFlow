@@ -17,6 +17,8 @@ export const ROUTES = {
   PROFILE: "/profile",
   ADMIN: "/admin",
   NOTIFICATIONS: "/notifications",
+  ANALYTICS: "/analytics",
+  SECURITY: "/security",
 } as const;
 
 export const API_ENDPOINTS = {

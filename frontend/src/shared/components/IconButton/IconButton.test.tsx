@@ -6,6 +6,7 @@
  */
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import userEvent from "@testing-library/user-event";
 import { X, Pencil, Plus } from "lucide-react";
 import { IconButton } from "./IconButton";

@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { toast } from "sonner";
 import { Plus } from "lucide-react";
 import { PageHeader } from "@/shared/layout";
 import { Button, EmptyState, ErrorState, Skeleton } from "@/shared/components";
-import { useBeneficiaries } from "../hooks";
+import { useBeneficiaries, useDeleteBeneficiary } from "../hooks";
 import { BeneficiaryCard } from "../components";
 import { CreateBeneficiaryDialog } from "./CreateBeneficiaryDialog";
 import type { Beneficiary } from "../types";
@@ -11,12 +12,25 @@ export function BeneficiariesPage() {
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [editingBeneficiary, setEditingBeneficiary] = useState<Beneficiary | null>(null);
   const { data, isLoading, error, refetch } = useBeneficiaries({ page: 0, size: 50 });
+  const deleteBeneficiary = useDeleteBeneficiary();
+
+  function handleDelete(id: string) {
+    const name = data?.content?.find((b) => b.id === id)?.nickname ?? "beneficiary";
+    if (!window.confirm(`Delete "${name}"? This cannot be undone.`)) return;
+    deleteBeneficiary.mutate(id, {
+      onSuccess: () => toast.success("Beneficiary deleted"),
+      onError: () => toast.error("Failed to delete beneficiary"),
+    });
+  }
 
   if (error) {
     return (
       <div className="space-y-6">
         <PageHeader title="Beneficiaries" subtitle="Manage your saved beneficiaries" />
-        <ErrorState title="Failed to load beneficiaries" onRetry={refetch} />
+        <ErrorState
+          title="Failed to load beneficiaries"
+          onRetry={refetch}
+        />
       </div>
     );
   }
@@ -59,13 +73,13 @@ export function BeneficiariesPage() {
           }
         />
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {beneficiaries.map((b) => (
             <BeneficiaryCard
               key={b.id}
               beneficiary={b}
               onEdit={setEditingBeneficiary}
-              onDelete={() => {}}
+              onDelete={handleDelete}
             />
           ))}
         </div>
@@ -73,7 +87,10 @@ export function BeneficiariesPage() {
 
       <CreateBeneficiaryDialog
         open={showCreateDialog || !!editingBeneficiary}
-        onClose={() => { setShowCreateDialog(false); setEditingBeneficiary(null); }}
+        onClose={() => {
+          setShowCreateDialog(false);
+          setEditingBeneficiary(null);
+        }}
         beneficiary={editingBeneficiary}
       />
     </div>

@@ -1,12 +1,12 @@
 import type { CardStatus } from "../types";
 
 const statusStyles: Record<CardStatus, string> = {
-  PENDING: "bg-yellow-100 text-yellow-800",
-  ACTIVE: "bg-green-100 text-green-800",
-  FROZEN: "bg-blue-100 text-blue-800",
-  BLOCKED: "bg-red-100 text-red-800",
-  EXPIRED: "bg-gray-100 text-gray-800",
-  CANCELLED: "bg-gray-100 text-gray-800",
+  PENDING: "bg-warning-subtle text-chart-4",
+  ACTIVE: "bg-success-subtle text-success",
+  FROZEN: "bg-info-subtle text-chart-3",
+  BLOCKED: "bg-danger-subtle text-danger",
+  EXPIRED: "bg-surface-active text-text-secondary",
+  CANCELLED: "bg-surface-active text-text-secondary",
 };
 
 export function CardStatusBadge({ status }: { status: CardStatus }) {

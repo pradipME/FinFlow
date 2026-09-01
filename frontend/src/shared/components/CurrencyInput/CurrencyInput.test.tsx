@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 import { CurrencyInput } from "./CurrencyInput";
 import {
   getDecimalSeparator,

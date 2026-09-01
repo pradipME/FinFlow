@@ -34,7 +34,7 @@ export function getButtonClasses({
   return cn(
     BASE_CLASSES,
     SIZE_CLASSES[size],
-    VARIANT_CLASSES[variant],
+    VARIANT_CLASSES[variant as keyof typeof VARIANT_CLASSES],
     fullWidth && FULL_WIDTH_CLASSES,
     iconOnlyPadding,
     loadingClass,

@@ -24,7 +24,8 @@
 -- detection), but there is no FK to reference.
 -- -------------------------------------------------------
 CREATE TABLE finflow_auth.login_history (
-    id              BIGINT        NOT NULL AUTO_INCREMENT,
+    id              BIGSERIAL        NOT NULL,
+
     user_id         CHAR(36)      NULL,
     identifier      VARCHAR(254)  NOT NULL,
     success         BOOLEAN       NOT NULL DEFAULT FALSE,
@@ -33,12 +34,12 @@ CREATE TABLE finflow_auth.login_history (
     user_agent      VARCHAR(500)  NULL,
 
     -- audit
-    created_at      DATETIME(6)   NOT NULL,
+    created_at      TIMESTAMP(6)   NOT NULL,
 
     CONSTRAINT pk_login_history PRIMARY KEY (id),
     CONSTRAINT fk_lh_user FOREIGN KEY (user_id)
         REFERENCES finflow_auth.users (id) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 -- Look up recent attempts for a specific user
 CREATE INDEX idx_lh_user_id ON finflow_auth.login_history (user_id);
@@ -65,7 +66,8 @@ CREATE INDEX idx_lh_user_failure ON finflow_auth.login_history (user_id, success
 -- context and structured data.
 -- -------------------------------------------------------
 CREATE TABLE finflow_auth.audit_log (
-    id              BIGINT        NOT NULL AUTO_INCREMENT,
+    id              BIGSERIAL        NOT NULL,
+
     event_type      VARCHAR(50)   NOT NULL,
     aggregate_id    CHAR(36)      NOT NULL,
     aggregate_type  VARCHAR(50)   NOT NULL DEFAULT 'USER',
@@ -75,10 +77,10 @@ CREATE TABLE finflow_auth.audit_log (
     user_agent      VARCHAR(500)  NULL,
 
     -- audit
-    created_at      DATETIME(6)   NOT NULL,
+    created_at      TIMESTAMP(6)   NOT NULL,
 
     CONSTRAINT pk_audit_log PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 -- Look up all events for a specific entity (e.g., all activity for user X)
 CREATE INDEX idx_audit_aggregate ON finflow_auth.audit_log (aggregate_id);

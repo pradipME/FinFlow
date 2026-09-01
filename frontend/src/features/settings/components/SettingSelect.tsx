@@ -1,3 +1,4 @@
+import { Select } from "@/shared/components";
 import { useUpdateSetting } from "../hooks";
 import type { SettingKey } from "../types";
 
@@ -18,33 +19,24 @@ export function SettingSelect({
 }: SettingSelectProps) {
   const { mutate, isPending } = useUpdateSetting();
 
-  function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    mutate({
-      key: settingKey,
-      payload: { settingValue: e.target.value },
-    });
-  }
-
   return (
-    <div className="flex items-center justify-between py-3">
-      <div className="flex-1">
-        <p className="text-sm font-medium text-gray-900">{label}</p>
-        {description && (
-          <p className="text-xs text-gray-500">{description}</p>
-        )}
+    <div className="flex flex-col gap-2 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-medium text-text-primary">{label}</p>
+        {description && <p className="mt-0.5 text-xs text-text-tertiary">{description}</p>}
       </div>
-      <select
+      <Select
+        className="w-full sm:w-52"
         value={value}
         disabled={isPending}
-        onChange={handleChange}
-        className="ml-4 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
+        options={options}
+        onChange={(e) =>
+          mutate({
+            key: settingKey,
+            payload: { settingValue: e.target.value },
+          })
+        }
+      />
     </div>
   );
 }

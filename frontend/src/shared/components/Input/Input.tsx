@@ -9,7 +9,7 @@
  *   <Input label="Email" type="email" placeholder="you@bank.com" required />
  *   <Input label="Amount" prefix="$" suffix=".00" type="number" />
  *   <Input label="API Key" leftIcon={<KeyIcon />} loading state="success" />
- *   <Input label="Search" clearable errorText="Invalid format" />
+ *   <Input label="Search" clearable effectiveErrorText="Invalid format" />
  */
 import {
   forwardRef,
@@ -77,37 +77,39 @@ function ClearButton({ onClear }: { onClear: () => void }) {
 
 // ── Input ────────────────────────────────────────────────────────
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  {
-    type = "text",
-    size = "md",
-    state = "default",
-    label,
-    helperText,
-    errorText,
-    successText,
-    prefix,
-    suffix,
-    leftIcon,
-    rightIcon,
-    clearable = false,
-    loading = false,
-    required = false,
-    disabled = false,
-    readOnly = false,
-    onClear,
-    className,
-    value,
-    onChange,
-    onFocus,
-    onBlur,
-    id: idProp,
-    "aria-describedby": ariaDescribedBy,
-    defaultValue: _defaultValue,
-    ...rest
-  },
-  ref,
-) {
+  export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+    {
+      type = "text",
+      size = "md",
+      state = "default",
+      label,
+      helperText,
+      error,
+      errorText,
+      successText,
+      prefix,
+      suffix,
+      leftIcon,
+      rightIcon,
+      clearable = false,
+      loading = false,
+      required = false,
+      disabled = false,
+      readOnly = false,
+      onClear,
+      className,
+      value,
+      onChange,
+      onFocus,
+      onBlur,
+      id: idProp,
+      "aria-describedby": ariaDescribedBy,
+      defaultValue: _defaultValue,
+      ...rest
+    },
+    ref,
+  ) {
+  const effectiveErrorText = error ?? errorText;
   const generatedId = useId();
   const id = idProp ?? generatedId;
   const helperId = `${id}-helper`;
@@ -123,8 +125,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   const currentValue = isControlled ? String(value) : internalValue;
   const hasValue = currentValue.length > 0;
 
-  // Effective state: errorText overrides
-  const effectiveState = errorText ? "invalid" : successText ? "success" : state;
+  // Effective state: effectiveErrorText overrides
+  const effectiveState = effectiveErrorText ? "invalid" : successText ? "success" : state;
 
   // ── Handlers ──────────────────────────────────────────────
 
@@ -172,9 +174,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   const describedBy =
     [
       ariaDescribedBy,
-      errorText ? errorId : "",
+      effectiveErrorText ? errorId : "",
       successText ? successId : "",
-      helperText && !errorText ? helperId : "",
+      helperText && !effectiveErrorText ? helperId : "",
     ]
       .filter(Boolean)
       .join(" ") || undefined;
@@ -268,17 +270,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         </div>
 
         {/* Message text — only one shown at a time */}
-        {errorText && (
+        {effectiveErrorText && (
           <p id={errorId} className={ERROR_TEXT_CLASSES} role="alert">
-            {errorText}
+            {effectiveErrorText}
           </p>
         )}
-        {successText && !errorText && (
+        {successText && !effectiveErrorText && (
           <p id={successId} className={SUCCESS_TEXT_CLASSES}>
             {successText}
           </p>
         )}
-        {helperText && !errorText && !successText && (
+        {helperText && !effectiveErrorText && !successText && (
           <p id={helperId} className={HELPER_TEXT_CLASSES}>
             {helperText}
           </p>

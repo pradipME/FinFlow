@@ -26,10 +26,7 @@ const ITEM_BASE =
 /**
  * Compute the full className for a toast item card.
  */
-export function getToastItemClasses(
-  variant: ToastVariant,
-  position: ToastPosition,
-): string {
+export function getToastItemClasses(variant: ToastVariant): string {
   return cn(
     ITEM_BASE,
     VARIANT_CLASSES[variant],
@@ -63,18 +60,12 @@ export function getToastContainerClasses(position: ToastPosition): string {
 
 // ── Action Button Classes ────────────────────────────────────────
 
-/** Classes for the optional action button. */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const ACTION_BUTTON_CLASSES =
-  "text-sm font-medium text-brand-primary hover:text-brand-primary-hover " +
-  "transition-colors duration-fast px-2 py-0.5 -ml-2 rounded " +
-  "hover:bg-brand-primary-subtle focus-visible:outline-none " +
-  "focus-visible:ring-2 focus-visible:ring-brand-primary";
+  "text-sm font-medium text-brand-primary hover:text-brand-primary-hover transition-colors duration-fast px-2 py-0.5 -ml-2 rounded hover:bg-brand-primary-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary";
 
 // ── Close Button Classes ─────────────────────────────────────────
 
-/** Classes for the dismiss (X) button. */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const CLOSE_BUTTON_CLASSES =
-  "absolute top-2 right-2 p-1 rounded " +
-  "text-text-tertiary hover:text-text-secondary hover:bg-bg-tertiary " +
-  "transition-colors duration-fast " +
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary";
+  "absolute top-2 right-2 p-1 rounded text-text-tertiary hover:text-text-secondary hover:bg-bg-tertiary transition-colors duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary";

@@ -25497,3 +25497,3066 @@ This generated password is for development use only. Your security configuration
     drop table if exists finflow_transfers.scheduled_transfers cascade 
 2026-09-01 21:20:44.321 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_transfers.transfer_templates cascade 
+2026-09-01 21:33:58.548 [main] INFO  [] c.f.m.a.r.AuthRepositoryIntegrationTest - Starting AuthRepositoryIntegrationTest using Java 21.0.11 with PID 22840 (started by Lenovo in C:\Projects\FinFlow\backend)
+2026-09-01 21:33:58.550 [main] DEBUG [] c.f.m.a.r.AuthRepositoryIntegrationTest - Running with Spring Boot v3.4.1, Spring v6.2.1
+2026-09-01 21:33:58.551 [main] INFO  [] c.f.m.a.r.AuthRepositoryIntegrationTest - The following 1 profile is active: "test"
+2026-09-01 21:34:00.288 [main] INFO  [] o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-09-01 21:34:00.290 [main] INFO  [] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-01 21:34:00.614 [main] INFO  [] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 306 ms. Found 22 JPA repository interfaces.
+2026-09-01 21:34:00.726 [main] INFO  [] o.s.b.t.a.j.TestDatabaseAutoConfiguration$EmbeddedDataSourceBeanFactoryPostProcessor - Replacing 'dataSource' DataSource bean with embedded version
+2026-09-01 21:34:01.178 [main] INFO  [] o.s.j.d.e.EmbeddedDatabaseFactory - Starting embedded database: url='jdbc:h2:mem:af22f943-36c9-4eee-b540-ca9ace03a468;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-09-01 21:34:02.015 [main] INFO  [] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-01 21:34:02.142 [main] INFO  [] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.4.Final
+2026-09-01 21:34:02.214 [main] INFO  [] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-01 21:34:02.475 [main] INFO  [] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-01 21:34:02.566 [main] WARN  [] org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-01 21:34:02.601 [main] INFO  [] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory$EmbeddedDataSourceProxy@788a2594']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-09-01 21:34:05.063 [main] INFO  [] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-01 21:34:05.103 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.account_holders cascade 
+2026-09-01 21:34:05.107 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.account_status_history cascade 
+2026-09-01 21:34:05.108 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.accounts cascade 
+2026-09-01 21:34:05.108 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.beneficiaries cascade 
+2026-09-01 21:34:05.109 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.card_transactions cascade 
+2026-09-01 21:34:05.109 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.cards cascade 
+2026-09-01 21:34:05.109 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.holds cascade 
+2026-09-01 21:34:05.109 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_admin.admin_audit_log cascade 
+2026-09-01 21:34:05.109 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.login_history cascade 
+2026-09-01 21:34:05.111 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.refresh_tokens cascade 
+2026-09-01 21:34:05.111 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.roles cascade 
+2026-09-01 21:34:05.111 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.user_credentials cascade 
+2026-09-01 21:34:05.111 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.user_roles cascade 
+2026-09-01 21:34:05.112 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.users cascade 
+2026-09-01 21:34:05.112 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_notifications.notifications cascade 
+2026-09-01 21:34:05.113 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_profiles.user_profiles cascade 
+2026-09-01 21:34:05.113 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_savings.savings_goals cascade 
+2026-09-01 21:34:05.114 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_settings.user_settings cascade 
+2026-09-01 21:34:05.114 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_transactions.transaction_entries cascade 
+2026-09-01 21:34:05.114 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_transactions.transactions cascade 
+2026-09-01 21:34:05.115 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_transfers.scheduled_transfers cascade 
+2026-09-01 21:34:05.115 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_transfers.transfer_templates cascade 
+2026-09-01 21:34:05.126 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_accounts.account_holders (
+        created_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        account_id CHAR(36) not null,
+        id CHAR(36) not null,
+        user_id CHAR(36) not null,
+        ownership_type enum ('AUTHORIZED','JOINT','PRIMARY') not null,
+        primary key (id),
+        unique (account_id, user_id)
+    )
+2026-09-01 21:34:05.146 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_accounts.account_status_history (
+        changed_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        new_status varchar(25) not null,
+        previous_status varchar(25),
+        account_id CHAR(36) not null,
+        changed_by varchar(36) not null,
+        reason varchar(500),
+        primary key (id)
+    )
+2026-09-01 21:34:05.156 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_accounts.accounts (
+        currency varchar(3) not null,
+        is_deleted boolean not null,
+        available_balance_cents bigint not null,
+        created_at timestamp(6) not null,
+        deleted_at timestamp(6),
+        ledger_balance_cents bigint not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        account_number varchar(20) not null unique,
+        created_by varchar(36) not null,
+        deleted_by varchar(36),
+        id CHAR(36) not null,
+        modified_by varchar(36) not null,
+        owner_id CHAR(36) not null,
+        nickname varchar(100),
+        account_status enum ('ACTIVE','CLOSED','PENDING','RESTRICTED','SUSPENDED') not null,
+        account_type enum ('CHECKING','CREDIT','INVESTMENT','SAVINGS') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:05.159 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_accounts.beneficiaries (
+        currency CHAR(3) not null,
+        is_deleted boolean not null,
+        created_at timestamp(6) not null,
+        deleted_at timestamp(6),
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        routing_number varchar(20),
+        swift_code varchar(20),
+        created_by varchar(36) not null,
+        deleted_by CHAR(36),
+        id CHAR(36) not null,
+        modified_by varchar(36) not null,
+        owner_id CHAR(36) not null,
+        account_number varchar(50) not null,
+        iban varchar(50),
+        nickname varchar(100),
+        bank_name varchar(200),
+        beneficiary_name varchar(200) not null,
+        email varchar(254),
+        beneficiary_status enum ('ACTIVE','BLOCKED','INACTIVE') not null,
+        primary key (id),
+        constraint uk_beneficiary_account unique (owner_id, account_number)
+    )
+2026-09-01 21:34:05.162 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_accounts.card_transactions (
+        currency CHAR(3) not null,
+        amount_cents bigint not null,
+        created_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        authorization_code varchar(20),
+        card_id CHAR(36) not null,
+        id CHAR(36) not null,
+        merchant_category varchar(50),
+        merchant_name varchar(200),
+        status enum ('AUTHORIZED','CAPTURED','DECLINED','REFUNDED','REVERSED','SETTLED') not null,
+        transaction_type enum ('AUTHORIZATION','CAPTURE','CASHBACK','FEE','REFUND','REVERSAL','SETTLEMENT') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:05.165 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_accounts.cards (
+        card_last_four CHAR(4) not null,
+        currency CHAR(3) not null,
+        expiry_month integer not null,
+        expiry_year integer not null,
+        pin_set boolean not null,
+        created_at timestamp(6) not null,
+        credit_limit_cents bigint,
+        daily_limit_cents bigint,
+        monthly_limit_cents bigint,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        account_id CHAR(36) not null,
+        id CHAR(36) not null,
+        owner_id CHAR(36) not null,
+        cardholder_name varchar(200) not null,
+        card_number_hash varchar(255) not null,
+        card_status enum ('ACTIVE','BLOCKED','CANCELLED','EXPIRED','FROZEN','PENDING') not null,
+        card_type enum ('CREDIT','DEBIT','PREPAID') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:05.166 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_accounts.holds (
+        amount_cents bigint not null,
+        created_at timestamp(6) not null,
+        expires_at timestamp(6),
+        released_at timestamp(6),
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        account_id CHAR(36) not null,
+        id CHAR(36) not null,
+        released_by varchar(36),
+        source_id varchar(36),
+        source_type varchar(50),
+        reason varchar(500) not null,
+        hold_status enum ('ACTIVE','EXPIRED','RELEASED') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:05.171 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_admin.admin_audit_log (
+        created_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        admin_user_id CHAR(36) not null,
+        created_by varchar(36) not null,
+        id CHAR(36) not null,
+        modified_by varchar(36) not null,
+        target_id CHAR(36) not null,
+        ip_address varchar(45),
+        target_type varchar(50) not null,
+        action varchar(100) not null,
+        details TEXT,
+        primary key (id)
+    )
+2026-09-01 21:34:05.173 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_auth.login_history (
+        success boolean not null,
+        created_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        user_id CHAR(36),
+        ip_address varchar(45),
+        identifier varchar(254) not null,
+        user_agent varchar(500),
+        failure_reason enum ('ACCOUNT_CLOSED','ACCOUNT_LOCKED','ACCOUNT_NOT_VERIFIED','ACCOUNT_SUSPENDED','INVALID_CREDENTIALS'),
+        primary key (id)
+    )
+2026-09-01 21:34:05.175 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_auth.refresh_tokens (
+        is_revoked boolean not null,
+        created_at timestamp(6) not null,
+        expires_at timestamp(6) not null,
+        last_used_at timestamp(6),
+        revoked_at timestamp(6),
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        family_id CHAR(36) not null,
+        id CHAR(36) not null,
+        session_id CHAR(36) not null unique,
+        user_id CHAR(36) not null,
+        created_ip varchar(45),
+        last_used_ip varchar(45),
+        refresh_token_hash varchar(64) not null,
+        created_user_agent varchar(500),
+        primary key (id)
+    )
+2026-09-01 21:34:05.178 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_auth.roles (
+        is_active boolean not null,
+        is_system_role boolean not null,
+        created_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        id CHAR(36) not null,
+        name varchar(50) not null unique,
+        description varchar(255),
+        primary key (id)
+    )
+2026-09-01 21:34:05.179 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_auth.user_credentials (
+        is_active boolean not null,
+        is_deleted boolean not null,
+        created_at timestamp(6) not null,
+        deleted_at timestamp(6),
+        expires_at timestamp(6),
+        last_used_at timestamp(6),
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        created_by varchar(36) not null,
+        deleted_by varchar(36),
+        id CHAR(36) not null,
+        modified_by varchar(36) not null,
+        user_id CHAR(36) not null,
+        hashed_value varchar(255) not null,
+        credential_type enum ('BIOMETRIC','PASSKEY','PASSWORD') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:05.180 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_auth.user_roles (
+        created_at timestamp(6) not null,
+        granted_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        granted_by varchar(36) not null,
+        id CHAR(36) not null,
+        role_id CHAR(36) not null,
+        user_id CHAR(36) not null,
+        primary key (id),
+        unique (user_id, role_id)
+    )
+2026-09-01 21:34:05.182 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_auth.users (
+        email_verified boolean not null,
+        failed_login_count integer not null,
+        is_deleted boolean not null,
+        phone_verified boolean not null,
+        created_at timestamp(6) not null,
+        deleted_at timestamp(6),
+        last_login_at timestamp(6),
+        locked_until timestamp(6),
+        terms_accepted_at timestamp(6),
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        phone_number varchar(20),
+        username varchar(30) not null,
+        created_by varchar(36) not null,
+        deleted_by varchar(36),
+        id CHAR(36) not null,
+        modified_by varchar(36) not null,
+        email varchar(254) not null,
+        status enum ('ACTIVE','CLOSED','PENDING_VERIFICATION','SUSPENDED') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:05.184 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_notifications.notifications (
+        is_read boolean not null,
+        created_at timestamp(6) not null,
+        read_at timestamp(6),
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        created_by varchar(36) not null,
+        id CHAR(36) not null,
+        modified_by varchar(36) not null,
+        owner_id CHAR(36) not null,
+        reference_id CHAR(36),
+        reference_type varchar(50),
+        message TEXT not null,
+        title varchar(255) not null,
+        notification_type enum ('ACCOUNT','PROMOTION','SECURITY','SYSTEM','TRANSACTION') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:05.186 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_profiles.user_profiles (
+        country CHAR(2),
+        date_of_birth date,
+        created_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        postal_code varchar(20),
+        created_by varchar(36) not null,
+        id CHAR(36) not null,
+        modified_by varchar(36) not null,
+        user_id CHAR(36) not null unique,
+        city varchar(100),
+        first_name varchar(100),
+        last_name varchar(100),
+        state varchar(100),
+        avatar_url varchar(500),
+        address_line1 varchar(255),
+        address_line2 varchar(255),
+        primary key (id)
+    )
+2026-09-01 21:34:05.188 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_savings.savings_goals (
+        currency CHAR(3) not null,
+        deadline date,
+        created_at timestamp(6) not null,
+        current_amount_cents bigint not null,
+        target_amount_cents bigint not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        account_id CHAR(36) not null,
+        id CHAR(36) not null,
+        owner_id CHAR(36) not null,
+        goal_name varchar(100) not null,
+        description varchar(255),
+        goal_status enum ('ACTIVE','CANCELLED','COMPLETED','PAUSED') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:05.192 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_settings.user_settings (
+        created_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        id CHAR(36) not null,
+        user_id CHAR(36) not null,
+        setting_key varchar(100) not null,
+        setting_value TEXT not null,
+        primary key (id)
+    )
+2026-09-01 21:34:05.194 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_transactions.transaction_entries (
+        currency CHAR(3) not null,
+        amount_cents bigint not null,
+        balance_after_cents bigint not null,
+        balance_before_cents bigint not null,
+        created_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        account_id CHAR(36) not null,
+        id CHAR(36) not null,
+        transaction_id CHAR(36) not null,
+        description varchar(255),
+        entry_type enum ('CREDIT','DEBIT') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:05.197 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_transactions.transactions (
+        currency CHAR(3) not null,
+        amount_cents bigint not null,
+        completed_at timestamp(6),
+        created_at timestamp(6) not null,
+        fee_amount_cents bigint not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        id CHAR(36) not null,
+        source_account_id CHAR(36),
+        target_account_id CHAR(36),
+        user_id CHAR(36) not null,
+        reference_number varchar(50) unique,
+        idempotency_key varchar(100) unique,
+        failed_reason varchar(500),
+        description varchar(255),
+        metadata_json TEXT,
+        transaction_status enum ('CANCELLED','COMPLETED','FAILED','PENDING') not null,
+        transaction_type enum ('DEPOSIT','FEE','REVERSAL','TRANSFER','WITHDRAWAL') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:05.201 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_transfers.scheduled_transfers (
+        currency CHAR(3) not null,
+        execution_count integer not null,
+        max_executions integer,
+        amount_cents bigint not null,
+        created_at timestamp(6) not null,
+        end_date timestamp(6),
+        last_execution timestamp(6),
+        next_execution timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        id CHAR(36) not null,
+        owner_id CHAR(36) not null,
+        source_account_id CHAR(36) not null,
+        target_account_id CHAR(36),
+        target_beneficiary_id CHAR(36),
+        template_id CHAR(36),
+        description varchar(255),
+        frequency enum ('BIWEEKLY','DAILY','MONTHLY','QUARTERLY','WEEKLY','YEARLY'),
+        schedule_status enum ('ACTIVE','CANCELLED','COMPLETED','FAILED','PAUSED') not null,
+        schedule_type enum ('ONE_TIME','RECURRING') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:05.204 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_transfers.transfer_templates (
+        currency CHAR(3) not null,
+        amount_cents bigint not null,
+        created_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        id CHAR(36) not null,
+        owner_id CHAR(36) not null,
+        source_account_id CHAR(36) not null,
+        target_account_id CHAR(36),
+        target_beneficiary_id CHAR(36),
+        template_name varchar(100) not null,
+        description varchar(255),
+        template_status enum ('ACTIVE','CANCELLED','COMPLETED','FAILED','PAUSED') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:05.207 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_accounts.account_holders 
+       add constraint fk_ah_account 
+       foreign key (account_id) 
+       references finflow_accounts.accounts
+2026-09-01 21:34:05.233 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_accounts.account_status_history 
+       add constraint fk_ash_account 
+       foreign key (account_id) 
+       references finflow_accounts.accounts
+2026-09-01 21:34:05.235 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_accounts.holds 
+       add constraint fk_holds_account 
+       foreign key (account_id) 
+       references finflow_accounts.accounts
+2026-09-01 21:34:05.236 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_auth.login_history 
+       add constraint fk_lh_user 
+       foreign key (user_id) 
+       references finflow_auth.users
+2026-09-01 21:34:05.239 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_auth.refresh_tokens 
+       add constraint fk_rt_user 
+       foreign key (user_id) 
+       references finflow_auth.users
+2026-09-01 21:34:05.241 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_auth.user_credentials 
+       add constraint fk_uc_user 
+       foreign key (user_id) 
+       references finflow_auth.users
+2026-09-01 21:34:05.243 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_auth.user_roles 
+       add constraint fk_ur_role 
+       foreign key (role_id) 
+       references finflow_auth.roles
+2026-09-01 21:34:05.245 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_auth.user_roles 
+       add constraint fk_ur_user 
+       foreign key (user_id) 
+       references finflow_auth.users
+2026-09-01 21:34:05.247 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_transactions.transaction_entries 
+       add constraint fk_txn_entry_transaction 
+       foreign key (transaction_id) 
+       references finflow_transactions.transactions
+2026-09-01 21:34:05.258 [main] INFO  [] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-01 21:34:05.956 [main] INFO  [] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-01 21:34:08.305 [main] INFO  [] c.f.m.a.r.AuthRepositoryIntegrationTest - Started AuthRepositoryIntegrationTest in 10.527 seconds (process running for 20.984)
+2026-09-01 21:34:08.619 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.645 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.648 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.user_roles
+        (created_at, granted_at, granted_by, role_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.668 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        ur1_0.id,
+        ur1_0.created_at,
+        ur1_0.granted_at,
+        ur1_0.granted_by,
+        ur1_0.role_id,
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.is_active,
+        r1_0.is_system_role,
+        r1_0.name,
+        r1_0.updated_at,
+        r1_0.version,
+        ur1_0.updated_at,
+        ur1_0.user_id,
+        ur1_0.version 
+    from
+        finflow_auth.user_roles ur1_0 
+    join
+        finflow_auth.roles r1_0 
+            on r1_0.id=ur1_0.role_id 
+    where
+        ur1_0.user_id=? 
+        and r1_0.is_active=true
+2026-09-01 21:34:08.758 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.760 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.762 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.user_roles
+        (created_at, granted_at, granted_by, role_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.764 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        ur1_0.id 
+    from
+        finflow_auth.user_roles ur1_0 
+    join
+        finflow_auth.roles r1_0 
+            on r1_0.id=ur1_0.role_id 
+    where
+        ur1_0.user_id=? 
+        and r1_0.name=? 
+        and r1_0.is_active 
+    fetch
+        first ? rows only
+2026-09-01 21:34:08.771 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        ur1_0.id 
+    from
+        finflow_auth.user_roles ur1_0 
+    join
+        finflow_auth.roles r1_0 
+            on r1_0.id=ur1_0.role_id 
+    where
+        ur1_0.user_id=? 
+        and r1_0.name=? 
+        and r1_0.is_active 
+    fetch
+        first ? rows only
+2026-09-01 21:34:08.783 [main] INFO  [] o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$RoleRepositoryTests]: RoleRepositoryTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-01 21:34:08.806 [main] INFO  [] o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.finflow.FinFlowApplication for test class com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$RoleRepositoryTests
+2026-09-01 21:34:08.822 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.826 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.827 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.is_active,
+        r1_0.is_system_role,
+        r1_0.name,
+        r1_0.updated_at,
+        r1_0.version 
+    from
+        finflow_auth.roles r1_0 
+    where
+        r1_0.name=? 
+        and r1_0.is_active
+2026-09-01 21:34:08.849 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.851 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.854 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        r1_0.id 
+    from
+        finflow_auth.roles r1_0 
+    where
+        r1_0.name=? 
+        and r1_0.is_active 
+    fetch
+        first ? rows only
+2026-09-01 21:34:08.856 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        r1_0.id 
+    from
+        finflow_auth.roles r1_0 
+    where
+        r1_0.name=? 
+        and r1_0.is_active 
+    fetch
+        first ? rows only
+2026-09-01 21:34:08.869 [main] INFO  [] o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$UserCredentialRepositoryTests]: UserCredentialRepositoryTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-01 21:34:08.889 [main] INFO  [] o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.finflow.FinFlowApplication for test class com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$UserCredentialRepositoryTests
+2026-09-01 21:34:08.905 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.908 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.910 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.user_credentials
+        (created_at, created_by, credential_type, deleted_at, deleted_by, expires_at, hashed_value, is_active, is_deleted, last_used_at, modified_by, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.911 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        uc1_0.id 
+    from
+        finflow_auth.user_credentials uc1_0 
+    where
+        uc1_0.user_id=? 
+        and uc1_0.credential_type=? 
+        and uc1_0.is_active 
+        and not(uc1_0.is_deleted) 
+    fetch
+        first ? rows only
+2026-09-01 21:34:08.917 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        uc1_0.id 
+    from
+        finflow_auth.user_credentials uc1_0 
+    where
+        uc1_0.user_id=? 
+        and uc1_0.credential_type=? 
+        and uc1_0.is_active 
+        and not(uc1_0.is_deleted) 
+    fetch
+        first ? rows only
+2026-09-01 21:34:08.940 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.943 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.944 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.user_credentials
+        (created_at, created_by, credential_type, deleted_at, deleted_by, expires_at, hashed_value, is_active, is_deleted, last_used_at, modified_by, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.945 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        uc1_0.id,
+        uc1_0.created_at,
+        uc1_0.created_by,
+        uc1_0.credential_type,
+        uc1_0.deleted_at,
+        uc1_0.deleted_by,
+        uc1_0.expires_at,
+        uc1_0.hashed_value,
+        uc1_0.is_active,
+        uc1_0.is_deleted,
+        uc1_0.last_used_at,
+        uc1_0.modified_by,
+        uc1_0.updated_at,
+        uc1_0.user_id,
+        uc1_0.version 
+    from
+        finflow_auth.user_credentials uc1_0 
+    where
+        uc1_0.user_id=? 
+        and uc1_0.credential_type=? 
+        and uc1_0.is_active 
+        and not(uc1_0.is_deleted)
+2026-09-01 21:34:08.957 [main] INFO  [] o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$UserRepositoryTests]: UserRepositoryTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-01 21:34:08.972 [main] INFO  [] o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.finflow.FinFlowApplication for test class com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$UserRepositoryTests
+2026-09-01 21:34:08.985 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.987 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:08.988 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id 
+    from
+        finflow_auth.users u1_0 
+    where
+        u1_0.phone_number=? 
+        and not(u1_0.is_deleted) 
+    fetch
+        first ? rows only
+2026-09-01 21:34:08.993 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id 
+    from
+        finflow_auth.users u1_0 
+    where
+        u1_0.phone_number=? 
+        and not(u1_0.is_deleted) 
+    fetch
+        first ? rows only
+2026-09-01 21:34:09.016 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:09.018 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:09.025 [main] DEBUG [] org.hibernate.SQL - 
+    update
+        finflow_auth.users 
+    set
+        deleted_at=?,
+        deleted_by=?,
+        email=?,
+        email_verified=?,
+        failed_login_count=?,
+        is_deleted=?,
+        last_login_at=?,
+        locked_until=?,
+        modified_by=?,
+        phone_number=?,
+        phone_verified=?,
+        status=?,
+        terms_accepted_at=?,
+        updated_at=?,
+        username=?,
+        version=? 
+    where
+        id=? 
+        and version=?
+2026-09-01 21:34:09.031 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted_at,
+        u1_0.deleted_by,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_count,
+        u1_0.is_deleted,
+        u1_0.last_login_at,
+        u1_0.locked_until,
+        u1_0.modified_by,
+        u1_0.phone_number,
+        u1_0.phone_verified,
+        u1_0.status,
+        u1_0.terms_accepted_at,
+        u1_0.updated_at,
+        u1_0.username,
+        u1_0.version 
+    from
+        finflow_auth.users u1_0 
+    where
+        upper(u1_0.email)=upper(?) 
+        and not(u1_0.is_deleted)
+2026-09-01 21:34:09.053 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:09.057 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:09.058 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        count(u1_0.id) 
+    from
+        finflow_auth.users u1_0 
+    where
+        u1_0.status=? 
+        and not(u1_0.is_deleted)
+2026-09-01 21:34:09.083 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:09.086 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:09.088 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id 
+    from
+        finflow_auth.users u1_0 
+    where
+        upper(u1_0.username)=upper(?) 
+        and not(u1_0.is_deleted) 
+    fetch
+        first ? rows only
+2026-09-01 21:34:09.093 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id 
+    from
+        finflow_auth.users u1_0 
+    where
+        upper(u1_0.username)=upper(?) 
+        and not(u1_0.is_deleted) 
+    fetch
+        first ? rows only
+2026-09-01 21:34:09.111 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:09.113 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:09.115 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id 
+    from
+        finflow_auth.users u1_0 
+    where
+        upper(u1_0.email)=upper(?) 
+        and not(u1_0.is_deleted) 
+    fetch
+        first ? rows only
+2026-09-01 21:34:09.118 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id 
+    from
+        finflow_auth.users u1_0 
+    where
+        upper(u1_0.email)=upper(?) 
+        and not(u1_0.is_deleted) 
+    fetch
+        first ? rows only
+2026-09-01 21:34:09.135 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:09.138 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:09.140 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted_at,
+        u1_0.deleted_by,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_count,
+        u1_0.is_deleted,
+        u1_0.last_login_at,
+        u1_0.locked_until,
+        u1_0.modified_by,
+        u1_0.phone_number,
+        u1_0.phone_verified,
+        u1_0.status,
+        u1_0.terms_accepted_at,
+        u1_0.updated_at,
+        u1_0.username,
+        u1_0.version 
+    from
+        finflow_auth.users u1_0 
+    where
+        upper(u1_0.email)=upper(?) 
+        and not(u1_0.is_deleted)
+2026-09-01 21:34:09.158 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:09.160 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:09.162 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted_at,
+        u1_0.deleted_by,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_count,
+        u1_0.is_deleted,
+        u1_0.last_login_at,
+        u1_0.locked_until,
+        u1_0.modified_by,
+        u1_0.phone_number,
+        u1_0.phone_verified,
+        u1_0.status,
+        u1_0.terms_accepted_at,
+        u1_0.updated_at,
+        u1_0.username,
+        u1_0.version 
+    from
+        finflow_auth.users u1_0 
+    where
+        upper(u1_0.email)=upper(?) 
+        and not(u1_0.is_deleted)
+2026-09-01 21:34:09.177 [main] INFO  [] o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest]: RefreshTokenRepositoryIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-01 21:34:09.197 [main] INFO  [] o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.finflow.FinFlowApplication for test class com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest
+2026-09-01 21:34:09.201 [main] INFO  [] o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$CountActiveByUserId]: CountActiveByUserId does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-01 21:34:09.215 [main] INFO  [] o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.finflow.FinFlowApplication for test class com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$CountActiveByUserId
+2026-09-01 21:34:09.275 [main] INFO  [] c.f.m.a.r.RefreshTokenRepositoryIntegrationTest - Starting RefreshTokenRepositoryIntegrationTest using Java 21.0.11 with PID 22840 (started by Lenovo in C:\Projects\FinFlow\backend)
+2026-09-01 21:34:09.275 [main] DEBUG [] c.f.m.a.r.RefreshTokenRepositoryIntegrationTest - Running with Spring Boot v3.4.1, Spring v6.2.1
+2026-09-01 21:34:09.275 [main] INFO  [] c.f.m.a.r.RefreshTokenRepositoryIntegrationTest - The following 1 profile is active: "test"
+2026-09-01 21:34:09.514 [main] INFO  [] o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-09-01 21:34:09.514 [main] INFO  [] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-01 21:34:09.663 [main] INFO  [] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 147 ms. Found 22 JPA repository interfaces.
+2026-09-01 21:34:09.695 [main] INFO  [] o.s.b.t.a.j.TestDatabaseAutoConfiguration$EmbeddedDataSourceBeanFactoryPostProcessor - Replacing 'dataSource' DataSource bean with embedded version
+2026-09-01 21:34:09.735 [main] INFO  [] o.s.j.d.e.EmbeddedDatabaseFactory - Starting embedded database: url='jdbc:h2:mem:87e7e671-1b52-4f6e-8655-7ac9dbb5cb25;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-09-01 21:34:09.821 [main] INFO  [] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-01 21:34:09.827 [main] INFO  [] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-01 21:34:09.863 [main] INFO  [] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-01 21:34:09.866 [main] WARN  [] org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-01 21:34:09.867 [main] INFO  [] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory$EmbeddedDataSourceProxy@b167a9f']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-09-01 21:34:10.532 [main] INFO  [] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-01 21:34:10.533 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.account_holders cascade 
+2026-09-01 21:34:10.534 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.account_status_history cascade 
+2026-09-01 21:34:10.534 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.accounts cascade 
+2026-09-01 21:34:10.534 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.beneficiaries cascade 
+2026-09-01 21:34:10.534 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.card_transactions cascade 
+2026-09-01 21:34:10.535 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.cards cascade 
+2026-09-01 21:34:10.535 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.holds cascade 
+2026-09-01 21:34:10.535 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_admin.admin_audit_log cascade 
+2026-09-01 21:34:10.535 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.login_history cascade 
+2026-09-01 21:34:10.535 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.refresh_tokens cascade 
+2026-09-01 21:34:10.536 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.roles cascade 
+2026-09-01 21:34:10.536 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.user_credentials cascade 
+2026-09-01 21:34:10.536 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.user_roles cascade 
+2026-09-01 21:34:10.536 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.users cascade 
+2026-09-01 21:34:10.536 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_notifications.notifications cascade 
+2026-09-01 21:34:10.536 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_profiles.user_profiles cascade 
+2026-09-01 21:34:10.536 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_savings.savings_goals cascade 
+2026-09-01 21:34:10.536 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_settings.user_settings cascade 
+2026-09-01 21:34:10.536 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_transactions.transaction_entries cascade 
+2026-09-01 21:34:10.538 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_transactions.transactions cascade 
+2026-09-01 21:34:10.538 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_transfers.scheduled_transfers cascade 
+2026-09-01 21:34:10.538 [main] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_transfers.transfer_templates cascade 
+2026-09-01 21:34:10.538 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_accounts.account_holders (
+        created_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        account_id CHAR(36) not null,
+        id CHAR(36) not null,
+        user_id CHAR(36) not null,
+        ownership_type enum ('AUTHORIZED','JOINT','PRIMARY') not null,
+        primary key (id),
+        unique (account_id, user_id)
+    )
+2026-09-01 21:34:10.541 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_accounts.account_status_history (
+        changed_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        new_status varchar(25) not null,
+        previous_status varchar(25),
+        account_id CHAR(36) not null,
+        changed_by varchar(36) not null,
+        reason varchar(500),
+        primary key (id)
+    )
+2026-09-01 21:34:10.543 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_accounts.accounts (
+        currency varchar(3) not null,
+        is_deleted boolean not null,
+        available_balance_cents bigint not null,
+        created_at timestamp(6) not null,
+        deleted_at timestamp(6),
+        ledger_balance_cents bigint not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        account_number varchar(20) not null unique,
+        created_by varchar(36) not null,
+        deleted_by varchar(36),
+        id CHAR(36) not null,
+        modified_by varchar(36) not null,
+        owner_id CHAR(36) not null,
+        nickname varchar(100),
+        account_status enum ('ACTIVE','CLOSED','PENDING','RESTRICTED','SUSPENDED') not null,
+        account_type enum ('CHECKING','CREDIT','INVESTMENT','SAVINGS') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:10.545 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_accounts.beneficiaries (
+        currency CHAR(3) not null,
+        is_deleted boolean not null,
+        created_at timestamp(6) not null,
+        deleted_at timestamp(6),
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        routing_number varchar(20),
+        swift_code varchar(20),
+        created_by varchar(36) not null,
+        deleted_by CHAR(36),
+        id CHAR(36) not null,
+        modified_by varchar(36) not null,
+        owner_id CHAR(36) not null,
+        account_number varchar(50) not null,
+        iban varchar(50),
+        nickname varchar(100),
+        bank_name varchar(200),
+        beneficiary_name varchar(200) not null,
+        email varchar(254),
+        beneficiary_status enum ('ACTIVE','BLOCKED','INACTIVE') not null,
+        primary key (id),
+        constraint uk_beneficiary_account unique (owner_id, account_number)
+    )
+2026-09-01 21:34:10.547 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_accounts.card_transactions (
+        currency CHAR(3) not null,
+        amount_cents bigint not null,
+        created_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        authorization_code varchar(20),
+        card_id CHAR(36) not null,
+        id CHAR(36) not null,
+        merchant_category varchar(50),
+        merchant_name varchar(200),
+        status enum ('AUTHORIZED','CAPTURED','DECLINED','REFUNDED','REVERSED','SETTLED') not null,
+        transaction_type enum ('AUTHORIZATION','CAPTURE','CASHBACK','FEE','REFUND','REVERSAL','SETTLEMENT') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:10.549 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_accounts.cards (
+        card_last_four CHAR(4) not null,
+        currency CHAR(3) not null,
+        expiry_month integer not null,
+        expiry_year integer not null,
+        pin_set boolean not null,
+        created_at timestamp(6) not null,
+        credit_limit_cents bigint,
+        daily_limit_cents bigint,
+        monthly_limit_cents bigint,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        account_id CHAR(36) not null,
+        id CHAR(36) not null,
+        owner_id CHAR(36) not null,
+        cardholder_name varchar(200) not null,
+        card_number_hash varchar(255) not null,
+        card_status enum ('ACTIVE','BLOCKED','CANCELLED','EXPIRED','FROZEN','PENDING') not null,
+        card_type enum ('CREDIT','DEBIT','PREPAID') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:10.551 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_accounts.holds (
+        amount_cents bigint not null,
+        created_at timestamp(6) not null,
+        expires_at timestamp(6),
+        released_at timestamp(6),
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        account_id CHAR(36) not null,
+        id CHAR(36) not null,
+        released_by varchar(36),
+        source_id varchar(36),
+        source_type varchar(50),
+        reason varchar(500) not null,
+        hold_status enum ('ACTIVE','EXPIRED','RELEASED') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:10.553 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_admin.admin_audit_log (
+        created_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        admin_user_id CHAR(36) not null,
+        created_by varchar(36) not null,
+        id CHAR(36) not null,
+        modified_by varchar(36) not null,
+        target_id CHAR(36) not null,
+        ip_address varchar(45),
+        target_type varchar(50) not null,
+        action varchar(100) not null,
+        details TEXT,
+        primary key (id)
+    )
+2026-09-01 21:34:10.555 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_auth.login_history (
+        success boolean not null,
+        created_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        user_id CHAR(36),
+        ip_address varchar(45),
+        identifier varchar(254) not null,
+        user_agent varchar(500),
+        failure_reason enum ('ACCOUNT_CLOSED','ACCOUNT_LOCKED','ACCOUNT_NOT_VERIFIED','ACCOUNT_SUSPENDED','INVALID_CREDENTIALS'),
+        primary key (id)
+    )
+2026-09-01 21:34:10.556 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_auth.refresh_tokens (
+        is_revoked boolean not null,
+        created_at timestamp(6) not null,
+        expires_at timestamp(6) not null,
+        last_used_at timestamp(6),
+        revoked_at timestamp(6),
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        family_id CHAR(36) not null,
+        id CHAR(36) not null,
+        session_id CHAR(36) not null unique,
+        user_id CHAR(36) not null,
+        created_ip varchar(45),
+        last_used_ip varchar(45),
+        refresh_token_hash varchar(64) not null,
+        created_user_agent varchar(500),
+        primary key (id)
+    )
+2026-09-01 21:34:10.559 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_auth.roles (
+        is_active boolean not null,
+        is_system_role boolean not null,
+        created_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        id CHAR(36) not null,
+        name varchar(50) not null unique,
+        description varchar(255),
+        primary key (id)
+    )
+2026-09-01 21:34:10.560 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_auth.user_credentials (
+        is_active boolean not null,
+        is_deleted boolean not null,
+        created_at timestamp(6) not null,
+        deleted_at timestamp(6),
+        expires_at timestamp(6),
+        last_used_at timestamp(6),
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        created_by varchar(36) not null,
+        deleted_by varchar(36),
+        id CHAR(36) not null,
+        modified_by varchar(36) not null,
+        user_id CHAR(36) not null,
+        hashed_value varchar(255) not null,
+        credential_type enum ('BIOMETRIC','PASSKEY','PASSWORD') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:10.562 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_auth.user_roles (
+        created_at timestamp(6) not null,
+        granted_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        granted_by varchar(36) not null,
+        id CHAR(36) not null,
+        role_id CHAR(36) not null,
+        user_id CHAR(36) not null,
+        primary key (id),
+        unique (user_id, role_id)
+    )
+2026-09-01 21:34:10.563 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_auth.users (
+        email_verified boolean not null,
+        failed_login_count integer not null,
+        is_deleted boolean not null,
+        phone_verified boolean not null,
+        created_at timestamp(6) not null,
+        deleted_at timestamp(6),
+        last_login_at timestamp(6),
+        locked_until timestamp(6),
+        terms_accepted_at timestamp(6),
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        phone_number varchar(20),
+        username varchar(30) not null,
+        created_by varchar(36) not null,
+        deleted_by varchar(36),
+        id CHAR(36) not null,
+        modified_by varchar(36) not null,
+        email varchar(254) not null,
+        status enum ('ACTIVE','CLOSED','PENDING_VERIFICATION','SUSPENDED') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:10.564 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_notifications.notifications (
+        is_read boolean not null,
+        created_at timestamp(6) not null,
+        read_at timestamp(6),
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        created_by varchar(36) not null,
+        id CHAR(36) not null,
+        modified_by varchar(36) not null,
+        owner_id CHAR(36) not null,
+        reference_id CHAR(36),
+        reference_type varchar(50),
+        message TEXT not null,
+        title varchar(255) not null,
+        notification_type enum ('ACCOUNT','PROMOTION','SECURITY','SYSTEM','TRANSACTION') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:10.565 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_profiles.user_profiles (
+        country CHAR(2),
+        date_of_birth date,
+        created_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        postal_code varchar(20),
+        created_by varchar(36) not null,
+        id CHAR(36) not null,
+        modified_by varchar(36) not null,
+        user_id CHAR(36) not null unique,
+        city varchar(100),
+        first_name varchar(100),
+        last_name varchar(100),
+        state varchar(100),
+        avatar_url varchar(500),
+        address_line1 varchar(255),
+        address_line2 varchar(255),
+        primary key (id)
+    )
+2026-09-01 21:34:10.567 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_savings.savings_goals (
+        currency CHAR(3) not null,
+        deadline date,
+        created_at timestamp(6) not null,
+        current_amount_cents bigint not null,
+        target_amount_cents bigint not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        account_id CHAR(36) not null,
+        id CHAR(36) not null,
+        owner_id CHAR(36) not null,
+        goal_name varchar(100) not null,
+        description varchar(255),
+        goal_status enum ('ACTIVE','CANCELLED','COMPLETED','PAUSED') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:10.568 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_settings.user_settings (
+        created_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        id CHAR(36) not null,
+        user_id CHAR(36) not null,
+        setting_key varchar(100) not null,
+        setting_value TEXT not null,
+        primary key (id)
+    )
+2026-09-01 21:34:10.569 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_transactions.transaction_entries (
+        currency CHAR(3) not null,
+        amount_cents bigint not null,
+        balance_after_cents bigint not null,
+        balance_before_cents bigint not null,
+        created_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        account_id CHAR(36) not null,
+        id CHAR(36) not null,
+        transaction_id CHAR(36) not null,
+        description varchar(255),
+        entry_type enum ('CREDIT','DEBIT') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:10.570 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_transactions.transactions (
+        currency CHAR(3) not null,
+        amount_cents bigint not null,
+        completed_at timestamp(6),
+        created_at timestamp(6) not null,
+        fee_amount_cents bigint not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        id CHAR(36) not null,
+        source_account_id CHAR(36),
+        target_account_id CHAR(36),
+        user_id CHAR(36) not null,
+        reference_number varchar(50) unique,
+        idempotency_key varchar(100) unique,
+        failed_reason varchar(500),
+        description varchar(255),
+        metadata_json TEXT,
+        transaction_status enum ('CANCELLED','COMPLETED','FAILED','PENDING') not null,
+        transaction_type enum ('DEPOSIT','FEE','REVERSAL','TRANSFER','WITHDRAWAL') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:10.571 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_transfers.scheduled_transfers (
+        currency CHAR(3) not null,
+        execution_count integer not null,
+        max_executions integer,
+        amount_cents bigint not null,
+        created_at timestamp(6) not null,
+        end_date timestamp(6),
+        last_execution timestamp(6),
+        next_execution timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        id CHAR(36) not null,
+        owner_id CHAR(36) not null,
+        source_account_id CHAR(36) not null,
+        target_account_id CHAR(36),
+        target_beneficiary_id CHAR(36),
+        template_id CHAR(36),
+        description varchar(255),
+        frequency enum ('BIWEEKLY','DAILY','MONTHLY','QUARTERLY','WEEKLY','YEARLY'),
+        schedule_status enum ('ACTIVE','CANCELLED','COMPLETED','FAILED','PAUSED') not null,
+        schedule_type enum ('ONE_TIME','RECURRING') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:10.572 [main] DEBUG [] org.hibernate.SQL - 
+    create table finflow_transfers.transfer_templates (
+        currency CHAR(3) not null,
+        amount_cents bigint not null,
+        created_at timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        version bigint not null,
+        id CHAR(36) not null,
+        owner_id CHAR(36) not null,
+        source_account_id CHAR(36) not null,
+        target_account_id CHAR(36),
+        target_beneficiary_id CHAR(36),
+        template_name varchar(100) not null,
+        description varchar(255),
+        template_status enum ('ACTIVE','CANCELLED','COMPLETED','FAILED','PAUSED') not null,
+        primary key (id)
+    )
+2026-09-01 21:34:10.573 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_accounts.account_holders 
+       add constraint fk_ah_account 
+       foreign key (account_id) 
+       references finflow_accounts.accounts
+2026-09-01 21:34:10.575 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_accounts.account_status_history 
+       add constraint fk_ash_account 
+       foreign key (account_id) 
+       references finflow_accounts.accounts
+2026-09-01 21:34:10.577 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_accounts.holds 
+       add constraint fk_holds_account 
+       foreign key (account_id) 
+       references finflow_accounts.accounts
+2026-09-01 21:34:10.579 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_auth.login_history 
+       add constraint fk_lh_user 
+       foreign key (user_id) 
+       references finflow_auth.users
+2026-09-01 21:34:10.580 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_auth.refresh_tokens 
+       add constraint fk_rt_user 
+       foreign key (user_id) 
+       references finflow_auth.users
+2026-09-01 21:34:10.582 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_auth.user_credentials 
+       add constraint fk_uc_user 
+       foreign key (user_id) 
+       references finflow_auth.users
+2026-09-01 21:34:10.584 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_auth.user_roles 
+       add constraint fk_ur_role 
+       foreign key (role_id) 
+       references finflow_auth.roles
+2026-09-01 21:34:10.586 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_auth.user_roles 
+       add constraint fk_ur_user 
+       foreign key (user_id) 
+       references finflow_auth.users
+2026-09-01 21:34:10.587 [main] DEBUG [] org.hibernate.SQL - 
+    alter table if exists finflow_transactions.transaction_entries 
+       add constraint fk_txn_entry_transaction 
+       foreign key (transaction_id) 
+       references finflow_transactions.transactions
+2026-09-01 21:34:10.591 [main] INFO  [] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-01 21:34:11.160 [main] INFO  [] c.f.m.a.r.RefreshTokenRepositoryIntegrationTest - Started RefreshTokenRepositoryIntegrationTest in 1.942 seconds (process running for 23.839)
+2026-09-01 21:34:11.218 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0
+2026-09-01 21:34:11.222 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted_at,
+        u1_0.deleted_by,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_count,
+        u1_0.is_deleted,
+        u1_0.last_login_at,
+        u1_0.locked_until,
+        u1_0.modified_by,
+        u1_0.phone_number,
+        u1_0.phone_verified,
+        u1_0.status,
+        u1_0.terms_accepted_at,
+        u1_0.updated_at,
+        u1_0.username,
+        u1_0.version 
+    from
+        finflow_auth.users u1_0
+2026-09-01 21:34:11.225 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.is_active,
+        r1_0.is_system_role,
+        r1_0.name,
+        r1_0.updated_at,
+        r1_0.version 
+    from
+        finflow_auth.roles r1_0
+2026-09-01 21:34:11.235 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.237 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.238 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.239 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.240 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.242 [main] DEBUG [] org.hibernate.SQL - 
+    update
+        finflow_auth.refresh_tokens 
+    set
+        created_ip=?,
+        created_user_agent=?,
+        expires_at=?,
+        family_id=?,
+        is_revoked=?,
+        last_used_at=?,
+        last_used_ip=?,
+        refresh_token_hash=?,
+        revoked_at=?,
+        session_id=?,
+        updated_at=?,
+        user_id=?,
+        version=? 
+    where
+        id=? 
+        and version=?
+2026-09-01 21:34:11.243 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        count(rt1_0.id) 
+    from
+        finflow_auth.refresh_tokens rt1_0 
+    where
+        rt1_0.user_id=? 
+        and rt1_0.is_revoked=false 
+        and rt1_0.expires_at>localtimestamp
+2026-09-01 21:34:11.253 [main] INFO  [] o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$FindExpiredNotRevoked]: FindExpiredNotRevoked does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-01 21:34:11.265 [main] INFO  [] o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.finflow.FinFlowApplication for test class com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$FindExpiredNotRevoked
+2026-09-01 21:34:11.272 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0
+2026-09-01 21:34:11.274 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted_at,
+        u1_0.deleted_by,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_count,
+        u1_0.is_deleted,
+        u1_0.last_login_at,
+        u1_0.locked_until,
+        u1_0.modified_by,
+        u1_0.phone_number,
+        u1_0.phone_verified,
+        u1_0.status,
+        u1_0.terms_accepted_at,
+        u1_0.updated_at,
+        u1_0.username,
+        u1_0.version 
+    from
+        finflow_auth.users u1_0
+2026-09-01 21:34:11.276 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.is_active,
+        r1_0.is_system_role,
+        r1_0.name,
+        r1_0.updated_at,
+        r1_0.version 
+    from
+        finflow_auth.roles r1_0
+2026-09-01 21:34:11.286 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.287 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.289 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.290 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.291 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0 
+    where
+        rt1_0.expires_at<? 
+        and rt1_0.is_revoked=false
+2026-09-01 21:34:11.301 [main] INFO  [] o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$RevokeAllByUserId]: RevokeAllByUserId does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-01 21:34:11.314 [main] INFO  [] o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.finflow.FinFlowApplication for test class com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$RevokeAllByUserId
+2026-09-01 21:34:11.320 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0
+2026-09-01 21:34:11.323 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted_at,
+        u1_0.deleted_by,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_count,
+        u1_0.is_deleted,
+        u1_0.last_login_at,
+        u1_0.locked_until,
+        u1_0.modified_by,
+        u1_0.phone_number,
+        u1_0.phone_verified,
+        u1_0.status,
+        u1_0.terms_accepted_at,
+        u1_0.updated_at,
+        u1_0.username,
+        u1_0.version 
+    from
+        finflow_auth.users u1_0
+2026-09-01 21:34:11.325 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.is_active,
+        r1_0.is_system_role,
+        r1_0.name,
+        r1_0.updated_at,
+        r1_0.version 
+    from
+        finflow_auth.roles r1_0
+2026-09-01 21:34:11.342 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.344 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.345 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.346 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.347 [main] DEBUG [] org.hibernate.SQL - 
+    update
+        finflow_auth.refresh_tokens rt1_0 
+    set
+        is_revoked=true,
+        revoked_at=? 
+    where
+        rt1_0.user_id=? 
+        and rt1_0.is_revoked=false
+2026-09-01 21:34:11.353 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0 
+    where
+        rt1_0.user_id=? 
+        and rt1_0.is_revoked=false 
+        and rt1_0.expires_at>localtimestamp 
+    order by
+        rt1_0.created_at desc
+2026-09-01 21:34:11.362 [main] INFO  [] o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$RevokeAllByFamilyId]: RevokeAllByFamilyId does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-01 21:34:11.376 [main] INFO  [] o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.finflow.FinFlowApplication for test class com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$RevokeAllByFamilyId
+2026-09-01 21:34:11.384 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0
+2026-09-01 21:34:11.388 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted_at,
+        u1_0.deleted_by,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_count,
+        u1_0.is_deleted,
+        u1_0.last_login_at,
+        u1_0.locked_until,
+        u1_0.modified_by,
+        u1_0.phone_number,
+        u1_0.phone_verified,
+        u1_0.status,
+        u1_0.terms_accepted_at,
+        u1_0.updated_at,
+        u1_0.username,
+        u1_0.version 
+    from
+        finflow_auth.users u1_0
+2026-09-01 21:34:11.391 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.is_active,
+        r1_0.is_system_role,
+        r1_0.name,
+        r1_0.updated_at,
+        r1_0.version 
+    from
+        finflow_auth.roles r1_0
+2026-09-01 21:34:11.402 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.404 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.406 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.408 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.409 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.410 [main] DEBUG [] org.hibernate.SQL - 
+    update
+        finflow_auth.refresh_tokens 
+    set
+        created_ip=?,
+        created_user_agent=?,
+        expires_at=?,
+        family_id=?,
+        is_revoked=?,
+        last_used_at=?,
+        last_used_ip=?,
+        refresh_token_hash=?,
+        revoked_at=?,
+        session_id=?,
+        updated_at=?,
+        user_id=?,
+        version=? 
+    where
+        id=? 
+        and version=?
+2026-09-01 21:34:11.411 [main] DEBUG [] org.hibernate.SQL - 
+    update
+        finflow_auth.refresh_tokens rt1_0 
+    set
+        is_revoked=true,
+        revoked_at=? 
+    where
+        rt1_0.family_id=? 
+        and rt1_0.is_revoked=false
+2026-09-01 21:34:11.420 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0 
+    where
+        rt1_0.id=?
+2026-09-01 21:34:11.431 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0 
+    where
+        rt1_0.id=?
+2026-09-01 21:34:11.440 [main] INFO  [] o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$FindAllByFamilyId]: FindAllByFamilyId does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-01 21:34:11.465 [main] INFO  [] o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.finflow.FinFlowApplication for test class com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$FindAllByFamilyId
+2026-09-01 21:34:11.476 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0
+2026-09-01 21:34:11.480 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted_at,
+        u1_0.deleted_by,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_count,
+        u1_0.is_deleted,
+        u1_0.last_login_at,
+        u1_0.locked_until,
+        u1_0.modified_by,
+        u1_0.phone_number,
+        u1_0.phone_verified,
+        u1_0.status,
+        u1_0.terms_accepted_at,
+        u1_0.updated_at,
+        u1_0.username,
+        u1_0.version 
+    from
+        finflow_auth.users u1_0
+2026-09-01 21:34:11.482 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.is_active,
+        r1_0.is_system_role,
+        r1_0.name,
+        r1_0.updated_at,
+        r1_0.version 
+    from
+        finflow_auth.roles r1_0
+2026-09-01 21:34:11.493 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.495 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.496 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.498 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.501 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.502 [main] DEBUG [] org.hibernate.SQL - 
+    update
+        finflow_auth.refresh_tokens 
+    set
+        created_ip=?,
+        created_user_agent=?,
+        expires_at=?,
+        family_id=?,
+        is_revoked=?,
+        last_used_at=?,
+        last_used_ip=?,
+        refresh_token_hash=?,
+        revoked_at=?,
+        session_id=?,
+        updated_at=?,
+        user_id=?,
+        version=? 
+    where
+        id=? 
+        and version=?
+2026-09-01 21:34:11.504 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0 
+    where
+        rt1_0.family_id=? 
+    order by
+        rt1_0.created_at desc
+2026-09-01 21:34:11.516 [main] INFO  [] o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$FindActiveByUserId]: FindActiveByUserId does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-01 21:34:11.537 [main] INFO  [] o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.finflow.FinFlowApplication for test class com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$FindActiveByUserId
+2026-09-01 21:34:11.547 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0
+2026-09-01 21:34:11.551 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted_at,
+        u1_0.deleted_by,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_count,
+        u1_0.is_deleted,
+        u1_0.last_login_at,
+        u1_0.locked_until,
+        u1_0.modified_by,
+        u1_0.phone_number,
+        u1_0.phone_verified,
+        u1_0.status,
+        u1_0.terms_accepted_at,
+        u1_0.updated_at,
+        u1_0.username,
+        u1_0.version 
+    from
+        finflow_auth.users u1_0
+2026-09-01 21:34:11.553 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.is_active,
+        r1_0.is_system_role,
+        r1_0.name,
+        r1_0.updated_at,
+        r1_0.version 
+    from
+        finflow_auth.roles r1_0
+2026-09-01 21:34:11.561 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.562 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.563 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.564 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.565 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.565 [main] DEBUG [] org.hibernate.SQL - 
+    update
+        finflow_auth.refresh_tokens 
+    set
+        created_ip=?,
+        created_user_agent=?,
+        expires_at=?,
+        family_id=?,
+        is_revoked=?,
+        last_used_at=?,
+        last_used_ip=?,
+        refresh_token_hash=?,
+        revoked_at=?,
+        session_id=?,
+        updated_at=?,
+        user_id=?,
+        version=? 
+    where
+        id=? 
+        and version=?
+2026-09-01 21:34:11.566 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0 
+    where
+        rt1_0.user_id=? 
+        and rt1_0.is_revoked=false 
+        and rt1_0.expires_at>localtimestamp 
+    order by
+        rt1_0.created_at desc
+2026-09-01 21:34:11.573 [main] INFO  [] o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$FindActiveBySessionId]: FindActiveBySessionId does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-01 21:34:11.585 [main] INFO  [] o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.finflow.FinFlowApplication for test class com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$FindActiveBySessionId
+2026-09-01 21:34:11.591 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0
+2026-09-01 21:34:11.595 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted_at,
+        u1_0.deleted_by,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_count,
+        u1_0.is_deleted,
+        u1_0.last_login_at,
+        u1_0.locked_until,
+        u1_0.modified_by,
+        u1_0.phone_number,
+        u1_0.phone_verified,
+        u1_0.status,
+        u1_0.terms_accepted_at,
+        u1_0.updated_at,
+        u1_0.username,
+        u1_0.version 
+    from
+        finflow_auth.users u1_0
+2026-09-01 21:34:11.596 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.is_active,
+        r1_0.is_system_role,
+        r1_0.name,
+        r1_0.updated_at,
+        r1_0.version 
+    from
+        finflow_auth.roles r1_0
+2026-09-01 21:34:11.602 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.602 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.603 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.604 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0 
+    where
+        rt1_0.session_id=? 
+        and rt1_0.is_revoked=false 
+        and rt1_0.expires_at>localtimestamp
+2026-09-01 21:34:11.613 [main] INFO  [] o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$FindByTokenHash]: FindByTokenHash does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-01 21:34:11.628 [main] INFO  [] o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.finflow.FinFlowApplication for test class com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$FindByTokenHash
+2026-09-01 21:34:11.635 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0
+2026-09-01 21:34:11.638 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted_at,
+        u1_0.deleted_by,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_count,
+        u1_0.is_deleted,
+        u1_0.last_login_at,
+        u1_0.locked_until,
+        u1_0.modified_by,
+        u1_0.phone_number,
+        u1_0.phone_verified,
+        u1_0.status,
+        u1_0.terms_accepted_at,
+        u1_0.updated_at,
+        u1_0.username,
+        u1_0.version 
+    from
+        finflow_auth.users u1_0
+2026-09-01 21:34:11.640 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.is_active,
+        r1_0.is_system_role,
+        r1_0.name,
+        r1_0.updated_at,
+        r1_0.version 
+    from
+        finflow_auth.roles r1_0
+2026-09-01 21:34:11.647 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.647 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.648 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.649 [main] DEBUG [] org.hibernate.SQL - 
+    update
+        finflow_auth.refresh_tokens 
+    set
+        created_ip=?,
+        created_user_agent=?,
+        expires_at=?,
+        family_id=?,
+        is_revoked=?,
+        last_used_at=?,
+        last_used_ip=?,
+        refresh_token_hash=?,
+        revoked_at=?,
+        session_id=?,
+        updated_at=?,
+        user_id=?,
+        version=? 
+    where
+        id=? 
+        and version=?
+2026-09-01 21:34:11.650 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0 
+    where
+        rt1_0.refresh_token_hash=?
+2026-09-01 21:34:11.662 [main] INFO  [] o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$FindActiveByTokenHash]: FindActiveByTokenHash does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-01 21:34:11.675 [main] INFO  [] o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.finflow.FinFlowApplication for test class com.finflow.modules.auth.repository.RefreshTokenRepositoryIntegrationTest$FindActiveByTokenHash
+2026-09-01 21:34:11.683 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0
+2026-09-01 21:34:11.686 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted_at,
+        u1_0.deleted_by,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_count,
+        u1_0.is_deleted,
+        u1_0.last_login_at,
+        u1_0.locked_until,
+        u1_0.modified_by,
+        u1_0.phone_number,
+        u1_0.phone_verified,
+        u1_0.status,
+        u1_0.terms_accepted_at,
+        u1_0.updated_at,
+        u1_0.username,
+        u1_0.version 
+    from
+        finflow_auth.users u1_0
+2026-09-01 21:34:11.689 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.is_active,
+        r1_0.is_system_role,
+        r1_0.name,
+        r1_0.updated_at,
+        r1_0.version 
+    from
+        finflow_auth.roles r1_0
+2026-09-01 21:34:11.694 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.695 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.696 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.697 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0 
+    where
+        rt1_0.refresh_token_hash=? 
+        and rt1_0.is_revoked=false 
+        and rt1_0.expires_at>localtimestamp
+2026-09-01 21:34:11.709 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0
+2026-09-01 21:34:11.712 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted_at,
+        u1_0.deleted_by,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_count,
+        u1_0.is_deleted,
+        u1_0.last_login_at,
+        u1_0.locked_until,
+        u1_0.modified_by,
+        u1_0.phone_number,
+        u1_0.phone_verified,
+        u1_0.status,
+        u1_0.terms_accepted_at,
+        u1_0.updated_at,
+        u1_0.username,
+        u1_0.version 
+    from
+        finflow_auth.users u1_0
+2026-09-01 21:34:11.714 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.is_active,
+        r1_0.is_system_role,
+        r1_0.name,
+        r1_0.updated_at,
+        r1_0.version 
+    from
+        finflow_auth.roles r1_0
+2026-09-01 21:34:11.719 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0 
+    where
+        rt1_0.refresh_token_hash=? 
+        and rt1_0.is_revoked=false 
+        and rt1_0.expires_at>localtimestamp
+2026-09-01 21:34:11.730 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0
+2026-09-01 21:34:11.732 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted_at,
+        u1_0.deleted_by,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_count,
+        u1_0.is_deleted,
+        u1_0.last_login_at,
+        u1_0.locked_until,
+        u1_0.modified_by,
+        u1_0.phone_number,
+        u1_0.phone_verified,
+        u1_0.status,
+        u1_0.terms_accepted_at,
+        u1_0.updated_at,
+        u1_0.username,
+        u1_0.version 
+    from
+        finflow_auth.users u1_0
+2026-09-01 21:34:11.734 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.is_active,
+        r1_0.is_system_role,
+        r1_0.name,
+        r1_0.updated_at,
+        r1_0.version 
+    from
+        finflow_auth.roles r1_0
+2026-09-01 21:34:11.738 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.739 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.740 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.741 [main] DEBUG [] org.hibernate.SQL - 
+    update
+        finflow_auth.refresh_tokens 
+    set
+        created_ip=?,
+        created_user_agent=?,
+        expires_at=?,
+        family_id=?,
+        is_revoked=?,
+        last_used_at=?,
+        last_used_ip=?,
+        refresh_token_hash=?,
+        revoked_at=?,
+        session_id=?,
+        updated_at=?,
+        user_id=?,
+        version=? 
+    where
+        id=? 
+        and version=?
+2026-09-01 21:34:11.742 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0 
+    where
+        rt1_0.refresh_token_hash=? 
+        and rt1_0.is_revoked=false 
+        and rt1_0.expires_at>localtimestamp
+2026-09-01 21:34:11.753 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0
+2026-09-01 21:34:11.757 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted_at,
+        u1_0.deleted_by,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_count,
+        u1_0.is_deleted,
+        u1_0.last_login_at,
+        u1_0.locked_until,
+        u1_0.modified_by,
+        u1_0.phone_number,
+        u1_0.phone_verified,
+        u1_0.status,
+        u1_0.terms_accepted_at,
+        u1_0.updated_at,
+        u1_0.username,
+        u1_0.version 
+    from
+        finflow_auth.users u1_0
+2026-09-01 21:34:11.760 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.is_active,
+        r1_0.is_system_role,
+        r1_0.name,
+        r1_0.updated_at,
+        r1_0.version 
+    from
+        finflow_auth.roles r1_0
+2026-09-01 21:34:11.765 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.roles
+        (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.766 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.users
+        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.767 [main] DEBUG [] org.hibernate.SQL - 
+    insert 
+    into
+        finflow_auth.refresh_tokens
+        (created_at, created_ip, created_user_agent, expires_at, family_id, is_revoked, last_used_at, last_used_ip, refresh_token_hash, revoked_at, session_id, updated_at, user_id, version, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 21:34:11.768 [main] DEBUG [] org.hibernate.SQL - 
+    select
+        rt1_0.id,
+        rt1_0.created_at,
+        rt1_0.created_ip,
+        rt1_0.created_user_agent,
+        rt1_0.expires_at,
+        rt1_0.family_id,
+        rt1_0.is_revoked,
+        rt1_0.last_used_at,
+        rt1_0.last_used_ip,
+        rt1_0.refresh_token_hash,
+        rt1_0.revoked_at,
+        rt1_0.session_id,
+        rt1_0.updated_at,
+        rt1_0.user_id,
+        rt1_0.version 
+    from
+        finflow_auth.refresh_tokens rt1_0 
+    where
+        rt1_0.refresh_token_hash=? 
+        and rt1_0.is_revoked=false 
+        and rt1_0.expires_at>localtimestamp
+2026-09-01 21:34:12.238 [main] INFO  [] c.f.m.b.service.BeneficiaryService - Changing beneficiary status: id=2fc52d21-225c-4251-84ee-5b391b8becbf, status=BLOCKED, userId=db2b6785-eef6-44d3-8163-95fc25665e85
+2026-09-01 21:34:12.239 [main] INFO  [] c.f.m.b.service.BeneficiaryService - Beneficiary status changed: id=2fc52d21-225c-4251-84ee-5b391b8becbf, status=BLOCKED
+2026-09-01 21:34:12.245 [main] INFO  [] c.f.m.b.service.BeneficiaryService - Deleting beneficiary: id=c09a08ec-3826-48e0-a08a-784de051c43e, userId=2ea41693-ad39-4fb4-b06e-b436a26e2ce3
+2026-09-01 21:34:12.246 [main] INFO  [] c.f.m.b.service.BeneficiaryService - Beneficiary deleted: id=c09a08ec-3826-48e0-a08a-784de051c43e
+2026-09-01 21:34:12.251 [main] INFO  [] c.f.m.b.service.BeneficiaryService - Updating beneficiary: id=fdb8d88f-72b4-45ed-8273-21829851acb3, userId=eab87d32-58b8-46a8-a599-1df7912c531f
+2026-09-01 21:34:12.251 [main] INFO  [] c.f.m.b.service.BeneficiaryService - Beneficiary updated: id=fdb8d88f-72b4-45ed-8273-21829851acb3
+2026-09-01 21:34:12.268 [main] INFO  [] c.f.m.b.service.BeneficiaryService - Creating beneficiary: userId=74b39b60-a705-419d-8db8-87a462ca38c9, name=John Doe
+2026-09-01 21:34:12.272 [main] INFO  [] c.f.m.b.service.BeneficiaryService - Creating beneficiary: userId=dbc53e33-4dbc-4e62-8341-f94f3367425a, name=John Doe
+2026-09-01 21:34:12.273 [main] INFO  [] c.f.m.b.service.BeneficiaryService - Beneficiary created: id=null
+2026-09-01 21:34:12.807 [main] INFO  [] c.f.m.n.service.NotificationService - Notification deleted: id=57ca0beb-cf4e-4b77-a1bd-f7faa3d0fd5c, userId=43a455eb-c86b-438f-be88-3da112433696
+2026-09-01 21:34:12.817 [main] INFO  [] c.f.m.n.service.NotificationService - Marking all notifications read for user: f220630c-cce1-4f86-92b7-1a0248425ce8
+2026-09-01 21:34:13.045 [main] INFO  [] c.f.m.p.service.UserProfileService - Profile updated: userId=6838ab67-1e58-4ad5-8784-fd903b3951db
+2026-09-01 21:34:13.050 [main] INFO  [] c.f.m.p.service.UserProfileService - Default profile created: userId=4640e3b1-8fc6-4811-be8f-47c88788e76c
+2026-09-01 21:34:13.051 [main] INFO  [] c.f.m.p.service.UserProfileService - Profile updated: userId=4640e3b1-8fc6-4811-be8f-47c88788e76c
+2026-09-01 21:34:13.054 [main] INFO  [] c.f.m.p.service.UserProfileService - Profile updated: userId=40150339-29b4-4874-86cd-321d4b609e71
+2026-09-01 21:34:13.058 [main] INFO  [] c.f.m.p.service.UserProfileService - Profile updated: userId=79accdf7-5e9c-48ba-8fc1-15cdfaa62b60
+2026-09-01 21:34:13.063 [main] INFO  [] c.f.m.p.service.UserProfileService - Profile updated: userId=de1147e4-0fe1-4db5-be3c-7eaf24e38ce9
+2026-09-01 21:34:13.067 [main] INFO  [] c.f.m.p.service.UserProfileService - Profile updated: userId=6a68633d-aa43-43fc-a76d-f2309e1123d2
+2026-09-01 21:34:13.078 [main] INFO  [] c.f.m.p.service.UserProfileService - Default profile created: userId=b0033dae-5e3f-4baf-af74-49068215353f
+2026-09-01 21:34:13.613 [main] INFO  [] c.f.m.s.service.SettingService - Setting deleted: userId=7462266f-cc8b-412a-9eb5-defd4b6f3694, key=notification_email
+2026-09-01 21:34:13.695 [main] INFO  [] c.f.m.s.service.SettingService - Bulk settings updated: userId=cc1d85f6-0599-45ab-9895-8107494a8af9, count=2
+2026-09-01 21:34:13.705 [main] INFO  [] c.f.m.s.service.SettingService - Setting updated: userId=5aae1776-07b2-4586-a2fb-a3167fcef7fb, key=notification_email, value=true
+2026-09-01 21:34:13.713 [main] INFO  [] c.f.m.s.service.SettingService - Setting updated: userId=56120a57-5cbd-4734-a2a8-63e875d0c8f3, key=notification_email, value=true
+2026-09-01 21:34:13.718 [main] INFO  [] c.f.m.s.service.SettingService - Setting updated: userId=74b1d785-f811-4624-9fcd-fb1dcd6ab524, key=language, value=es
+2026-09-01 21:34:14.009 [main] INFO  [] c.f.m.t.service.TransactionService - Cancelling transaction: txnId=3982d772-a165-4943-a091-1ae5d00cde9d, userId=0d2cf66a-4f58-4b3e-be18-1df431a087e2
+2026-09-01 21:34:14.015 [main] INFO  [] c.f.m.t.service.TransactionService - Cancelling transaction: txnId=2b822b73-5e01-413f-accd-63ed57ca5b44, userId=e9358935-de4e-49fb-afc3-5dd7756bea65
+2026-09-01 21:34:14.015 [main] INFO  [] c.f.m.t.service.TransactionService - Transaction cancelled: txnId=2b822b73-5e01-413f-accd-63ed57ca5b44
+2026-09-01 21:34:14.036 [main] INFO  [] c.f.m.t.service.TransactionService - Creating transfer: userId=126adf67-db85-4927-8706-f109c4dc14c1, amountCents=50000, source=65ad7a99-4fb4-48e6-81a6-e5e3b9f0e2a3, target=4d8046a7-b37b-46bc-9b65-e937c257d990
+2026-09-01 21:34:14.046 [main] INFO  [] c.f.m.t.service.TransactionService - Creating transfer: userId=7cc649bb-9156-4474-99d2-f5c32debb394, amountCents=3000, source=4d2d85a1-d367-4f76-8b02-974a7e18c7da, target=4d2d85a1-d367-4f76-8b02-974a7e18c7da
+2026-09-01 21:34:14.053 [main] INFO  [] c.f.m.t.service.TransactionService - Creating transfer: userId=a7b703d3-fd97-49a5-84e7-72a7b15dc47a, amountCents=3000, source=5e9d6d4d-d717-4e92-9d35-c23040b004d6, target=37461436-aa68-41e4-bbd1-d5952ccba32a
+2026-09-01 21:34:14.054 [main] INFO  [] c.f.m.t.service.TransactionService - Transfer completed: txnId=null, ref=TXN-1788278654054-28B128B7
+2026-09-01 21:34:14.062 [main] INFO  [] c.f.m.t.service.TransactionService - Creating withdrawal: userId=c34e737f-90c6-477f-b7c0-8806f4532d2f, amountCents=2000, accountId=e8260322-7d8d-4a1b-b3ce-428899182802
+2026-09-01 21:34:14.063 [main] INFO  [] c.f.m.t.service.TransactionService - Withdrawal completed: txnId=null, ref=TXN-1788278654062-07F7B69C
+2026-09-01 21:34:14.067 [main] INFO  [] c.f.m.t.service.TransactionService - Creating withdrawal: userId=27e61205-463d-4aa2-8539-eb750296300a, amountCents=20000, accountId=d3052a22-ad15-4332-839b-af6b5faee433
+2026-09-01 21:34:14.074 [main] INFO  [] c.f.m.t.service.TransactionService - Creating deposit: userId=2eb360c9-76ed-4b97-af9f-5c7dd45d98cf, amountCents=0, accountId=3ecfe9e1-0a6d-4aaa-ace7-ffe4c85e77e3
+2026-09-01 21:34:14.081 [main] INFO  [] c.f.m.t.service.TransactionService - Creating deposit: userId=22227634-4664-4ccd-87b6-5d05b1615834, amountCents=5000, accountId=8950a151-9a13-48cd-b0b6-db8e9e26d11e
+2026-09-01 21:34:14.087 [main] INFO  [] c.f.m.t.service.TransactionService - Creating deposit: userId=c2b84e4f-b7ee-4864-98a6-949c9c491ce6, amountCents=5000, accountId=e0a1ba81-c2be-4486-b0a5-296d5fd29866
+2026-09-01 21:34:14.088 [main] INFO  [] c.f.m.t.service.TransactionService - Deposit completed: txnId=null, ref=TXN-1788278654088-CA4C679B
+2026-09-01 21:34:14.095 [main] INFO  [] c.f.m.t.service.TransactionService - Creating deposit: userId=35da5388-26ea-4545-910d-4c94bdf8e1bf, amountCents=5000, accountId=62f41cdb-1d59-4ef4-8fd1-6b2d1a327054
+2026-09-01 21:34:15.170 [main] INFO  [] c.f.s.config.JwtSigningKeyProvider - JWT signing keys loaded. Active key: 'primary', total keys: 1
+2026-09-01 21:34:15.324 [main] DEBUG [] c.f.s.config.JwtSigningKeyProvider - Could not extract kid from token: Malformed protected header JSON: Unable to deserialize: Unrecognized token 'm': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 2]
+2026-09-01 21:34:15.328 [main] DEBUG [] c.f.shared.config.JwtTokenProvider - Invalid JWT token: Malformed protected header JSON: Unable to deserialize: Unrecognized token 'm': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 2]
+2026-09-01 21:34:15.331 [main] INFO  [] c.f.s.config.JwtSigningKeyProvider - JWT signing keys loaded. Active key: 'primary', total keys: 1
+2026-09-01 21:34:15.333 [main] INFO  [] c.f.s.config.JwtSigningKeyProvider - JWT signing keys loaded. Active key: 'primary', total keys: 1
+2026-09-01 21:34:15.336 [main] INFO  [] c.f.s.config.JwtSigningKeyProvider - JWT signing keys loaded. Active key: 'primary', total keys: 1
+2026-09-01 21:34:15.405 [main] INFO  [] c.f.s.config.JwtSigningKeyProvider - JWT signing keys loaded. Active key: 'primary', total keys: 1
+2026-09-01 21:34:15.406 [main] DEBUG [] c.f.s.config.JwtSigningKeyProvider - Could not extract kid from token: Invalid compact JWT string: Compact JWSs must contain exactly 2 period characters, and compact JWEs must contain exactly 4.  Found: 0
+2026-09-01 21:34:15.408 [main] DEBUG [] c.f.shared.config.JwtTokenProvider - Invalid JWT token: Invalid compact JWT string: Compact JWSs must contain exactly 2 period characters, and compact JWEs must contain exactly 4.  Found: 0
+2026-09-01 21:34:15.410 [main] INFO  [] c.f.s.config.JwtSigningKeyProvider - JWT signing keys loaded. Active key: 'primary', total keys: 1
+2026-09-01 21:34:15.456 [main] INFO  [] c.f.s.config.JwtSigningKeyProvider - JWT signing keys loaded. Active key: 'primary', total keys: 1
+2026-09-01 21:34:15.462 [main] INFO  [] c.f.s.config.JwtSigningKeyProvider - JWT signing keys loaded. Active key: 'primary', total keys: 1
+2026-09-01 21:34:15.463 [main] DEBUG [] c.f.s.config.JwtSigningKeyProvider - Could not extract kid from token: Malformed protected header JSON: Unable to deserialize: Unexpected character ('�' (code 65533 / 0xfffd)): expected a valid value (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 1]
+2026-09-01 21:34:15.465 [main] DEBUG [] c.f.shared.config.JwtTokenProvider - Invalid JWT token: Malformed protected header JSON: Unable to deserialize: Unexpected character ('�' (code 65533 / 0xfffd)): expected a valid value (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 1]
+2026-09-01 21:34:15.467 [main] INFO  [] c.f.s.config.JwtSigningKeyProvider - JWT signing keys loaded. Active key: 'primary', total keys: 1
+2026-09-01 21:34:15.473 [main] INFO  [] c.f.s.config.JwtSigningKeyProvider - JWT signing keys loaded. Active key: 'primary', total keys: 1
+2026-09-01 21:34:15.490 [main] INFO  [] c.f.s.config.JwtSigningKeyProvider - JWT signing keys loaded. Active key: 'primary', total keys: 1
+2026-09-01 21:34:15.496 [main] INFO  [] c.f.s.config.JwtSigningKeyProvider - JWT signing keys loaded. Active key: 'primary', total keys: 1
+2026-09-01 21:34:15.497 [main] INFO  [] c.f.s.config.JwtSigningKeyProvider - JWT signing keys loaded. Active key: 'primary', total keys: 1
+2026-09-01 21:34:15.502 [main] DEBUG [] c.f.shared.config.JwtTokenProvider - Invalid JWT token: Expected iss claim to be: wrong-issuer, but was: finflow.
+2026-09-01 21:34:15.504 [main] INFO  [] c.f.s.config.JwtSigningKeyProvider - JWT signing keys loaded. Active key: 'primary', total keys: 1
+2026-09-01 21:34:15.510 [main] INFO  [] c.f.s.config.JwtSigningKeyProvider - JWT signing keys loaded. Active key: 'primary', total keys: 1
+2026-09-01 21:34:15.510 [main] INFO  [] c.f.s.config.JwtSigningKeyProvider - JWT signing keys loaded. Active key: 'other', total keys: 1
+2026-09-01 21:34:15.512 [main] DEBUG [] c.f.s.config.JwtSigningKeyProvider - Could not extract kid from token: JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted.
+2026-09-01 21:34:15.513 [main] WARN  [] c.f.shared.config.JwtTokenProvider - JWT signature validation failed: JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted.
+2026-09-01 21:34:15.533 [SpringApplicationShutdownHook] INFO  [] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-01 21:34:15.766 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.account_holders cascade 
+2026-09-01 21:34:15.770 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.account_status_history cascade 
+2026-09-01 21:34:15.771 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.accounts cascade 
+2026-09-01 21:34:15.772 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.beneficiaries cascade 
+2026-09-01 21:34:15.773 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.card_transactions cascade 
+2026-09-01 21:34:15.773 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.cards cascade 
+2026-09-01 21:34:15.774 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.holds cascade 
+2026-09-01 21:34:15.774 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_admin.admin_audit_log cascade 
+2026-09-01 21:34:15.774 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.login_history cascade 
+2026-09-01 21:34:15.774 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.refresh_tokens cascade 
+2026-09-01 21:34:15.775 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.roles cascade 
+2026-09-01 21:34:15.775 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.user_credentials cascade 
+2026-09-01 21:34:15.775 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.user_roles cascade 
+2026-09-01 21:34:15.776 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.users cascade 
+2026-09-01 21:34:15.776 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_notifications.notifications cascade 
+2026-09-01 21:34:15.776 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_profiles.user_profiles cascade 
+2026-09-01 21:34:15.777 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_savings.savings_goals cascade 
+2026-09-01 21:34:15.777 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_settings.user_settings cascade 
+2026-09-01 21:34:15.777 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_transactions.transaction_entries cascade 
+2026-09-01 21:34:15.779 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_transactions.transactions cascade 
+2026-09-01 21:34:15.779 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_transfers.scheduled_transfers cascade 
+2026-09-01 21:34:15.780 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_transfers.transfer_templates cascade 
+2026-09-01 21:34:15.784 [SpringApplicationShutdownHook] INFO  [] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-01 21:34:15.785 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.account_holders cascade 
+2026-09-01 21:34:15.786 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.account_status_history cascade 
+2026-09-01 21:34:15.787 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.accounts cascade 
+2026-09-01 21:34:15.788 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.beneficiaries cascade 
+2026-09-01 21:34:15.788 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.card_transactions cascade 
+2026-09-01 21:34:15.788 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.cards cascade 
+2026-09-01 21:34:15.790 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_accounts.holds cascade 
+2026-09-01 21:34:15.790 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_admin.admin_audit_log cascade 
+2026-09-01 21:34:15.790 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.login_history cascade 
+2026-09-01 21:34:15.791 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.refresh_tokens cascade 
+2026-09-01 21:34:15.792 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.roles cascade 
+2026-09-01 21:34:15.792 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.user_credentials cascade 
+2026-09-01 21:34:15.792 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.user_roles cascade 
+2026-09-01 21:34:15.793 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_auth.users cascade 
+2026-09-01 21:34:15.793 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_notifications.notifications cascade 
+2026-09-01 21:34:15.793 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_profiles.user_profiles cascade 
+2026-09-01 21:34:15.794 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_savings.savings_goals cascade 
+2026-09-01 21:34:15.794 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_settings.user_settings cascade 
+2026-09-01 21:34:15.794 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_transactions.transaction_entries cascade 
+2026-09-01 21:34:15.794 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_transactions.transactions cascade 
+2026-09-01 21:34:15.796 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_transfers.scheduled_transfers cascade 
+2026-09-01 21:34:15.796 [SpringApplicationShutdownHook] DEBUG [] org.hibernate.SQL - 
+    drop table if exists finflow_transfers.transfer_templates cascade 

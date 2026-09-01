@@ -21,7 +21,7 @@ spring:
       enabled: detect
 
 server:
-  port: ${PORT:8080}
+  port: 8080
   tomcat:
     max-threads: 200
     min-spare-threads: 20

@@ -23,7 +23,10 @@
 #   REDIS_ENABLED               — Set to false to fully disable Redis (default: true)
 #   FINFLOW_JWT_ACTIVE_KEY_ID   — Active signing key ID (default: primary)
 #   FRONTEND_URL                — Frontend URL for CORS (default: http://localhost:3000)
-#   PORT                        — Server port (default: 8080, Render sets this automatically)
+#   PORT                        — Render's external port; consumed by the Nginx sidecar (see nginx.conf).
+#                                 The Spring Boot process itself always binds the fixed internal port
+#                                 defined in `server.port` below to avoid a port collision with Nginx
+#                                 in the monolithic image.
 #
 # KEY ROTATION ENVIRONMENT VARIABLES:
 #
@@ -33,7 +36,11 @@
 # Use a secrets manager (AWS Secrets Manager, HashiCorp Vault, Kubernetes Secrets).
 
 server:
-  port: ${PORT:8080}
+  # Internal HTTP port for the Spring Boot process. In the monolithic image this
+  # MUST NOT use ${PORT}, because Nginx binds ${PORT} (Render's external port) for
+  # incoming traffic and proxies /api/ to this fixed internal port. Hard-coding it
+  # avoids the two processes colliding on the same socket.
+  port: 8080
   shutdown: graceful
 
 spring:

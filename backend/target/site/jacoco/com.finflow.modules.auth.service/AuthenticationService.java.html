@@ -188,7 +188,7 @@ public class AuthenticationService {
 <span class="nc bnc" id="L188" title="All 3 branches missed.">        return switch (user.getStatus()) {</span>
 <span class="nc" id="L189">            case SUSPENDED -&gt; LoginHistory.FailureReason.ACCOUNT_SUSPENDED;</span>
 <span class="nc" id="L190">            case CLOSED -&gt; LoginHistory.FailureReason.ACCOUNT_CLOSED;</span>
-<span class="nc" id="L191">            case ACTIVE, PENDING_VERIFICATION -&gt; null;</span>
+<span class="nc" id="L191">            case ACTIVE -&gt; null;</span>
         };
     }
 

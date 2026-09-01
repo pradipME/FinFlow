@@ -11,7 +11,7 @@
 --
 -- PostgreSQL does NOT actually need blank-padded fixed-length storage for
 -- 36-char UUID strings, 3-char currency codes, etc. Both types hold identical
--- values, and bpchar -> varchaR is a binary-coercible cast, so this is a safe,
+-- values, and bpchar -> varchar is a binary-coercible cast, so this is a safe,
 -- non-destructive online migration.
 --
 -- This migration may run any number of times (idempotent ALTER COLUMN).

@@ -4,7 +4,6 @@ export const ROUTES = {
   REGISTER: "/register",
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
-  VERIFY_EMAIL: "/verify-email",
   VERIFY_OTP: "/verify-otp",
   DASHBOARD: "/dashboard",
   ACCOUNTS: "/accounts",
@@ -25,7 +24,6 @@ export const API_ENDPOINTS = {
   AUTH: {
     LOGIN: "/auth/login",
     REGISTER: "/auth/register",
-    VERIFY_EMAIL: "/auth/verify-email",
     REFRESH: "/auth/refresh",
     REVOKE: "/auth/revoke",
     LOGOUT: "/auth/logout",

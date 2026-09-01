@@ -72,7 +72,6 @@ class AuthControllerTest {
                     "test@finflow.com",
                     "testuser",
                     "ACTIVE",
-                    true,
                     LocalDateTime.now()
             );
         }
@@ -91,7 +90,6 @@ class AuthControllerTest {
                     .andExpect(jsonPath("$.data.email", is("test@finflow.com")))
                     .andExpect(jsonPath("$.data.username", is("testuser")))
                     .andExpect(jsonPath("$.data.status", is("ACTIVE")))
-                    .andExpect(jsonPath("$.data.emailVerified", is(true)))
                     .andExpect(jsonPath("$.meta.message", is("User registered successfully")));
 
             verify(registrationService).register(any(RegisterRequest.class));

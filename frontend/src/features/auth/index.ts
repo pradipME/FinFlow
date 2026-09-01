@@ -6,6 +6,5 @@ export {
   RegisterPage,
   ForgotPasswordPage,
   ResetPasswordPage,
-  EmailVerificationPage,
   OtpVerificationPage,
 } from "./pages";

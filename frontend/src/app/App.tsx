@@ -19,9 +19,6 @@ const ForgotPasswordPage = lazy(() =>
 const ResetPasswordPage = lazy(() =>
   import("@/features/auth/pages/ResetPasswordPage").then((m) => ({ default: m.ResetPasswordPage })),
 );
-const EmailVerificationPage = lazy(() =>
-  import("@/features/auth/pages/EmailVerificationPage").then((m) => ({ default: m.EmailVerificationPage })),
-);
 const OtpVerificationPage = lazy(() =>
   import("@/features/auth/pages/OtpVerificationPage").then((m) => ({ default: m.OtpVerificationPage })),
 );
@@ -121,14 +118,6 @@ function AuthRoutes() {
           element={
             <AuthLayout>
               <ResetPasswordPage />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path={ROUTES.VERIFY_EMAIL}
-          element={
-            <AuthLayout>
-              <EmailVerificationPage />
             </AuthLayout>
           }
         />

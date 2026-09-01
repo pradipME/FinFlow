@@ -55,9 +55,6 @@ public class LoginHistory {
         /** Submitted credentials do not match any active credential. */
         INVALID_CREDENTIALS("INVALID_CREDENTIALS"),
 
-        /** Account exists but email has not been verified. */
-        ACCOUNT_NOT_VERIFIED("ACCOUNT_NOT_VERIFIED"),
-
         /** Account is temporarily locked due to excessive failed attempts. */
         ACCOUNT_LOCKED("ACCOUNT_LOCKED"),
 

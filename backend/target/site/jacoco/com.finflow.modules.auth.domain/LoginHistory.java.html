@@ -55,26 +55,23 @@ public class LoginHistory {
         /** Submitted credentials do not match any active credential. */
 <span class="fc" id="L56">        INVALID_CREDENTIALS(&quot;INVALID_CREDENTIALS&quot;),</span>
 
-        /** Account exists but email has not been verified. */
-<span class="fc" id="L59">        ACCOUNT_NOT_VERIFIED(&quot;ACCOUNT_NOT_VERIFIED&quot;),</span>
-
         /** Account is temporarily locked due to excessive failed attempts. */
-<span class="fc" id="L62">        ACCOUNT_LOCKED(&quot;ACCOUNT_LOCKED&quot;),</span>
+<span class="fc" id="L59">        ACCOUNT_LOCKED(&quot;ACCOUNT_LOCKED&quot;),</span>
 
         /** Account has been suspended by an administrator. */
-<span class="fc" id="L65">        ACCOUNT_SUSPENDED(&quot;ACCOUNT_SUSPENDED&quot;),</span>
+<span class="fc" id="L62">        ACCOUNT_SUSPENDED(&quot;ACCOUNT_SUSPENDED&quot;),</span>
 
         /** Account has been permanently closed. */
-<span class="fc" id="L68">        ACCOUNT_CLOSED(&quot;ACCOUNT_CLOSED&quot;);</span>
+<span class="fc" id="L65">        ACCOUNT_CLOSED(&quot;ACCOUNT_CLOSED&quot;);</span>
 
         private final String code;
 
-<span class="fc" id="L72">        FailureReason(String code) {</span>
-<span class="fc" id="L73">            this.code = code;</span>
-<span class="fc" id="L74">        }</span>
+<span class="fc" id="L69">        FailureReason(String code) {</span>
+<span class="fc" id="L70">            this.code = code;</span>
+<span class="fc" id="L71">        }</span>
 
         public String getCode() {
-<span class="nc" id="L77">            return code;</span>
+<span class="nc" id="L74">            return code;</span>
         }
     }
 
@@ -178,13 +175,13 @@ public class LoginHistory {
 
     @PrePersist
     protected void onCreate() {
-<span class="nc" id="L181">        this.createdAt = LocalDateTime.now();</span>
-<span class="nc" id="L182">    }</span>
+<span class="nc" id="L178">        this.createdAt = LocalDateTime.now();</span>
+<span class="nc" id="L179">    }</span>
 
     // ---- Constructors ----
 
     /** Default constructor required by JPA. */
-<span class="fc" id="L187">    protected LoginHistory() {}</span>
+<span class="fc" id="L184">    protected LoginHistory() {}</span>
 
     /**
      * Creates a login history record for an attempt against a known user.
@@ -197,14 +194,14 @@ public class LoginHistory {
      * @param userAgent      HTTP User-Agent header, or {@code null} if unavailable
      */
     public LoginHistory(User user, String identifier, boolean success,
-<span class="nc" id="L200">                        FailureReason failureReason, String ipAddress, String userAgent) {</span>
-<span class="nc" id="L201">        this.user = user;</span>
-<span class="nc" id="L202">        this.identifier = identifier;</span>
-<span class="nc" id="L203">        this.success = success;</span>
-<span class="nc" id="L204">        this.failureReason = failureReason;</span>
-<span class="nc" id="L205">        this.ipAddress = ipAddress;</span>
-<span class="nc" id="L206">        this.userAgent = userAgent;</span>
-<span class="nc" id="L207">    }</span>
+<span class="nc" id="L197">                        FailureReason failureReason, String ipAddress, String userAgent) {</span>
+<span class="nc" id="L198">        this.user = user;</span>
+<span class="nc" id="L199">        this.identifier = identifier;</span>
+<span class="nc" id="L200">        this.success = success;</span>
+<span class="nc" id="L201">        this.failureReason = failureReason;</span>
+<span class="nc" id="L202">        this.ipAddress = ipAddress;</span>
+<span class="nc" id="L203">        this.userAgent = userAgent;</span>
+<span class="nc" id="L204">    }</span>
 
     /**
      * Creates a login history record for an attempt against a non-existent user.
@@ -219,7 +216,7 @@ public class LoginHistory {
      *         {@code failureReason=INVALID_CREDENTIALS}
      */
     public static LoginHistory failedAttempt(String identifier, String ipAddress, String userAgent) {
-<span class="nc" id="L222">        return new LoginHistory(null, identifier, false,</span>
+<span class="nc" id="L219">        return new LoginHistory(null, identifier, false,</span>
                 FailureReason.INVALID_CREDENTIALS, ipAddress, userAgent);
     }
 
@@ -234,56 +231,56 @@ public class LoginHistory {
      */
     public static LoginHistory successfulAttempt(User user, String identifier,
                                                   String ipAddress, String userAgent) {
-<span class="nc" id="L237">        return new LoginHistory(user, identifier, true, null, ipAddress, userAgent);</span>
+<span class="nc" id="L234">        return new LoginHistory(user, identifier, true, null, ipAddress, userAgent);</span>
     }
 
     // ---- Getters ----
 
     public Long getId() {
-<span class="nc" id="L243">        return id;</span>
+<span class="nc" id="L240">        return id;</span>
     }
 
     public User getUser() {
-<span class="nc" id="L247">        return user;</span>
+<span class="nc" id="L244">        return user;</span>
     }
 
     public String getIdentifier() {
-<span class="nc" id="L251">        return identifier;</span>
+<span class="nc" id="L248">        return identifier;</span>
     }
 
     public Boolean getSuccess() {
-<span class="nc" id="L255">        return success;</span>
+<span class="nc" id="L252">        return success;</span>
     }
 
     public FailureReason getFailureReason() {
-<span class="nc" id="L259">        return failureReason;</span>
+<span class="nc" id="L256">        return failureReason;</span>
     }
 
     public String getIpAddress() {
-<span class="nc" id="L263">        return ipAddress;</span>
+<span class="nc" id="L260">        return ipAddress;</span>
     }
 
     public String getUserAgent() {
-<span class="nc" id="L267">        return userAgent;</span>
+<span class="nc" id="L264">        return userAgent;</span>
     }
 
     public LocalDateTime getCreatedAt() {
-<span class="nc" id="L271">        return createdAt;</span>
+<span class="nc" id="L268">        return createdAt;</span>
     }
 
     // ---- equals / hashCode ----
 
     @Override
     public boolean equals(Object o) {
-<span class="nc bnc" id="L278" title="All 2 branches missed.">        if (this == o) return true;</span>
-<span class="nc bnc" id="L279" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
-<span class="nc" id="L280">        LoginHistory that = (LoginHistory) o;</span>
-<span class="nc bnc" id="L281" title="All 4 branches missed.">        return id != null &amp;&amp; Objects.equals(id, that.id);</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L276" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc" id="L277">        LoginHistory that = (LoginHistory) o;</span>
+<span class="nc bnc" id="L278" title="All 4 branches missed.">        return id != null &amp;&amp; Objects.equals(id, that.id);</span>
     }
 
     @Override
     public int hashCode() {
-<span class="nc" id="L286">        return getClass().hashCode();</span>
+<span class="nc" id="L283">        return getClass().hashCode();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

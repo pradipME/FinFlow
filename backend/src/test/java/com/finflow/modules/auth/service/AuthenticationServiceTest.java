@@ -71,7 +71,6 @@ class AuthenticationServiceTest {
         activeUser = new User("test@finflow.com", "testuser", "+2348012345678", LocalDateTime.now());
         activeUser.setId(UUID.randomUUID());
         activeUser.setStatus(UserStatus.ACTIVE);
-        activeUser.setEmailVerified(true);
         activeUser.setFailedLoginCount(0);
 
         UserRole userRole = new UserRole(activeUser, customerRole, "system");

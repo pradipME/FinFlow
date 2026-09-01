@@ -30,10 +30,6 @@ public record RegisterResponse(
                 example = "ACTIVE")
         String status,
 
-        @Schema(description = "Whether email has been verified",
-                example = "true")
-        Boolean emailVerified,
-
         @Schema(description = "Timestamp of account creation (ISO 8601)",
                 example = "2026-07-13T16:30:00Z")
         LocalDateTime createdAt

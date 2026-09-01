@@ -21,7 +21,7 @@ import java.util.Set;
  *   &lt;li&gt;Email is globally unique (case-insensitive, excluding soft-deleted).&lt;/li&gt;
  *   &lt;li&gt;Phone number is globally unique when present.&lt;/li&gt;
  *   &lt;li&gt;Username is globally unique.&lt;/li&gt;
-     *   &lt;li&gt;Users start as {@link UserStatus#ACTIVE}.&lt;/li&gt;
+ *   &lt;li&gt;Users start as {@link UserStatus#ACTIVE}.&lt;/li&gt;
  *   &lt;li&gt;Soft-deleted users cannot authenticate.&lt;/li&gt;
  * &lt;/ul&gt;
  *
@@ -48,11 +48,8 @@ public class User extends BaseSoftDeletableEntity {
     @Column(name = &quot;status&quot;, nullable = false, length = 25)
     private UserStatus status = UserStatus.ACTIVE;
 
-<span class="fc" id="L51">    @Column(name = &quot;email_verified&quot;, nullable = false)</span>
-<span class="fc" id="L52">    private Boolean emailVerified = true;</span>
-
-<span class="fc" id="L54">    @Column(name = &quot;phone_verified&quot;, nullable = false)</span>
-<span class="fc" id="L55">    private Boolean phoneVerified = false;</span>
+<span class="fc" id="L51">    @Column(name = &quot;phone_verified&quot;, nullable = false)</span>
+<span class="fc" id="L52">    private Boolean phoneVerified = false;</span>
 
     @Column(name = &quot;terms_accepted_at&quot;)
     private LocalDateTime termsAcceptedAt;
@@ -60,20 +57,20 @@ public class User extends BaseSoftDeletableEntity {
     @Column(name = &quot;last_login_at&quot;)
     private LocalDateTime lastLoginAt;
 
-<span class="fc" id="L63">    @Column(name = &quot;failed_login_count&quot;, nullable = false)</span>
-<span class="fc" id="L64">    private Integer failedLoginCount = 0;</span>
+<span class="fc" id="L60">    @Column(name = &quot;failed_login_count&quot;, nullable = false)</span>
+<span class="fc" id="L61">    private Integer failedLoginCount = 0;</span>
 
     @Column(name = &quot;locked_until&quot;)
     private LocalDateTime lockedUntil;
 
-<span class="fc" id="L69">    @OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL, fetch = FetchType.LAZY)</span>
+<span class="fc" id="L66">    @OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL, fetch = FetchType.LAZY)</span>
     private Set&lt;UserCredential&gt; credentials = new HashSet&lt;&gt;();
 
-<span class="fc" id="L72">    @OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL, fetch = FetchType.LAZY)</span>
+<span class="fc" id="L69">    @OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL, fetch = FetchType.LAZY)</span>
     private Set&lt;UserRole&gt; roles = new HashSet&lt;&gt;();
 
     /** Default constructor required by JPA. */
-<span class="fc" id="L76">    protected User() {}</span>
+<span class="fc" id="L73">    protected User() {}</span>
 
     /**
      * Creates a new User with the required identity fields.
@@ -83,30 +80,17 @@ public class User extends BaseSoftDeletableEntity {
      * @param phoneNumber        optional phone number in international format
      * @param termsAcceptedAt    timestamp when terms were accepted (required)
      */
-<span class="fc" id="L86">    public User(String email, String username, String phoneNumber, LocalDateTime termsAcceptedAt) {</span>
-<span class="fc" id="L87">        this.email = email;</span>
-<span class="fc" id="L88">        this.username = username;</span>
-<span class="fc" id="L89">        this.phoneNumber = phoneNumber;</span>
-<span class="fc" id="L90">        this.termsAcceptedAt = termsAcceptedAt;</span>
-<span class="fc" id="L91">        this.status = UserStatus.ACTIVE;</span>
-<span class="fc" id="L92">        this.emailVerified = true;</span>
-<span class="fc" id="L93">        this.phoneVerified = false;</span>
-<span class="fc" id="L94">        this.failedLoginCount = 0;</span>
-<span class="fc" id="L95">    }</span>
+<span class="fc" id="L83">    public User(String email, String username, String phoneNumber, LocalDateTime termsAcceptedAt) {</span>
+<span class="fc" id="L84">        this.email = email;</span>
+<span class="fc" id="L85">        this.username = username;</span>
+<span class="fc" id="L86">        this.phoneNumber = phoneNumber;</span>
+<span class="fc" id="L87">        this.termsAcceptedAt = termsAcceptedAt;</span>
+<span class="fc" id="L88">        this.status = UserStatus.ACTIVE;</span>
+<span class="fc" id="L89">        this.phoneVerified = false;</span>
+<span class="fc" id="L90">        this.failedLoginCount = 0;</span>
+<span class="fc" id="L91">    }</span>
 
     // ---- Business Methods ----
-
-    /**
-     * Marks the user's email as verified.
-     *
-     * @throws IllegalStateException if the user is soft-deleted
-     */
-    public void verifyEmail() {
-<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (Boolean.TRUE.equals(getIsDeleted())) {</span>
-<span class="nc" id="L106">            throw new IllegalStateException(&quot;Cannot verify email of a deleted user&quot;);</span>
-        }
-<span class="nc" id="L108">        this.emailVerified = true;</span>
-<span class="nc" id="L109">    }</span>
 
     /**
      * Ensures the user is active.
@@ -114,11 +98,11 @@ public class User extends BaseSoftDeletableEntity {
      * @throws IllegalStateException if the user is soft-deleted
      */
     public void activate() {
-<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (Boolean.TRUE.equals(getIsDeleted())) {</span>
-<span class="nc" id="L118">            throw new IllegalStateException(&quot;Cannot activate a deleted user&quot;);</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        if (Boolean.TRUE.equals(getIsDeleted())) {</span>
+<span class="nc" id="L102">            throw new IllegalStateException(&quot;Cannot activate a deleted user&quot;);</span>
         }
-<span class="nc" id="L120">        this.status = UserStatus.ACTIVE;</span>
-<span class="nc" id="L121">    }</span>
+<span class="nc" id="L104">        this.status = UserStatus.ACTIVE;</span>
+<span class="nc" id="L105">    }</span>
 
     /**
      * Suspends the user account for security reasons.
@@ -126,11 +110,11 @@ public class User extends BaseSoftDeletableEntity {
      * @throws IllegalStateException if the user is already closed
      */
     public void suspend() {
-<span class="nc bnc" id="L129" title="All 2 branches missed.">        if (this.status == UserStatus.CLOSED) {</span>
-<span class="nc" id="L130">            throw new IllegalStateException(&quot;Cannot suspend a closed user&quot;);</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (this.status == UserStatus.CLOSED) {</span>
+<span class="nc" id="L114">            throw new IllegalStateException(&quot;Cannot suspend a closed user&quot;);</span>
         }
-<span class="nc" id="L132">        this.status = UserStatus.SUSPENDED;</span>
-<span class="nc" id="L133">    }</span>
+<span class="nc" id="L116">        this.status = UserStatus.SUSPENDED;</span>
+<span class="nc" id="L117">    }</span>
 
     /**
      * Permanently closes the user account.
@@ -138,40 +122,40 @@ public class User extends BaseSoftDeletableEntity {
      * @throws IllegalStateException if the user is already closed
      */
     public void close() {
-<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (this.status == UserStatus.CLOSED) {</span>
-<span class="nc" id="L142">            throw new IllegalStateException(&quot;User is already closed&quot;);</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (this.status == UserStatus.CLOSED) {</span>
+<span class="nc" id="L126">            throw new IllegalStateException(&quot;User is already closed&quot;);</span>
         }
-<span class="nc" id="L144">        this.status = UserStatus.CLOSED;</span>
-<span class="nc" id="L145">    }</span>
+<span class="nc" id="L128">        this.status = UserStatus.CLOSED;</span>
+<span class="nc" id="L129">    }</span>
 
     /**
      * Records a failed login attempt and applies lockout if threshold exceeded.
      * Lockout after 5 failures (30 min), escalates after 10 failures (24 hr).
      */
     public void recordFailedLogin() {
-<span class="nc" id="L152">        this.failedLoginCount++;</span>
-<span class="nc bnc" id="L153" title="All 2 branches missed.">        if (this.failedLoginCount &gt;= 10) {</span>
-<span class="nc" id="L154">            this.lockedUntil = LocalDateTime.now().plusHours(24);</span>
-<span class="nc bnc" id="L155" title="All 2 branches missed.">        } else if (this.failedLoginCount &gt;= 5) {</span>
-<span class="nc" id="L156">            this.lockedUntil = LocalDateTime.now().plusMinutes(30);</span>
+<span class="nc" id="L136">        this.failedLoginCount++;</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        if (this.failedLoginCount &gt;= 10) {</span>
+<span class="nc" id="L138">            this.lockedUntil = LocalDateTime.now().plusHours(24);</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        } else if (this.failedLoginCount &gt;= 5) {</span>
+<span class="nc" id="L140">            this.lockedUntil = LocalDateTime.now().plusMinutes(30);</span>
         }
-<span class="nc" id="L158">    }</span>
+<span class="nc" id="L142">    }</span>
 
     /**
      * Resets the failed login counter and clears any lockout.
      */
     public void resetFailedLogins() {
-<span class="nc" id="L164">        this.failedLoginCount = 0;</span>
-<span class="nc" id="L165">        this.lockedUntil = null;</span>
-<span class="nc" id="L166">    }</span>
+<span class="nc" id="L148">        this.failedLoginCount = 0;</span>
+<span class="nc" id="L149">        this.lockedUntil = null;</span>
+<span class="nc" id="L150">    }</span>
 
     /**
      * Records a successful login timestamp.
      */
     public void recordLogin() {
-<span class="nc" id="L172">        this.lastLoginAt = LocalDateTime.now();</span>
-<span class="nc" id="L173">        resetFailedLogins();</span>
-<span class="nc" id="L174">    }</span>
+<span class="nc" id="L156">        this.lastLoginAt = LocalDateTime.now();</span>
+<span class="nc" id="L157">        resetFailedLogins();</span>
+<span class="nc" id="L158">    }</span>
 
     /**
      * Checks whether the account is currently locked.
@@ -179,57 +163,53 @@ public class User extends BaseSoftDeletableEntity {
      * @return true if the account is locked and the lock period has not expired
      */
     public boolean isLocked() {
-<span class="nc bnc" id="L182" title="All 4 branches missed.">        return lockedUntil != null &amp;&amp; LocalDateTime.now().isBefore(lockedUntil);</span>
+<span class="nc bnc" id="L166" title="All 4 branches missed.">        return lockedUntil != null &amp;&amp; LocalDateTime.now().isBefore(lockedUntil);</span>
     }
 
     // ---- Getters ----
 
     public String getEmail() {
-<span class="nc" id="L188">        return email;</span>
+<span class="nc" id="L172">        return email;</span>
     }
 
     public String getPhoneNumber() {
-<span class="nc" id="L192">        return phoneNumber;</span>
+<span class="nc" id="L176">        return phoneNumber;</span>
     }
 
     public String getUsername() {
-<span class="fc" id="L196">        return username;</span>
+<span class="fc" id="L180">        return username;</span>
     }
 
     public UserStatus getStatus() {
-<span class="nc" id="L200">        return status;</span>
-    }
-
-    public Boolean getEmailVerified() {
-<span class="nc" id="L204">        return emailVerified;</span>
+<span class="nc" id="L184">        return status;</span>
     }
 
     public Boolean getPhoneVerified() {
-<span class="nc" id="L208">        return phoneVerified;</span>
+<span class="nc" id="L188">        return phoneVerified;</span>
     }
 
     public LocalDateTime getTermsAcceptedAt() {
-<span class="nc" id="L212">        return termsAcceptedAt;</span>
+<span class="nc" id="L192">        return termsAcceptedAt;</span>
     }
 
     public LocalDateTime getLastLoginAt() {
-<span class="nc" id="L216">        return lastLoginAt;</span>
+<span class="nc" id="L196">        return lastLoginAt;</span>
     }
 
     public Integer getFailedLoginCount() {
-<span class="nc" id="L220">        return failedLoginCount;</span>
+<span class="nc" id="L200">        return failedLoginCount;</span>
     }
 
     public LocalDateTime getLockedUntil() {
-<span class="nc" id="L224">        return lockedUntil;</span>
+<span class="nc" id="L204">        return lockedUntil;</span>
     }
 
     public Set&lt;UserCredential&gt; getCredentials() {
-<span class="nc" id="L228">        return credentials;</span>
+<span class="nc" id="L208">        return credentials;</span>
     }
 
     public Set&lt;UserRole&gt; getRoles() {
-<span class="nc" id="L232">        return roles;</span>
+<span class="nc" id="L212">        return roles;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

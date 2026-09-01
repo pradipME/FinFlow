@@ -3,26 +3,22 @@
 /**
  * Represents the lifecycle status of a user account on the FinFlow platform.
  *
- * &lt;p&gt;Users begin in {@link #PENDING_VERIFICATION} after registration and
- * transition to {@link #ACTIVE} once their email address is verified.
+ * &lt;p&gt;Users begin as {@link #ACTIVE} after registration.
  * Accounts may be {@link #SUSPENDED} for security reasons or {@link #CLOSED}
  * at the user's request.&lt;/p&gt;
  *
  * @author FinFlow Engineering
  * @since 1.0.0
  */
-<span class="fc" id="L14">public enum UserStatus {</span>
+<span class="fc" id="L13">public enum UserStatus {</span>
 
-    /** Initial state after registration; email verification pending. */
-<span class="fc" id="L17">    PENDING_VERIFICATION,</span>
-
-    /** Fully verified and active user. */
-<span class="fc" id="L20">    ACTIVE,</span>
+    /** Active user. */
+<span class="fc" id="L16">    ACTIVE,</span>
 
     /** Temporarily restricted due to security concerns. */
-<span class="fc" id="L23">    SUSPENDED,</span>
+<span class="fc" id="L19">    SUSPENDED,</span>
 
     /** Permanently closed by user or admin action. */
-<span class="fc" id="L26">    CLOSED</span>
+<span class="fc" id="L22">    CLOSED</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -4,7 +4,6 @@ import { ShieldCheck, ShieldAlert, Eye, ShieldX, Bell, CheckCheck, CircleCheck, 
 import { Card, Button, EmptyState, Skeleton, Badge } from "@/shared/components";
 import { PageHeader } from "@/shared/layout/components/Content/PageHeader";
 import { useNotifications, useMarkAllNotificationsRead } from "@/features/notifications/hooks";
-import { useAuth } from "@/features/auth";
 import { formatRelativeTime } from "@/shared/lib/format";
 import { cn } from "@/shared/utils";
 
@@ -23,7 +22,6 @@ function severityOf(title: string, message: string): keyof typeof SEVERITY_META 
 
 export function SecurityPage() {
   const { data, isLoading } = useNotifications({ notificationType: "SECURITY", page: 0, size: 50 });
-  const { user } = useAuth();
   const markAll = useMarkAllNotificationsRead();
 
   const securityEvents = useMemo(() => data?.content ?? [], [data]);
@@ -83,7 +81,7 @@ export function SecurityPage() {
             </div>
             <div className="rounded-lg border border-border-subtle bg-bg-secondary px-4 py-2.5">
               <p className="flex items-center gap-1.5 text-xs text-text-tertiary"><CheckCheck size={13} /> Verified</p>
-              <p className="mt-0.5 font-medium text-text-primary">{user?.emailVerified ? "Identity confirmed" : "Awaiting verification"}</p>
+              <p className="mt-0.5 font-medium text-text-primary">Identity confirmed</p>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$UserRoleRepositoryTests" time="11.11" tests="2" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$UserRoleRepositoryTests" time="10.67" tests="2" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -17,7 +17,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Eclipse Adoptium\jdk-21.0.11.10-hotspot\bin"/>
-    <property name="sun.java.command" value="C:\Users\Lenovo\AppData\Local\Temp\surefire14793876865934062529\surefirebooter-20260901213347147_3.jar C:\Users\Lenovo\AppData\Local\Temp\surefire14793876865934062529 2026-09-01T21-33-46_949-jvmRun1 surefire-20260901213347147_1tmp surefire_0-20260901213347147_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\Lenovo\AppData\Local\Temp\surefire10076340184529544592\surefirebooter-20260901224154130_3.jar C:\Users\Lenovo\AppData\Local\Temp\surefire10076340184529544592 2026-09-01T22-41-53_901-jvmRun1 surefire-20260901224154130_1tmp surefire_0-20260901224154130_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Projects\FinFlow\backend\target\test-classes;C:\Projects\FinFlow\backend\target\classes;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-starter-web\3.4.1\spring-boot-starter-web-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-starter\3.4.1\spring-boot-starter-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot\3.4.1\spring-boot-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-autoconfigure\3.4.1\spring-boot-autoconfigure-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-starter-logging\3.4.1\spring-boot-starter-logging-3.4.1.jar;C:\Users\Lenovo\.m2\repository\ch\qos\logback\logback-classic\1.5.12\logback-classic-1.5.12.jar;C:\Users\Lenovo\.m2\repository\ch\qos\logback\logback-core\1.5.12\logback-core-1.5.12.jar;C:\Users\Lenovo\.m2\repository\org\apache\logging\log4j\log4j-to-slf4j\2.24.3\log4j-to-slf4j-2.24.3.jar;C:\Users\Lenovo\.m2\repository\org\apache\logging\log4j\log4j-api\2.24.3\log4j-api-2.24.3.jar;C:\Users\Lenovo\.m2\repository\org\slf4j\jul-to-slf4j\2.0.16\jul-to-slf4j-2.0.16.jar;C:\Users\Lenovo\.m2\repository\jakarta\annotation\jakarta.annotation-api\2.1.1\jakarta.annotation-api-2.1.1.jar;C:\Users\Lenovo\.m2\repository\org\yaml\snakeyaml\2.3\snakeyaml-2.3.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-starter-json\3.4.1\spring-boot-starter-json-3.4.1.jar;C:\Users\Lenovo\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jdk8\2.18.2\jackson-datatype-jdk8-2.18.2.jar;C:\Users\Lenovo\.m2\repository\com\fasterxml\jackson\module\jackson-module-parameter-names\2.18.2\jackson-module-parameter-names-2.18.2.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-starter-tomcat\3.4.1\spring-boot-starter-tomcat-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\apache\tomcat\embed\tomcat-embed-core\10.1.34\tomcat-embed-core-10.1.34.jar;C:\Users\Lenovo\.m2\repository\org\apache\tomcat\embed\tomcat-embed-websocket\10.1.34\tomcat-embed-websocket-10.1.34.jar;C:\Users\Lenovo\.m2\repository\org\springframework\spring-web\6.2.1\spring-web-6.2.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\spring-beans\6.2.1\spring-beans-6.2.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\spring-webmvc\6.2.1\spring-webmvc-6.2.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\spring-context\6.2.1\spring-context-6.2.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\spring-expression\6.2.1\spring-expression-6.2.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-starter-data-jpa\3.4.1\spring-boot-starter-data-jpa-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-starter-jdbc\3.4.1\spring-boot-starter-jdbc-3.4.1.jar;C:\Users\Lenovo\.m2\repository\com\zaxxer\HikariCP\5.1.0\HikariCP-5.1.0.jar;C:\Users\Lenovo\.m2\repository\org\springframework\spring-jdbc\6.2.1\spring-jdbc-6.2.1.jar;C:\Users\Lenovo\.m2\repository\org\hibernate\orm\hibernate-core\6.6.4.Final\hibernate-core-6.6.4.Final.jar;C:\Users\Lenovo\.m2\repository\jakarta\persistence\jakarta.persistence-api\3.1.0\jakarta.persistence-api-3.1.0.jar;C:\Users\Lenovo\.m2\repository\org\jboss\logging\jboss-logging\3.6.1.Final\jboss-logging-3.6.1.Final.jar;C:\Users\Lenovo\.m2\repository\org\hibernate\common\hibernate-commons-annotations\7.0.3.Final\hibernate-commons-annotations-7.0.3.Final.jar;C:\Users\Lenovo\.m2\repository\io\smallrye\jandex\3.2.0\jandex-3.2.0.jar;C:\Users\Lenovo\.m2\repository\com\fasterxml\classmate\1.7.0\classmate-1.7.0.jar;C:\Users\Lenovo\.m2\repository\net\bytebuddy\byte-buddy\1.15.11\byte-buddy-1.15.11.jar;C:\Users\Lenovo\.m2\repository\org\glassfish\jaxb\jaxb-runtime\4.0.5\jaxb-runtime-4.0.5.jar;C:\Users\Lenovo\.m2\repository\org\glassfish\jaxb\jaxb-core\4.0.5\jaxb-core-4.0.5.jar;C:\Users\Lenovo\.m2\repository\org\glassfish\jaxb\txw2\4.0.5\txw2-4.0.5.jar;C:\Users\Lenovo\.m2\repository\com\sun\istack\istack-commons-runtime\4.1.2\istack-commons-runtime-4.1.2.jar;C:\Users\Lenovo\.m2\repository\jakarta\inject\jakarta.inject-api\2.0.1\jakarta.inject-api-2.0.1.jar;C:\Users\Lenovo\.m2\repository\org\antlr\antlr4-runtime\4.13.0\antlr4-runtime-4.13.0.jar;C:\Users\Lenovo\.m2\repository\org\springframework\data\spring-data-jpa\3.4.1\spring-data-jpa-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\data\spring-data-commons\3.4.1\spring-data-commons-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\spring-orm\6.2.1\spring-orm-6.2.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\spring-aspects\6.2.1\spring-aspects-6.2.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-starter-data-redis\3.4.1\spring-boot-starter-data-redis-3.4.1.jar;C:\Users\Lenovo\.m2\repository\io\lettuce\lettuce-core\6.4.1.RELEASE\lettuce-core-6.4.1.RELEASE.jar;C:\Users\Lenovo\.m2\repository\io\netty\netty-common\4.1.116.Final\netty-common-4.1.116.Final.jar;C:\Users\Lenovo\.m2\repository\io\netty\netty-handler\4.1.116.Final\netty-handler-4.1.116.Final.jar;C:\Users\Lenovo\.m2\repository\io\netty\netty-resolver\4.1.116.Final\netty-resolver-4.1.116.Final.jar;C:\Users\Lenovo\.m2\repository\io\netty\netty-buffer\4.1.116.Final\netty-buffer-4.1.116.Final.jar;C:\Users\Lenovo\.m2\repository\io\netty\netty-transport-native-unix-common\4.1.116.Final\netty-transport-native-unix-common-4.1.116.Final.jar;C:\Users\Lenovo\.m2\repository\io\netty\netty-codec\4.1.116.Final\netty-codec-4.1.116.Final.jar;C:\Users\Lenovo\.m2\repository\io\netty\netty-transport\4.1.116.Final\netty-transport-4.1.116.Final.jar;C:\Users\Lenovo\.m2\repository\io\projectreactor\reactor-core\3.7.1\reactor-core-3.7.1.jar;C:\Users\Lenovo\.m2\repository\org\reactivestreams\reactive-streams\1.0.4\reactive-streams-1.0.4.jar;C:\Users\Lenovo\.m2\repository\org\springframework\data\spring-data-redis\3.4.1\spring-data-redis-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\data\spring-data-keyvalue\3.4.1\spring-data-keyvalue-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\spring-oxm\6.2.1\spring-oxm-6.2.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-starter-validation\3.4.1\spring-boot-starter-validation-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\apache\tomcat\embed\tomcat-embed-el\10.1.34\tomcat-embed-el-10.1.34.jar;C:\Users\Lenovo\.m2\repository\org\hibernate\validator\hibernate-validator\8.0.2.Final\hibernate-validator-8.0.2.Final.jar;C:\Users\Lenovo\.m2\repository\jakarta\validation\jakarta.validation-api\3.0.2\jakarta.validation-api-3.0.2.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-starter-security\3.4.1\spring-boot-starter-security-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\spring-aop\6.2.1\spring-aop-6.2.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\security\spring-security-config\6.4.2\spring-security-config-6.4.2.jar;C:\Users\Lenovo\.m2\repository\org\springframework\security\spring-security-web\6.4.2\spring-security-web-6.4.2.jar;C:\Users\Lenovo\.m2\repository\org\bouncycastle\bcprov-jdk18on\1.80\bcprov-jdk18on-1.80.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-starter-cache\3.4.1\spring-boot-starter-cache-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\spring-context-support\6.2.1\spring-context-support-6.2.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-starter-aop\3.4.1\spring-boot-starter-aop-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\aspectj\aspectjweaver\1.9.22.1\aspectjweaver-1.9.22.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-starter-actuator\3.4.1\spring-boot-starter-actuator-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-actuator-autoconfigure\3.4.1\spring-boot-actuator-autoconfigure-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-actuator\3.4.1\spring-boot-actuator-3.4.1.jar;C:\Users\Lenovo\.m2\repository\io\micrometer\micrometer-observation\1.14.2\micrometer-observation-1.14.2.jar;C:\Users\Lenovo\.m2\repository\io\micrometer\micrometer-commons\1.14.2\micrometer-commons-1.14.2.jar;C:\Users\Lenovo\.m2\repository\io\micrometer\micrometer-jakarta9\1.14.2\micrometer-jakarta9-1.14.2.jar;C:\Users\Lenovo\.m2\repository\io\micrometer\micrometer-core\1.14.2\micrometer-core-1.14.2.jar;C:\Users\Lenovo\.m2\repository\org\hdrhistogram\HdrHistogram\2.2.2\HdrHistogram-2.2.2.jar;C:\Users\Lenovo\.m2\repository\org\latencyutils\LatencyUtils\2.0.3\LatencyUtils-2.0.3.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-starter-mail\3.4.1\spring-boot-starter-mail-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\eclipse\angus\jakarta.mail\2.0.3\jakarta.mail-2.0.3.jar;C:\Users\Lenovo\.m2\repository\jakarta\activation\jakarta.activation-api\2.1.3\jakarta.activation-api-2.1.3.jar;C:\Users\Lenovo\.m2\repository\org\eclipse\angus\angus-activation\2.0.2\angus-activation-2.0.2.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-starter-quartz\3.4.1\spring-boot-starter-quartz-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\spring-tx\6.2.1\spring-tx-6.2.1.jar;C:\Users\Lenovo\.m2\repository\org\quartz-scheduler\quartz\2.3.2\quartz-2.3.2.jar;C:\Users\Lenovo\.m2\repository\com\mchange\mchange-commons-java\0.2.15\mchange-commons-java-0.2.15.jar;C:\Users\Lenovo\.m2\repository\org\postgresql\postgresql\42.7.4\postgresql-42.7.4.jar;C:\Users\Lenovo\.m2\repository\org\checkerframework\checker-qual\3.42.0\checker-qual-3.42.0.jar;C:\Users\Lenovo\.m2\repository\org\flywaydb\flyway-core\10.20.1\flyway-core-10.20.1.jar;C:\Users\Lenovo\.m2\repository\com\fasterxml\jackson\dataformat\jackson-dataformat-toml\2.18.2\jackson-dataformat-toml-2.18.2.jar;C:\Users\Lenovo\.m2\repository\org\flywaydb\flyway-database-postgresql\10.20.1\flyway-database-postgresql-10.20.1.jar;C:\Users\Lenovo\.m2\repository\org\springdoc\springdoc-openapi-starter-webmvc-ui\2.7.0\springdoc-openapi-starter-webmvc-ui-2.7.0.jar;C:\Users\Lenovo\.m2\repository\org\springdoc\springdoc-openapi-starter-webmvc-api\2.7.0\springdoc-openapi-starter-webmvc-api-2.7.0.jar;C:\Users\Lenovo\.m2\repository\org\springdoc\springdoc-openapi-starter-common\2.7.0\springdoc-openapi-starter-common-2.7.0.jar;C:\Users\Lenovo\.m2\repository\io\swagger\core\v3\swagger-core-jakarta\2.2.25\swagger-core-jakarta-2.2.25.jar;C:\Users\Lenovo\.m2\repository\io\swagger\core\v3\swagger-annotations-jakarta\2.2.25\swagger-annotations-jakarta-2.2.25.jar;C:\Users\Lenovo\.m2\repository\io\swagger\core\v3\swagger-models-jakarta\2.2.25\swagger-models-jakarta-2.2.25.jar;C:\Users\Lenovo\.m2\repository\com\fasterxml\jackson\dataformat\jackson-dataformat-yaml\2.18.2\jackson-dataformat-yaml-2.18.2.jar;C:\Users\Lenovo\.m2\repository\org\webjars\swagger-ui\5.18.2\swagger-ui-5.18.2.jar;C:\Users\Lenovo\.m2\repository\org\webjars\webjars-locator-lite\1.0.1\webjars-locator-lite-1.0.1.jar;C:\Users\Lenovo\.m2\repository\org\jspecify\jspecify\1.0.0\jspecify-1.0.0.jar;C:\Users\Lenovo\.m2\repository\org\mapstruct\mapstruct\1.6.3\mapstruct-1.6.3.jar;C:\Users\Lenovo\.m2\repository\org\projectlombok\lombok\1.18.36\lombok-1.18.36.jar;C:\Users\Lenovo\.m2\repository\org\projectlombok\lombok-mapstruct-binding\0.2.0\lombok-mapstruct-binding-0.2.0.jar;C:\Users\Lenovo\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.18.2\jackson-datatype-jsr310-2.18.2.jar;C:\Users\Lenovo\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.18.2\jackson-annotations-2.18.2.jar;C:\Users\Lenovo\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.18.2\jackson-core-2.18.2.jar;C:\Users\Lenovo\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.18.2\jackson-databind-2.18.2.jar;C:\Users\Lenovo\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-hibernate6\2.18.2\jackson-datatype-hibernate6-2.18.2.jar;C:\Users\Lenovo\.m2\repository\jakarta\transaction\jakarta.transaction-api\2.0.1\jakarta.transaction-api-2.0.1.jar;C:\Users\Lenovo\.m2\repository\org\apache\commons\commons-lang3\3.17.0\commons-lang3-3.17.0.jar;C:\Users\Lenovo\.m2\repository\org\apache\commons\commons-collections4\4.5.0-M3\commons-collections4-4.5.0-M3.jar;C:\Users\Lenovo\.m2\repository\io\github\resilience4j\resilience4j-spring-boot3\2.2.0\resilience4j-spring-boot3-2.2.0.jar;C:\Users\Lenovo\.m2\repository\io\github\resilience4j\resilience4j-spring6\2.2.0\resilience4j-spring6-2.2.0.jar;C:\Users\Lenovo\.m2\repository\io\github\resilience4j\resilience4j-annotations\2.2.0\resilience4j-annotations-2.2.0.jar;C:\Users\Lenovo\.m2\repository\io\github\resilience4j\resilience4j-consumer\2.2.0\resilience4j-consumer-2.2.0.jar;C:\Users\Lenovo\.m2\repository\io\github\resilience4j\resilience4j-circularbuffer\2.2.0\resilience4j-circularbuffer-2.2.0.jar;C:\Users\Lenovo\.m2\repository\io\github\resilience4j\resilience4j-framework-common\2.2.0\resilience4j-framework-common-2.2.0.jar;C:\Users\Lenovo\.m2\repository\org\slf4j\slf4j-api\2.0.16\slf4j-api-2.0.16.jar;C:\Users\Lenovo\.m2\repository\io\github\resilience4j\resilience4j-micrometer\2.2.0\resilience4j-micrometer-2.2.0.jar;C:\Users\Lenovo\.m2\repository\io\github\resilience4j\resilience4j-bulkhead\2.2.0\resilience4j-bulkhead-2.2.0.jar;C:\Users\Lenovo\.m2\repository\io\github\resilience4j\resilience4j-retry\2.2.0\resilience4j-retry-2.2.0.jar;C:\Users\Lenovo\.m2\repository\io\github\resilience4j\resilience4j-ratelimiter\2.2.0\resilience4j-ratelimiter-2.2.0.jar;C:\Users\Lenovo\.m2\repository\io\github\resilience4j\resilience4j-timelimiter\2.2.0\resilience4j-timelimiter-2.2.0.jar;C:\Users\Lenovo\.m2\repository\io\github\resilience4j\resilience4j-circuitbreaker\2.2.0\resilience4j-circuitbreaker-2.2.0.jar;C:\Users\Lenovo\.m2\repository\io\github\resilience4j\resilience4j-core\2.2.0\resilience4j-core-2.2.0.jar;C:\Users\Lenovo\.m2\repository\io\jsonwebtoken\jjwt-api\0.12.6\jjwt-api-0.12.6.jar;C:\Users\Lenovo\.m2\repository\io\jsonwebtoken\jjwt-impl\0.12.6\jjwt-impl-0.12.6.jar;C:\Users\Lenovo\.m2\repository\io\jsonwebtoken\jjwt-jackson\0.12.6\jjwt-jackson-0.12.6.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-starter-test\3.4.1\spring-boot-starter-test-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-test\3.4.1\spring-boot-test-3.4.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\boot\spring-boot-test-autoconfigure\3.4.1\spring-boot-test-autoconfigure-3.4.1.jar;C:\Users\Lenovo\.m2\repository\com\jayway\jsonpath\json-path\2.9.0\json-path-2.9.0.jar;C:\Users\Lenovo\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\4.0.2\jakarta.xml.bind-api-4.0.2.jar;C:\Users\Lenovo\.m2\repository\net\minidev\json-smart\2.5.1\json-smart-2.5.1.jar;C:\Users\Lenovo\.m2\repository\net\minidev\accessors-smart\2.5.1\accessors-smart-2.5.1.jar;C:\Users\Lenovo\.m2\repository\org\ow2\asm\asm\9.6\asm-9.6.jar;C:\Users\Lenovo\.m2\repository\org\assertj\assertj-core\3.26.3\assertj-core-3.26.3.jar;C:\Users\Lenovo\.m2\repository\org\awaitility\awaitility\4.2.2\awaitility-4.2.2.jar;C:\Users\Lenovo\.m2\repository\org\hamcrest\hamcrest\2.2\hamcrest-2.2.jar;C:\Users\Lenovo\.m2\repository\org\junit\jupiter\junit-jupiter\5.11.4\junit-jupiter-5.11.4.jar;C:\Users\Lenovo\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.11.4\junit-jupiter-api-5.11.4.jar;C:\Users\Lenovo\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Lenovo\.m2\repository\org\junit\platform\junit-platform-commons\1.11.4\junit-platform-commons-1.11.4.jar;C:\Users\Lenovo\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\Lenovo\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.11.4\junit-jupiter-params-5.11.4.jar;C:\Users\Lenovo\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.11.4\junit-jupiter-engine-5.11.4.jar;C:\Users\Lenovo\.m2\repository\org\junit\platform\junit-platform-engine\1.11.4\junit-platform-engine-1.11.4.jar;C:\Users\Lenovo\.m2\repository\org\mockito\mockito-core\5.14.2\mockito-core-5.14.2.jar;C:\Users\Lenovo\.m2\repository\net\bytebuddy\byte-buddy-agent\1.15.11\byte-buddy-agent-1.15.11.jar;C:\Users\Lenovo\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\Lenovo\.m2\repository\org\mockito\mockito-junit-jupiter\5.14.2\mockito-junit-jupiter-5.14.2.jar;C:\Users\Lenovo\.m2\repository\org\skyscreamer\jsonassert\1.5.3\jsonassert-1.5.3.jar;C:\Users\Lenovo\.m2\repository\com\vaadin\external\google\android-json\0.0.20131108.vaadin1\android-json-0.0.20131108.vaadin1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\spring-core\6.2.1\spring-core-6.2.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\spring-jcl\6.2.1\spring-jcl-6.2.1.jar;C:\Users\Lenovo\.m2\repository\org\springframework\spring-test\6.2.1\spring-test-6.2.1.jar;C:\Users\Lenovo\.m2\repository\org\xmlunit\xmlunit-core\2.10.0\xmlunit-core-2.10.0.jar;C:\Users\Lenovo\.m2\repository\org\springframework\security\spring-security-test\6.4.2\spring-security-test-6.4.2.jar;C:\Users\Lenovo\.m2\repository\org\springframework\security\spring-security-core\6.4.2\spring-security-core-6.4.2.jar;C:\Users\Lenovo\.m2\repository\org\springframework\security\spring-security-crypto\6.4.2\spring-security-crypto-6.4.2.jar;C:\Users\Lenovo\.m2\repository\com\h2database\h2\2.3.232\h2-2.3.232.jar;C:\Users\Lenovo\.m2\repository\org\testcontainers\junit-jupiter\1.20.4\junit-jupiter-1.20.4.jar;C:\Users\Lenovo\.m2\repository\org\testcontainers\postgresql\1.20.4\postgresql-1.20.4.jar;C:\Users\Lenovo\.m2\repository\org\testcontainers\jdbc\1.20.4\jdbc-1.20.4.jar;C:\Users\Lenovo\.m2\repository\org\testcontainers\database-commons\1.20.4\database-commons-1.20.4.jar;C:\Users\Lenovo\.m2\repository\org\testcontainers\testcontainers\1.20.4\testcontainers-1.20.4.jar;C:\Users\Lenovo\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\Lenovo\.m2\repository\org\hamcrest\hamcrest-core\2.2\hamcrest-core-2.2.jar;C:\Users\Lenovo\.m2\repository\org\apache\commons\commons-compress\1.24.0\commons-compress-1.24.0.jar;C:\Users\Lenovo\.m2\repository\org\rnorth\duct-tape\duct-tape\1.0.8\duct-tape-1.0.8.jar;C:\Users\Lenovo\.m2\repository\org\jetbrains\annotations\17.0.0\annotations-17.0.0.jar;C:\Users\Lenovo\.m2\repository\com\github\docker-java\docker-java-api\3.4.0\docker-java-api-3.4.0.jar;C:\Users\Lenovo\.m2\repository\com\github\docker-java\docker-java-transport-zerodep\3.4.0\docker-java-transport-zerodep-3.4.0.jar;C:\Users\Lenovo\.m2\repository\com\github\docker-java\docker-java-transport\3.4.0\docker-java-transport-3.4.0.jar;C:\Users\Lenovo\.m2\repository\net\java\dev\jna\jna\5.13.0\jna-5.13.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -34,7 +34,7 @@
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="FILE_LOG_CHARSET" value="UTF-8"/>
     <property name="java.awt.headless" value="true"/>
-    <property name="surefire.real.class.path" value="C:\Users\Lenovo\AppData\Local\Temp\surefire14793876865934062529\surefirebooter-20260901213347147_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\Lenovo\AppData\Local\Temp\surefire10076340184529544592\surefirebooter-20260901224154130_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="21.0.11+10-LTS"/>
@@ -55,7 +55,7 @@
     <property name="user.dir" value="C:\Projects\FinFlow\backend"/>
     <property name="os.arch" value="amd64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="PID" value="22840"/>
+    <property name="PID" value="2296"/>
     <property name="sun.os.patch.level" value=""/>
     <property name="CONSOLE_LOG_CHARSET" value="UTF-8"/>
     <property name="native.encoding" value="Cp1252"/>
@@ -69,11 +69,11 @@
     <property name="CONSOLE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{requestId}] %logger{36} - %msg%n"/>
     <property name="LOGGED_APPLICATION_NAME" value="[finflow-backend] "/>
   </properties>
-  <testcase name="shouldSaveAndFindUserRole" classname="com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$UserRoleRepositoryTests" time="0.381">
-    <system-out><![CDATA[21:33:57.162 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest]: AuthRepositoryIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-21:33:57.610 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.finflow.FinFlowApplication for test class com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest
-21:33:57.674 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$UserRoleRepositoryTests]: UserRoleRepositoryTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-21:33:57.699 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.finflow.FinFlowApplication for test class com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$UserRoleRepositoryTests
+  <testcase name="shouldSaveAndFindUserRole" classname="com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$UserRoleRepositoryTests" time="0.406">
+    <system-out><![CDATA[22:42:04.572 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest]: AuthRepositoryIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+22:42:04.866 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.finflow.FinFlowApplication for test class com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest
+22:42:04.930 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$UserRoleRepositoryTests]: UserRoleRepositoryTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+22:42:04.959 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.finflow.FinFlowApplication for test class com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$UserRoleRepositoryTests
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -84,117 +84,117 @@
 
  :: Spring Boot ::                (v3.4.1)
 
-2026-09-01 21:33:58.548 [main] INFO  [] c.f.m.a.r.AuthRepositoryIntegrationTest - Starting AuthRepositoryIntegrationTest using Java 21.0.11 with PID 22840 (started by Lenovo in C:\Projects\FinFlow\backend)
-2026-09-01 21:33:58.550 [main] DEBUG [] c.f.m.a.r.AuthRepositoryIntegrationTest - Running with Spring Boot v3.4.1, Spring v6.2.1
-2026-09-01 21:33:58.551 [main] INFO  [] c.f.m.a.r.AuthRepositoryIntegrationTest - The following 1 profile is active: "test"
-2026-09-01 21:34:00.288 [main] INFO  [] o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
-2026-09-01 21:34:00.290 [main] INFO  [] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-09-01 21:34:00.614 [main] INFO  [] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 306 ms. Found 22 JPA repository interfaces.
-2026-09-01 21:34:00.726 [main] INFO  [] o.s.b.t.a.j.TestDatabaseAutoConfiguration$EmbeddedDataSourceBeanFactoryPostProcessor - Replacing 'dataSource' DataSource bean with embedded version
-2026-09-01 21:34:01.178 [main] INFO  [] o.s.j.d.e.EmbeddedDatabaseFactory - Starting embedded database: url='jdbc:h2:mem:af22f943-36c9-4eee-b540-ca9ace03a468;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
-2026-09-01 21:34:02.015 [main] INFO  [] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-09-01 21:34:02.142 [main] INFO  [] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.4.Final
-2026-09-01 21:34:02.214 [main] INFO  [] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
-2026-09-01 21:34:02.475 [main] INFO  [] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-09-01 21:34:02.566 [main] WARN  [] org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-09-01 21:34:02.601 [main] INFO  [] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory$EmbeddedDataSourceProxy@788a2594']
+2026-09-01 22:42:05.776 [main] INFO  [] c.f.m.a.r.AuthRepositoryIntegrationTest - Starting AuthRepositoryIntegrationTest using Java 21.0.11 with PID 2296 (started by Lenovo in C:\Projects\FinFlow\backend)
+2026-09-01 22:42:05.778 [main] DEBUG [] c.f.m.a.r.AuthRepositoryIntegrationTest - Running with Spring Boot v3.4.1, Spring v6.2.1
+2026-09-01 22:42:05.779 [main] INFO  [] c.f.m.a.r.AuthRepositoryIntegrationTest - The following 1 profile is active: "test"
+2026-09-01 22:42:06.749 [main] INFO  [] o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-09-01 22:42:06.753 [main] INFO  [] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-01 22:42:07.059 [main] INFO  [] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 291 ms. Found 22 JPA repository interfaces.
+2026-09-01 22:42:07.188 [main] INFO  [] o.s.b.t.a.j.TestDatabaseAutoConfiguration$EmbeddedDataSourceBeanFactoryPostProcessor - Replacing 'dataSource' DataSource bean with embedded version
+2026-09-01 22:42:07.656 [main] INFO  [] o.s.j.d.e.EmbeddedDatabaseFactory - Starting embedded database: url='jdbc:h2:mem:3846d17b-eb22-4d3a-b1bf-25a6c9e94d0a;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-09-01 22:42:08.623 [main] INFO  [] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-01 22:42:08.790 [main] INFO  [] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.4.Final
+2026-09-01 22:42:08.866 [main] INFO  [] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-01 22:42:09.172 [main] INFO  [] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-01 22:42:09.286 [main] WARN  [] org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-01 22:42:09.324 [main] INFO  [] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory$EmbeddedDataSourceProxy@54e324d1']
 	Database driver: undefined/unknown
 	Database version: 2.3.232
 	Autocommit mode: undefined/unknown
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2026-09-01 21:34:05.063 [main] INFO  [] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-09-01 21:34:05.103 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.666 [main] INFO  [] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-01 22:42:11.707 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_accounts.account_holders cascade 
 Hibernate: 
     drop table if exists finflow_accounts.account_holders cascade 
-2026-09-01 21:34:05.107 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.711 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_accounts.account_status_history cascade 
 Hibernate: 
     drop table if exists finflow_accounts.account_status_history cascade 
-2026-09-01 21:34:05.108 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.713 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_accounts.accounts cascade 
 Hibernate: 
     drop table if exists finflow_accounts.accounts cascade 
-2026-09-01 21:34:05.108 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.713 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_accounts.beneficiaries cascade 
 Hibernate: 
     drop table if exists finflow_accounts.beneficiaries cascade 
-2026-09-01 21:34:05.109 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.714 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_accounts.card_transactions cascade 
 Hibernate: 
     drop table if exists finflow_accounts.card_transactions cascade 
-2026-09-01 21:34:05.109 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.714 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_accounts.cards cascade 
 Hibernate: 
     drop table if exists finflow_accounts.cards cascade 
-2026-09-01 21:34:05.109 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.715 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_accounts.holds cascade 
 Hibernate: 
     drop table if exists finflow_accounts.holds cascade 
-2026-09-01 21:34:05.109 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.715 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_admin.admin_audit_log cascade 
 Hibernate: 
     drop table if exists finflow_admin.admin_audit_log cascade 
-2026-09-01 21:34:05.109 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.715 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_auth.login_history cascade 
 Hibernate: 
     drop table if exists finflow_auth.login_history cascade 
-2026-09-01 21:34:05.111 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.715 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_auth.refresh_tokens cascade 
 Hibernate: 
     drop table if exists finflow_auth.refresh_tokens cascade 
-2026-09-01 21:34:05.111 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.716 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_auth.roles cascade 
 Hibernate: 
     drop table if exists finflow_auth.roles cascade 
-2026-09-01 21:34:05.111 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.716 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_auth.user_credentials cascade 
 Hibernate: 
     drop table if exists finflow_auth.user_credentials cascade 
-2026-09-01 21:34:05.111 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.716 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_auth.user_roles cascade 
 Hibernate: 
     drop table if exists finflow_auth.user_roles cascade 
-2026-09-01 21:34:05.112 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.717 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_auth.users cascade 
 Hibernate: 
     drop table if exists finflow_auth.users cascade 
-2026-09-01 21:34:05.112 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.717 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_notifications.notifications cascade 
 Hibernate: 
     drop table if exists finflow_notifications.notifications cascade 
-2026-09-01 21:34:05.113 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.717 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_profiles.user_profiles cascade 
 Hibernate: 
     drop table if exists finflow_profiles.user_profiles cascade 
-2026-09-01 21:34:05.113 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.718 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_savings.savings_goals cascade 
 Hibernate: 
     drop table if exists finflow_savings.savings_goals cascade 
-2026-09-01 21:34:05.114 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.718 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_settings.user_settings cascade 
 Hibernate: 
     drop table if exists finflow_settings.user_settings cascade 
-2026-09-01 21:34:05.114 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.718 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_transactions.transaction_entries cascade 
 Hibernate: 
     drop table if exists finflow_transactions.transaction_entries cascade 
-2026-09-01 21:34:05.114 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.718 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_transactions.transactions cascade 
 Hibernate: 
     drop table if exists finflow_transactions.transactions cascade 
-2026-09-01 21:34:05.115 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.719 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_transfers.scheduled_transfers cascade 
 Hibernate: 
     drop table if exists finflow_transfers.scheduled_transfers cascade 
-2026-09-01 21:34:05.115 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.719 [main] DEBUG [] org.hibernate.SQL - 
     drop table if exists finflow_transfers.transfer_templates cascade 
 Hibernate: 
     drop table if exists finflow_transfers.transfer_templates cascade 
-2026-09-01 21:34:05.126 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.732 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_accounts.account_holders (
         created_at timestamp(6) not null,
         updated_at timestamp(6) not null,
@@ -218,7 +218,7 @@ Hibernate:
         primary key (id),
         unique (account_id, user_id)
     )
-2026-09-01 21:34:05.146 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.752 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_accounts.account_status_history (
         changed_at timestamp(6) not null,
         id bigint generated by default as identity,
@@ -240,7 +240,7 @@ Hibernate:
         reason varchar(500),
         primary key (id)
     )
-2026-09-01 21:34:05.156 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.761 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_accounts.accounts (
         currency varchar(3) not null,
         is_deleted boolean not null,
@@ -282,7 +282,7 @@ Hibernate:
         account_type enum ('CHECKING','CREDIT','INVESTMENT','SAVINGS') not null,
         primary key (id)
     )
-2026-09-01 21:34:05.159 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.765 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_accounts.beneficiaries (
         currency CHAR(3) not null,
         is_deleted boolean not null,
@@ -332,7 +332,7 @@ Hibernate:
         primary key (id),
         constraint uk_beneficiary_account unique (owner_id, account_number)
     )
-2026-09-01 21:34:05.162 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.769 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_accounts.card_transactions (
         currency CHAR(3) not null,
         amount_cents bigint not null,
@@ -364,7 +364,7 @@ Hibernate:
         transaction_type enum ('AUTHORIZATION','CAPTURE','CASHBACK','FEE','REFUND','REVERSAL','SETTLEMENT') not null,
         primary key (id)
     )
-2026-09-01 21:34:05.165 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.771 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_accounts.cards (
         card_last_four CHAR(4) not null,
         currency CHAR(3) not null,
@@ -408,7 +408,7 @@ Hibernate:
         card_type enum ('CREDIT','DEBIT','PREPAID') not null,
         primary key (id)
     )
-2026-09-01 21:34:05.166 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.774 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_accounts.holds (
         amount_cents bigint not null,
         created_at timestamp(6) not null,
@@ -442,7 +442,7 @@ Hibernate:
         hold_status enum ('ACTIVE','EXPIRED','RELEASED') not null,
         primary key (id)
     )
-2026-09-01 21:34:05.171 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.780 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_admin.admin_audit_log (
         created_at timestamp(6) not null,
         updated_at timestamp(6) not null,
@@ -474,7 +474,7 @@ Hibernate:
         details TEXT,
         primary key (id)
     )
-2026-09-01 21:34:05.173 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.781 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_auth.login_history (
         success boolean not null,
         created_at timestamp(6) not null,
@@ -483,7 +483,7 @@ Hibernate:
         ip_address varchar(45),
         identifier varchar(254) not null,
         user_agent varchar(500),
-        failure_reason enum ('ACCOUNT_CLOSED','ACCOUNT_LOCKED','ACCOUNT_NOT_VERIFIED','ACCOUNT_SUSPENDED','INVALID_CREDENTIALS'),
+        failure_reason enum ('ACCOUNT_CLOSED','ACCOUNT_LOCKED','ACCOUNT_SUSPENDED','INVALID_CREDENTIALS'),
         primary key (id)
     )
 Hibernate: 
@@ -495,10 +495,10 @@ Hibernate:
         ip_address varchar(45),
         identifier varchar(254) not null,
         user_agent varchar(500),
-        failure_reason enum ('ACCOUNT_CLOSED','ACCOUNT_LOCKED','ACCOUNT_NOT_VERIFIED','ACCOUNT_SUSPENDED','INVALID_CREDENTIALS'),
+        failure_reason enum ('ACCOUNT_CLOSED','ACCOUNT_LOCKED','ACCOUNT_SUSPENDED','INVALID_CREDENTIALS'),
         primary key (id)
     )
-2026-09-01 21:34:05.175 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.784 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_auth.refresh_tokens (
         is_revoked boolean not null,
         created_at timestamp(6) not null,
@@ -536,7 +536,7 @@ Hibernate:
         created_user_agent varchar(500),
         primary key (id)
     )
-2026-09-01 21:34:05.178 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.786 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_auth.roles (
         is_active boolean not null,
         is_system_role boolean not null,
@@ -560,7 +560,7 @@ Hibernate:
         description varchar(255),
         primary key (id)
     )
-2026-09-01 21:34:05.179 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.789 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_auth.user_credentials (
         is_active boolean not null,
         is_deleted boolean not null,
@@ -598,7 +598,7 @@ Hibernate:
         credential_type enum ('BIOMETRIC','PASSKEY','PASSWORD') not null,
         primary key (id)
     )
-2026-09-01 21:34:05.180 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.792 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_auth.user_roles (
         created_at timestamp(6) not null,
         granted_at timestamp(6) not null,
@@ -624,9 +624,8 @@ Hibernate:
         primary key (id),
         unique (user_id, role_id)
     )
-2026-09-01 21:34:05.182 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.794 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_auth.users (
-        email_verified boolean not null,
         failed_login_count integer not null,
         is_deleted boolean not null,
         phone_verified boolean not null,
@@ -644,12 +643,11 @@ Hibernate:
         id CHAR(36) not null,
         modified_by varchar(36) not null,
         email varchar(254) not null,
-        status enum ('ACTIVE','CLOSED','PENDING_VERIFICATION','SUSPENDED') not null,
+        status enum ('ACTIVE','CLOSED','SUSPENDED') not null,
         primary key (id)
     )
 Hibernate: 
     create table finflow_auth.users (
-        email_verified boolean not null,
         failed_login_count integer not null,
         is_deleted boolean not null,
         phone_verified boolean not null,
@@ -667,10 +665,10 @@ Hibernate:
         id CHAR(36) not null,
         modified_by varchar(36) not null,
         email varchar(254) not null,
-        status enum ('ACTIVE','CLOSED','PENDING_VERIFICATION','SUSPENDED') not null,
+        status enum ('ACTIVE','CLOSED','SUSPENDED') not null,
         primary key (id)
     )
-2026-09-01 21:34:05.184 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.797 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_notifications.notifications (
         is_read boolean not null,
         created_at timestamp(6) not null,
@@ -706,7 +704,7 @@ Hibernate:
         notification_type enum ('ACCOUNT','PROMOTION','SECURITY','SYSTEM','TRANSACTION') not null,
         primary key (id)
     )
-2026-09-01 21:34:05.186 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.799 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_profiles.user_profiles (
         country CHAR(2),
         date_of_birth date,
@@ -748,7 +746,7 @@ Hibernate:
         address_line2 varchar(255),
         primary key (id)
     )
-2026-09-01 21:34:05.188 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.801 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_savings.savings_goals (
         currency CHAR(3) not null,
         deadline date,
@@ -782,7 +780,7 @@ Hibernate:
         goal_status enum ('ACTIVE','CANCELLED','COMPLETED','PAUSED') not null,
         primary key (id)
     )
-2026-09-01 21:34:05.192 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.803 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_settings.user_settings (
         created_at timestamp(6) not null,
         updated_at timestamp(6) not null,
@@ -804,7 +802,7 @@ Hibernate:
         setting_value TEXT not null,
         primary key (id)
     )
-2026-09-01 21:34:05.194 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.804 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_transactions.transaction_entries (
         currency CHAR(3) not null,
         amount_cents bigint not null,
@@ -836,7 +834,7 @@ Hibernate:
         entry_type enum ('CREDIT','DEBIT') not null,
         primary key (id)
     )
-2026-09-01 21:34:05.197 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.806 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_transactions.transactions (
         currency CHAR(3) not null,
         amount_cents bigint not null,
@@ -880,7 +878,7 @@ Hibernate:
         transaction_type enum ('DEPOSIT','FEE','REVERSAL','TRANSFER','WITHDRAWAL') not null,
         primary key (id)
     )
-2026-09-01 21:34:05.201 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.809 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_transfers.scheduled_transfers (
         currency CHAR(3) not null,
         execution_count integer not null,
@@ -928,7 +926,7 @@ Hibernate:
         schedule_type enum ('ONE_TIME','RECURRING') not null,
         primary key (id)
     )
-2026-09-01 21:34:05.204 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.812 [main] DEBUG [] org.hibernate.SQL - 
     create table finflow_transfers.transfer_templates (
         currency CHAR(3) not null,
         amount_cents bigint not null,
@@ -962,7 +960,7 @@ Hibernate:
         template_status enum ('ACTIVE','CANCELLED','COMPLETED','FAILED','PAUSED') not null,
         primary key (id)
     )
-2026-09-01 21:34:05.207 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.814 [main] DEBUG [] org.hibernate.SQL - 
     alter table if exists finflow_accounts.account_holders 
        add constraint fk_ah_account 
        foreign key (account_id) 
@@ -972,7 +970,7 @@ Hibernate:
        add constraint fk_ah_account 
        foreign key (account_id) 
        references finflow_accounts.accounts
-2026-09-01 21:34:05.233 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.843 [main] DEBUG [] org.hibernate.SQL - 
     alter table if exists finflow_accounts.account_status_history 
        add constraint fk_ash_account 
        foreign key (account_id) 
@@ -982,7 +980,7 @@ Hibernate:
        add constraint fk_ash_account 
        foreign key (account_id) 
        references finflow_accounts.accounts
-2026-09-01 21:34:05.235 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.844 [main] DEBUG [] org.hibernate.SQL - 
     alter table if exists finflow_accounts.holds 
        add constraint fk_holds_account 
        foreign key (account_id) 
@@ -992,7 +990,7 @@ Hibernate:
        add constraint fk_holds_account 
        foreign key (account_id) 
        references finflow_accounts.accounts
-2026-09-01 21:34:05.236 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.846 [main] DEBUG [] org.hibernate.SQL - 
     alter table if exists finflow_auth.login_history 
        add constraint fk_lh_user 
        foreign key (user_id) 
@@ -1002,7 +1000,7 @@ Hibernate:
        add constraint fk_lh_user 
        foreign key (user_id) 
        references finflow_auth.users
-2026-09-01 21:34:05.239 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.847 [main] DEBUG [] org.hibernate.SQL - 
     alter table if exists finflow_auth.refresh_tokens 
        add constraint fk_rt_user 
        foreign key (user_id) 
@@ -1012,7 +1010,7 @@ Hibernate:
        add constraint fk_rt_user 
        foreign key (user_id) 
        references finflow_auth.users
-2026-09-01 21:34:05.241 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.850 [main] DEBUG [] org.hibernate.SQL - 
     alter table if exists finflow_auth.user_credentials 
        add constraint fk_uc_user 
        foreign key (user_id) 
@@ -1022,7 +1020,7 @@ Hibernate:
        add constraint fk_uc_user 
        foreign key (user_id) 
        references finflow_auth.users
-2026-09-01 21:34:05.243 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.851 [main] DEBUG [] org.hibernate.SQL - 
     alter table if exists finflow_auth.user_roles 
        add constraint fk_ur_role 
        foreign key (role_id) 
@@ -1032,7 +1030,7 @@ Hibernate:
        add constraint fk_ur_role 
        foreign key (role_id) 
        references finflow_auth.roles
-2026-09-01 21:34:05.245 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.853 [main] DEBUG [] org.hibernate.SQL - 
     alter table if exists finflow_auth.user_roles 
        add constraint fk_ur_user 
        foreign key (user_id) 
@@ -1042,7 +1040,7 @@ Hibernate:
        add constraint fk_ur_user 
        foreign key (user_id) 
        references finflow_auth.users
-2026-09-01 21:34:05.247 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.854 [main] DEBUG [] org.hibernate.SQL - 
     alter table if exists finflow_transactions.transaction_entries 
        add constraint fk_txn_entry_transaction 
        foreign key (transaction_id) 
@@ -1052,10 +1050,10 @@ Hibernate:
        add constraint fk_txn_entry_transaction 
        foreign key (transaction_id) 
        references finflow_transactions.transactions
-2026-09-01 21:34:05.258 [main] INFO  [] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-09-01 21:34:05.956 [main] INFO  [] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
-2026-09-01 21:34:08.305 [main] INFO  [] c.f.m.a.r.AuthRepositoryIntegrationTest - Started AuthRepositoryIntegrationTest in 10.527 seconds (process running for 20.984)
-2026-09-01 21:34:08.619 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:11.874 [main] INFO  [] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-01 22:42:12.501 [main] INFO  [] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-01 22:42:15.085 [main] INFO  [] c.f.m.a.r.AuthRepositoryIntegrationTest - Started AuthRepositoryIntegrationTest in 10.044 seconds (process running for 20.775)
+2026-09-01 22:42:15.400 [main] DEBUG [] org.hibernate.SQL - 
     insert 
     into
         finflow_auth.roles
@@ -1069,21 +1067,21 @@ Hibernate:
         (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
     values
         (?, ?, ?, ?, ?, ?, ?, ?)
-2026-09-01 21:34:08.645 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:15.431 [main] DEBUG [] org.hibernate.SQL - 
     insert 
     into
         finflow_auth.users
-        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+        (created_at, created_by, deleted_at, deleted_by, email, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
     values
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 Hibernate: 
     insert 
     into
         finflow_auth.users
-        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+        (created_at, created_by, deleted_at, deleted_by, email, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
     values
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-2026-09-01 21:34:08.648 [main] DEBUG [] org.hibernate.SQL - 
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 22:42:15.434 [main] DEBUG [] org.hibernate.SQL - 
     insert 
     into
         finflow_auth.user_roles
@@ -1097,7 +1095,7 @@ Hibernate:
         (created_at, granted_at, granted_by, role_id, updated_at, user_id, version, id) 
     values
         (?, ?, ?, ?, ?, ?, ?, ?)
-2026-09-01 21:34:08.668 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:15.466 [main] DEBUG [] org.hibernate.SQL - 
     select
         ur1_0.id,
         ur1_0.created_at,
@@ -1151,8 +1149,8 @@ Hibernate:
         and r1_0.is_active=true
 ]]></system-out>
   </testcase>
-  <testcase name="shouldCheckUserRoleByName" classname="com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$UserRoleRepositoryTests" time="0.049">
-    <system-out><![CDATA[2026-09-01 21:34:08.758 [main] DEBUG [] org.hibernate.SQL - 
+  <testcase name="shouldCheckUserRoleByName" classname="com.finflow.modules.auth.repository.AuthRepositoryIntegrationTest$UserRoleRepositoryTests" time="0.06">
+    <system-out><![CDATA[2026-09-01 22:42:15.572 [main] DEBUG [] org.hibernate.SQL - 
     insert 
     into
         finflow_auth.roles
@@ -1166,21 +1164,21 @@ Hibernate:
         (created_at, description, is_active, is_system_role, name, updated_at, version, id) 
     values
         (?, ?, ?, ?, ?, ?, ?, ?)
-2026-09-01 21:34:08.760 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:15.575 [main] DEBUG [] org.hibernate.SQL - 
     insert 
     into
         finflow_auth.users
-        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+        (created_at, created_by, deleted_at, deleted_by, email, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
     values
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 Hibernate: 
     insert 
     into
         finflow_auth.users
-        (created_at, created_by, deleted_at, deleted_by, email, email_verified, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
+        (created_at, created_by, deleted_at, deleted_by, email, failed_login_count, is_deleted, last_login_at, locked_until, modified_by, phone_number, phone_verified, status, terms_accepted_at, updated_at, username, version, id) 
     values
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-2026-09-01 21:34:08.762 [main] DEBUG [] org.hibernate.SQL - 
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-09-01 22:42:15.577 [main] DEBUG [] org.hibernate.SQL - 
     insert 
     into
         finflow_auth.user_roles
@@ -1194,7 +1192,7 @@ Hibernate:
         (created_at, granted_at, granted_by, role_id, updated_at, user_id, version, id) 
     values
         (?, ?, ?, ?, ?, ?, ?, ?)
-2026-09-01 21:34:08.764 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:15.579 [main] DEBUG [] org.hibernate.SQL - 
     select
         ur1_0.id 
     from
@@ -1222,7 +1220,7 @@ Hibernate:
         and r1_0.is_active 
     fetch
         first ? rows only
-2026-09-01 21:34:08.771 [main] DEBUG [] org.hibernate.SQL - 
+2026-09-01 22:42:15.585 [main] DEBUG [] org.hibernate.SQL - 
     select
         ur1_0.id 
     from

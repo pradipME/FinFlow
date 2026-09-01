@@ -21,7 +21,7 @@ import java.util.Set;
  *   <li>Email is globally unique (case-insensitive, excluding soft-deleted).</li>
  *   <li>Phone number is globally unique when present.</li>
  *   <li>Username is globally unique.</li>
-     *   <li>Users start as {@link UserStatus#ACTIVE}.</li>
+ *   <li>Users start as {@link UserStatus#ACTIVE}.</li>
  *   <li>Soft-deleted users cannot authenticate.</li>
  * </ul>
  *
@@ -47,9 +47,6 @@ public class User extends BaseSoftDeletableEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 25)
     private UserStatus status = UserStatus.ACTIVE;
-
-    @Column(name = "email_verified", nullable = false)
-    private Boolean emailVerified = true;
 
     @Column(name = "phone_verified", nullable = false)
     private Boolean phoneVerified = false;
@@ -89,24 +86,11 @@ public class User extends BaseSoftDeletableEntity {
         this.phoneNumber = phoneNumber;
         this.termsAcceptedAt = termsAcceptedAt;
         this.status = UserStatus.ACTIVE;
-        this.emailVerified = true;
         this.phoneVerified = false;
         this.failedLoginCount = 0;
     }
 
     // ---- Business Methods ----
-
-    /**
-     * Marks the user's email as verified.
-     *
-     * @throws IllegalStateException if the user is soft-deleted
-     */
-    public void verifyEmail() {
-        if (Boolean.TRUE.equals(getIsDeleted())) {
-            throw new IllegalStateException("Cannot verify email of a deleted user");
-        }
-        this.emailVerified = true;
-    }
 
     /**
      * Ensures the user is active.
@@ -198,10 +182,6 @@ public class User extends BaseSoftDeletableEntity {
 
     public UserStatus getStatus() {
         return status;
-    }
-
-    public Boolean getEmailVerified() {
-        return emailVerified;
     }
 
     public Boolean getPhoneVerified() {

@@ -35,7 +35,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
           email: payload.email as string,
           username: payload.username as string,
           status: (payload.status as string) ?? "ACTIVE",
-          emailVerified: (payload.emailVerified as boolean) ?? false,
           createdAt: (payload.iat as string) ?? new Date().toISOString(),
         };
       } catch {
@@ -44,7 +43,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
           email: "",
           username: "",
           status: "UNKNOWN",
-          emailVerified: false,
           createdAt: new Date().toISOString(),
         };
       }
@@ -118,7 +116,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         email: result.email,
         username: result.username,
         status: result.status,
-        emailVerified: result.emailVerified,
         createdAt: result.createdAt,
       } as User;
     },

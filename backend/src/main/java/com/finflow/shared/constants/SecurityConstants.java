@@ -17,7 +17,6 @@ public final class SecurityConstants {
             "/api/v1/auth/revoke",
             "/api/v1/auth/forgot-password",
             "/api/v1/auth/reset-password",
-            "/api/v1/auth/verify-email",
             "/api/v1/health",
             "/api/v1/health/**",
             "/swagger-ui/**",

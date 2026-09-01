@@ -188,7 +188,7 @@ public class AuthenticationService {
         return switch (user.getStatus()) {
             case SUSPENDED -> LoginHistory.FailureReason.ACCOUNT_SUSPENDED;
             case CLOSED -> LoginHistory.FailureReason.ACCOUNT_CLOSED;
-            case ACTIVE, PENDING_VERIFICATION -> null;
+            case ACTIVE -> null;
         };
     }
 

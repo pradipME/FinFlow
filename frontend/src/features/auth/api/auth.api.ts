@@ -11,7 +11,6 @@ interface RegisterResponse {
   email: string;
   username: string;
   status: string;
-  emailVerified: boolean;
   createdAt: string;
 }
 

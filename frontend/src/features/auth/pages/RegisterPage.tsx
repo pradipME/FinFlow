@@ -54,8 +54,8 @@ export function RegisterPage() {
         phoneNumber: data.phoneNumber || undefined,
         termsAccepted: data.termsAccepted,
       });
-      toast.success("Account created! Please check your email to verify your account.");
-      navigate(ROUTES.VERIFY_EMAIL, { replace: true });
+      toast.success("Account created! You can now sign in.");
+      navigate(ROUTES.LOGIN, { replace: true });
     } catch (err) {
       const message =
         err instanceof Error

@@ -5,7 +5,6 @@ import { AuthProvider } from "../../context/AuthContext";
 import { LoginPage } from "../LoginPage";
 import { RegisterPage } from "../RegisterPage";
 import { ForgotPasswordPage } from "../ForgotPasswordPage";
-import { EmailVerificationPage } from "../EmailVerificationPage";
 import { OtpVerificationPage } from "../OtpVerificationPage";
 import { tokenManager } from "@/shared/api/token-manager";
 
@@ -85,19 +84,6 @@ describe("Auth Pages", () => {
     it("has link back to login", () => {
       renderWithAuth(<ForgotPasswordPage />, "/forgot-password");
       expect(screen.getByText("Back to sign in")).toBeInTheDocument();
-    });
-  });
-
-  describe("EmailVerificationPage", () => {
-    it("renders with unsupported warning", () => {
-      renderWithAuth(<EmailVerificationPage />, "/verify-email");
-      expect(screen.getByText("Check your email")).toBeInTheDocument();
-      expect(screen.getByText("Feature Unavailable")).toBeInTheDocument();
-    });
-
-    it("has resend button", () => {
-      renderWithAuth(<EmailVerificationPage />, "/verify-email");
-      expect(screen.getByText("Resend verification email")).toBeInTheDocument();
     });
   });
 

@@ -58,7 +58,6 @@ class LoginHistoryRepositoryIntegrationTest {
         testUser = new User("test@finflow.com", "testuser", "+2348012345678", LocalDateTime.now());
         testUser.setId(UUID.randomUUID());
         testUser.setStatus(UserStatus.ACTIVE);
-        testUser.setEmailVerified(true);
         testUser = userRepository.save(testUser);
     }
 

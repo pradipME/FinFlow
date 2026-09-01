@@ -89,7 +89,6 @@ class RegistrationServiceTest {
                     savedUser.getEmail(),
                     savedUser.getUsername(),
                     "ACTIVE",
-                    true,
                     LocalDateTime.now()
             );
             when(userMapper.toRegisterResponse(savedUser)).thenReturn(expectedResponse);
@@ -110,7 +109,6 @@ class RegistrationServiceTest {
             assertThat(response.email()).isEqualTo("test@finflow.com");
             assertThat(response.username()).isEqualTo("testuser");
             assertThat(response.status()).isEqualTo("ACTIVE");
-            assertThat(response.emailVerified()).isTrue();
         }
 
         @Test

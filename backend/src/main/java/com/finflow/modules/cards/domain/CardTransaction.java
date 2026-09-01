@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 @EntityListeners({BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class CardTransaction extends BaseEntity {
 
-    @Column(name = "card_id", nullable = false, length = 36)
+    @Column(name = "card_id", nullable = false, length = 36, columnDefinition = "CHAR(36)")
     private String cardId;
 
     @Enumerated(EnumType.STRING)
@@ -19,7 +19,7 @@ public class CardTransaction extends BaseEntity {
     @Column(name = "amount_cents", nullable = false)
     private Long amountCents;
 
-    @Column(name = "currency", nullable = false, length = 3)
+    @Column(name = "currency", nullable = false, length = 3, columnDefinition = "CHAR(3)")
     private String currency;
 
     @Column(name = "merchant_name", length = 200)

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @EntityListeners({com.finflow.shared.domain.BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class UserProfile extends BaseAuditableEntity {
 
-    @Column(name = &quot;user_id&quot;, nullable = false, unique = true, length = 36)
+    @Column(name = &quot;user_id&quot;, nullable = false, unique = true, length = 36, columnDefinition = &quot;CHAR(36)&quot;)
     private String userId;
 
     @Column(name = &quot;first_name&quot;, length = 100)
@@ -37,7 +37,7 @@ public class UserProfile extends BaseAuditableEntity {
     @Column(name = &quot;postal_code&quot;, length = 20)
     private String postalCode;
 
-    @Column(name = &quot;country&quot;, length = 2)
+    @Column(name = &quot;country&quot;, length = 2, columnDefinition = &quot;CHAR(2)&quot;)
     private String country;
 
     @Column(name = &quot;avatar_url&quot;, length = 500)

@@ -8,10 +8,14 @@ import jakarta.persistence.*;
 @Table(name = "beneficiaries", schema = "finflow_accounts",
        uniqueConstraints = @UniqueConstraint(name = "uk_beneficiary_account",
            columnNames = {"owner_id", "account_number"}))
+@AttributeOverrides({
+    @AttributeOverride(name = "deletedBy",
+        column = @Column(name = "deleted_by", columnDefinition = "CHAR(36)", length = 36))
+})
 @EntityListeners({BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class Beneficiary extends BaseSoftDeletableEntity {
 
-    @Column(name = "owner_id", nullable = false, length = 36)
+    @Column(name = "owner_id", nullable = false, length = 36, columnDefinition = "CHAR(36)")
     private String ownerId;
 
     @Column(name = "nickname", length = 100)
@@ -38,7 +42,7 @@ public class Beneficiary extends BaseSoftDeletableEntity {
     @Column(name = "swift_code", length = 20)
     private String swiftCode;
 
-    @Column(name = "currency", nullable = false, length = 3)
+    @Column(name = "currency", nullable = false, length = 3, columnDefinition = "CHAR(3)")
     private String currency = "USD";
 
     @Enumerated(EnumType.STRING)

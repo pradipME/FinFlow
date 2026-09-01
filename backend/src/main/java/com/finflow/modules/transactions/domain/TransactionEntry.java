@@ -14,7 +14,7 @@ public class TransactionEntry extends BaseEntity {
             foreignKey = @ForeignKey(name = "fk_txn_entry_transaction"))
     private Transaction transaction;
 
-    @Column(name = "account_id", nullable = false, length = 36)
+    @Column(name = "account_id", nullable = false, length = 36, columnDefinition = "CHAR(36)")
     private String accountId;
 
     @Enumerated(EnumType.STRING)
@@ -24,7 +24,7 @@ public class TransactionEntry extends BaseEntity {
     @Column(name = "amount_cents", nullable = false)
     private Long amountCents;
 
-    @Column(name = "currency", nullable = false, length = 3)
+    @Column(name = "currency", nullable = false, length = 3, columnDefinition = "CHAR(3)")
     private String currency;
 
     @Column(name = "balance_before_cents", nullable = false)

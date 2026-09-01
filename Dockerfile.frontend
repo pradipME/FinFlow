@@ -10,16 +10,27 @@ RUN npm run build
 FROM nginx:alpine
 
 # Non-root, production-safe nginx:
-# - Keep runtime temp/log paths under /tmp (world-writable) so nginx can run
-#   even as a restricted/non-root user.
-# - chown the html dir so the nginx worker can serve indexes.
+# - Keep runtime temp/log paths under /tmp so nginx can start even as a
+#   restricted/non-root user.
+# - Pre-create every /tmp/nginx sub-directory and let the nginx user own them.
 COPY --from=build /app/dist /usr/share/nginx/html
-RUN mkdir -p /tmp/nginx && chown -R nginx:nginx /tmp/nginx \
+RUN mkdir -p /tmp/nginx/client_body /tmp/nginx/proxy /tmp/nginx/fastcgi \
+        /tmp/nginx/uwsgi /tmp/nginx/scgi \
+    && chown -R nginx:nginx /tmp/nginx \
     && chown -R nginx:nginx /usr/share/nginx/html
 
-# Replace the stock main config (temp paths, logs) and add the server block.
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
+# Replace the stock main config with a complete deterministic config that logs
+# to stdout/stderr and uses /tmp for all runtime temp files.
+COPY frontend/nginx.conf /etc/nginx/nginx.conf
+
+# Remove any stock conf.d server blocks so there are no duplicate listeners.
+RUN rm -f /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+
+# Render sets PORT (default 80). Rewrite the listen directive at startup so
+# nginx always binds the port Render forwards traffic to. The master runs as
+# root (standard nginx pattern) to bind privileged ports; worker processes
+# drop to the unprivileged 'nginx' user via `user nginx;`.
+# /tmp/nginx is recreated at runtime to cover ephemeral filesystems.
+CMD ["sh", "-c", "mkdir -p /tmp/nginx/client_body /tmp/nginx/proxy /tmp/nginx/fastcgi /tmp/nginx/uwsgi /tmp/nginx/scgi && sed -i 's/listen 80;/listen ${PORT:-80};/' /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"]

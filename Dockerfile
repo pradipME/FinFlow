@@ -1,6 +1,6 @@
 # Multi-stage build for FinFlow
 
-# ── Stage 1: Build frontend ──
+# -- Stage 1: Build frontend --
 FROM node:20-alpine AS frontend-build
 WORKDIR /app/frontend
 COPY frontend/package.json frontend/package-lock.json ./
@@ -8,7 +8,7 @@ RUN npm ci
 COPY frontend/ ./
 RUN npm run build
 
-# ── Stage 2: Build backend ──
+# -- Stage 2: Build backend --
 FROM maven:3.9-eclipse-temurin-21 AS backend-build
 WORKDIR /app/backend
 COPY backend/pom.xml ./
@@ -16,7 +16,7 @@ RUN mvn dependency:go-offline -B
 COPY backend/src ./src
 RUN mvn package -DskipTests -B
 
-# ── Stage 3: Production runtime ──
+# -- Stage 3: Production runtime --
 FROM eclipse-temurin:21-jre-alpine AS production
 RUN addgroup -S finflow && adduser -S finflow -G finflow
 
@@ -34,10 +34,11 @@ RUN apk add --no-cache nginx
 # Copy frontend nginx config (main config with writable /tmp runtime paths)
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Set ownership and create a writable runtime dir for the non-root nginx user
-RUN chown -R finflow:finflow /app \
-    && mkdir -p /tmp/nginx \
-    && chown finflow:finflow /tmp/nginx
+# Set ownership and create every nginx runtime temp dir for the non-root user
+RUN mkdir -p /tmp/nginx/client_body /tmp/nginx/proxy /tmp/nginx/fastcgi \
+        /tmp/nginx/uwsgi /tmp/nginx/scgi \
+    && chown -R finflow:finflow /app \
+    && chown -R finflow:finflow /tmp/nginx
 
 EXPOSE 80 8080
 

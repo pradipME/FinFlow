@@ -14,7 +14,7 @@ public class AccountHolder extends BaseEntity {
                 foreignKey = @ForeignKey(name = &quot;fk_ah_account&quot;))
     private Account account;
 
-    @Column(name = &quot;user_id&quot;, nullable = false, length = 36)
+    @Column(name = &quot;user_id&quot;, nullable = false, length = 36, columnDefinition = &quot;CHAR(36)&quot;)
     private String userId;
 
 <span class="fc" id="L20">    @Enumerated(EnumType.STRING)</span>

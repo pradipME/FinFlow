@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 @EntityListeners({BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class UserSetting extends BaseEntity {
 
-    @Column(name = &quot;user_id&quot;, nullable = false, length = 36)
+    @Column(name = &quot;user_id&quot;, nullable = false, length = 36, columnDefinition = &quot;CHAR(36)&quot;)
     private String userId;
 
     @Column(name = &quot;setting_key&quot;, nullable = false, length = 100)

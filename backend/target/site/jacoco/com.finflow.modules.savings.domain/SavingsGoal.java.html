@@ -11,10 +11,10 @@ import java.time.LocalDate;
 @EntityListeners({BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class SavingsGoal extends BaseEntity {
 
-    @Column(name = &quot;owner_id&quot;, nullable = false, length = 36)
+    @Column(name = &quot;owner_id&quot;, nullable = false, length = 36, columnDefinition = &quot;CHAR(36)&quot;)
     private String ownerId;
 
-    @Column(name = &quot;account_id&quot;, nullable = false, length = 36)
+    @Column(name = &quot;account_id&quot;, nullable = false, length = 36, columnDefinition = &quot;CHAR(36)&quot;)
     private String accountId;
 
     @Column(name = &quot;goal_name&quot;, nullable = false, length = 100)
@@ -26,7 +26,7 @@ public class SavingsGoal extends BaseEntity {
 <span class="fc" id="L26">    @Column(name = &quot;current_amount_cents&quot;, nullable = false)</span>
 <span class="fc" id="L27">    private Long currentAmountCents = 0L;</span>
 
-    @Column(name = &quot;currency&quot;, nullable = false, length = 3)
+    @Column(name = &quot;currency&quot;, nullable = false, length = 3, columnDefinition = &quot;CHAR(3)&quot;)
     private String currency;
 
 <span class="fc" id="L32">    @Enumerated(EnumType.STRING)</span>

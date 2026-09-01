@@ -53,7 +53,7 @@ public class RefreshToken extends BaseEntity {
      * Unique session identifier linking this record to the Redis session cache.
      * Generated as UUID v4 on token creation.
      */
-    @Column(name = "session_id", nullable = false, unique = true, length = 36)
+    @Column(name = "session_id", nullable = false, unique = true, length = 36, columnDefinition = "CHAR(36)")
     private String sessionId;
 
     /**
@@ -61,7 +61,7 @@ public class RefreshToken extends BaseEntity {
      * original token. Used for reuse detection — if a revoked token is presented,
      * all tokens in the same family are revoked.
      */
-    @Column(name = "family_id", nullable = false, length = 36)
+    @Column(name = "family_id", nullable = false, length = 36, columnDefinition = "CHAR(36)")
     private String familyId;
 
     /**

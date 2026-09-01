@@ -9,16 +9,16 @@ import jakarta.persistence.*;
 @EntityListeners({BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class Card extends BaseEntity {
 
-    @Column(name = "owner_id", nullable = false, length = 36)
+    @Column(name = "owner_id", nullable = false, length = 36, columnDefinition = "CHAR(36)")
     private String ownerId;
 
-    @Column(name = "account_id", nullable = false, length = 36)
+    @Column(name = "account_id", nullable = false, length = 36, columnDefinition = "CHAR(36)")
     private String accountId;
 
     @Column(name = "card_number_hash", nullable = false)
     private String cardNumberHash;
 
-    @Column(name = "card_last_four", nullable = false, length = 4)
+    @Column(name = "card_last_four", nullable = false, length = 4, columnDefinition = "CHAR(4)")
     private String cardLastFour;
 
     @Enumerated(EnumType.STRING)
@@ -47,7 +47,7 @@ public class Card extends BaseEntity {
     @Column(name = "monthly_limit_cents")
     private Long monthlyLimitCents;
 
-    @Column(name = "currency", nullable = false, length = 3)
+    @Column(name = "currency", nullable = false, length = 3, columnDefinition = "CHAR(3)")
     private String currency;
 
     @Column(name = "pin_set", nullable = false)

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "notifications", schema = "finflow_notifications")
 public class Notification extends BaseAuditableEntity {
 
-    @Column(name = "owner_id", nullable = false, length = 36)
+    @Column(name = "owner_id", nullable = false, length = 36, columnDefinition = "CHAR(36)")
     private String ownerId;
 
     @Enumerated(EnumType.STRING)
@@ -29,7 +29,7 @@ public class Notification extends BaseAuditableEntity {
     @Column(name = "reference_type", length = 50)
     private String referenceType;
 
-    @Column(name = "reference_id", length = 36)
+    @Column(name = "reference_id", length = 36, columnDefinition = "CHAR(36)")
     private String referenceId;
 
     @Column(name = "is_read", nullable = false)

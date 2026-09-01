@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 @Table(name = "admin_audit_log", schema = "finflow_admin")
 public class AdminAuditLog extends BaseAuditableEntity {
 
-    @Column(name = "admin_user_id", nullable = false, length = 36)
+    @Column(name = "admin_user_id", nullable = false, length = 36, columnDefinition = "CHAR(36)")
     private String adminUserId;
 
     @Column(name = "action", nullable = false, length = 100)
@@ -16,7 +16,7 @@ public class AdminAuditLog extends BaseAuditableEntity {
     @Column(name = "target_type", nullable = false, length = 50)
     private String targetType;
 
-    @Column(name = "target_id", nullable = false, length = 36)
+    @Column(name = "target_id", nullable = false, length = 36, columnDefinition = "CHAR(36)")
     private String targetId;
 
     @Column(name = "details", columnDefinition = "TEXT")

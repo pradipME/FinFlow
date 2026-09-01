@@ -33,19 +33,19 @@ public class Transaction extends BaseEntity {
     @Column(name = "amount_cents", nullable = false)
     private Long amountCents;
 
-    @Column(name = "currency", nullable = false, length = 3)
+    @Column(name = "currency", nullable = false, length = 3, columnDefinition = "CHAR(3)")
     private String currency;
 
-    @Column(name = "source_account_id", length = 36)
+    @Column(name = "source_account_id", length = 36, columnDefinition = "CHAR(36)")
     private String sourceAccountId;
 
-    @Column(name = "target_account_id", length = 36)
+    @Column(name = "target_account_id", length = 36, columnDefinition = "CHAR(36)")
     private String targetAccountId;
 
     @Column(name = "fee_amount_cents", nullable = false)
     private Long feeAmountCents;
 
-    @Column(name = "user_id", nullable = false, length = 36)
+    @Column(name = "user_id", nullable = false, length = 36, columnDefinition = "CHAR(36)")
     private String userId;
 
     @Column(name = "completed_at")

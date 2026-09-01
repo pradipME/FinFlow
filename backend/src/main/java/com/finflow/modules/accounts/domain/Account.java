@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 @EntityListeners({com.finflow.shared.domain.BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class Account extends BaseSoftDeletableEntity {
 
-    @Column(name = "owner_id", nullable = false, length = 36)
+    @Column(name = "owner_id", nullable = false, length = 36, columnDefinition = "CHAR(36)")
     private String ownerId;
 
     @Column(name = "account_number", nullable = false, unique = true, length = 20)

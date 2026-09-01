@@ -9,25 +9,25 @@ import jakarta.persistence.*;
 @EntityListeners({BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class TransferTemplate extends BaseEntity {
 
-    @Column(name = "owner_id", nullable = false, length = 36)
+    @Column(name = "owner_id", nullable = false, length = 36, columnDefinition = "CHAR(36)")
     private String ownerId;
 
     @Column(name = "template_name", nullable = false, length = 100)
     private String templateName;
 
-    @Column(name = "source_account_id", nullable = false, length = 36)
+    @Column(name = "source_account_id", nullable = false, length = 36, columnDefinition = "CHAR(36)")
     private String sourceAccountId;
 
-    @Column(name = "target_account_id", length = 36)
+    @Column(name = "target_account_id", length = 36, columnDefinition = "CHAR(36)")
     private String targetAccountId;
 
-    @Column(name = "target_beneficiary_id", length = 36)
+    @Column(name = "target_beneficiary_id", length = 36, columnDefinition = "CHAR(36)")
     private String targetBeneficiaryId;
 
     @Column(name = "amount_cents", nullable = false)
     private Long amountCents;
 
-    @Column(name = "currency", nullable = false, length = 3)
+    @Column(name = "currency", nullable = false, length = 3, columnDefinition = "CHAR(3)")
     private String currency;
 
     @Column(name = "description", length = 255)

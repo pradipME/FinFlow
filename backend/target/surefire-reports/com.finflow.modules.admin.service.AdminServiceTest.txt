@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.finflow.modules.admin.service.AdminServiceTest
 -------------------------------------------------------------------------------
-Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.281 s -- in com.finflow.modules.admin.service.AdminServiceTest
+Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.318 s -- in com.finflow.modules.admin.service.AdminServiceTest

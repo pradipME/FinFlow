@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.finflow.modules.notifications.service.NotificationServiceTest$DeleteNotification
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.160 s -- in com.finflow.modules.notifications.service.NotificationServiceTest$DeleteNotification
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.154 s -- in com.finflow.modules.notifications.service.NotificationServiceTest$DeleteNotification

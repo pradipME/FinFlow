@@ -2,6 +2,7 @@ export interface User {
   id: string;
   email: string;
   username: string;
+  roles: string[];
   status: string;
   createdAt: string;
 }
@@ -33,7 +34,7 @@ export interface AuthState {
 }
 
 export interface AuthContextValue extends AuthState {
-  login: (payload: LoginPayload) => Promise<void>;
+  login: (payload: LoginPayload, remember?: boolean) => Promise<void>;
   register: (payload: RegisterPayload) => Promise<User>;
   logout: () => Promise<void>;
   refreshSession: () => Promise<boolean>;

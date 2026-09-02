@@ -18,6 +18,8 @@
 import {
   forwardRef,
   useCallback,
+  useEffect,
+  useRef,
   type KeyboardEvent,
 } from "react";
 import { MotionConfig } from "framer-motion";
@@ -53,7 +55,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     {
       onSearch,
       searchShortcut,
-      debounceMs: _debounceMs,
+      debounceMs = 300,
       autoFocus = false,
       placeholder = "Search\u2026",
       disabled = false,
@@ -66,6 +68,8 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     },
     ref,
   ) {
+    const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
     // ── Handlers ──────────────────────────────────────────────
 
     const handleKeyDown = useCallback(
@@ -86,9 +90,19 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange?.(e);
+        if (!onSearch) return;
+        if (debounceTimer.current) clearTimeout(debounceTimer.current);
+        const value = e.target.value;
+        debounceTimer.current = setTimeout(() => onSearch(value), debounceMs);
       },
-      [onChange],
+      [onSearch, onChange, debounceMs],
     );
+
+    useEffect(() => {
+      return () => {
+        if (debounceTimer.current) clearTimeout(debounceTimer.current);
+      };
+    }, []);
 
     // ── Render ────────────────────────────────────────────────
 
@@ -99,6 +113,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
         <div className={getWrapperClasses(className)}>
           <Input
             ref={ref}
+            {...rest}
             type="search"
             placeholder={placeholder}
             disabled={disabled}
@@ -110,7 +125,6 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
             onKeyDown={handleKeyDown}
             onChange={handleChange}
             aria-label={rest["aria-label"] ?? "Search"}
-            {...rest}
             leftIcon={<SearchIcon />}
             suffix={
               hasShortcut ? (

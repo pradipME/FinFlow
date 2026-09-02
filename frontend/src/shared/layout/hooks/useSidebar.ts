@@ -9,7 +9,7 @@
  *   const sidebar = useSidebar();
  *   <aside style={{ width: sidebar.mode === "expanded" ? 240 : 64 }}>
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { SidebarMode } from "../types";
 import { useBreakpoint } from "./useBreakpoint";
 import { LAYOUT_STORAGE_KEYS, SIDEBAR_EXPANDED_WIDTH, SIDEBAR_COLLAPSED_WIDTH } from "../constants";
@@ -50,40 +50,35 @@ export interface UseSidebarReturn {
 export function useSidebar(): UseSidebarReturn {
   const { shouldAutoCollapseSidebar, shouldHideSidebar } = useBreakpoint();
 
-  // Store the user's preferred mode in a ref (never overridden by breakpoint logic).
-  const preferredModeRef = useRef<SidebarMode>(readPersistedMode());
+  // User preference (expanded/collapsed). Held in state so toggling re-renders.
+  const [preferredMode, setPreferredMode] = useState<SidebarMode>(readPersistedMode());
   const [isOpen, setIsOpen] = useState(false);
 
   // Derive the effective mode: breakpoint constraints override user preference.
   const mode: SidebarMode = useMemo(() => {
     if (shouldHideSidebar) return "offscreen";
     if (shouldAutoCollapseSidebar) return "collapsed";
-    return preferredModeRef.current;
-  }, [shouldHideSidebar, shouldAutoCollapseSidebar]);
+    return preferredMode;
+  }, [shouldHideSidebar, shouldAutoCollapseSidebar, preferredMode]);
 
-  // Persist user preference (only when it's a user-controlled value).
+  // Persist user preference.
   useEffect(() => {
-    const pref = preferredModeRef.current;
-    if (pref === "expanded" || pref === "collapsed") {
+    if (preferredMode === "expanded" || preferredMode === "collapsed") {
       try {
-        localStorage.setItem(LAYOUT_STORAGE_KEYS.SIDEBAR_MODE, pref);
+        localStorage.setItem(LAYOUT_STORAGE_KEYS.SIDEBAR_MODE, preferredMode);
       } catch {
         // silent
       }
     }
-  }, [mode]);
+  }, [preferredMode]);
 
   // ── Actions ─────────────────────────────────────────────────
   const toggle = useCallback(() => {
-    const next = preferredModeRef.current === "expanded" ? "collapsed" : "expanded";
-    preferredModeRef.current = next;
-    // Force re-render by toggling isOpen imperatively — React will re-derive mode.
-    setIsOpen((prev) => prev);
+    setPreferredMode((current) => (current === "expanded" ? "collapsed" : "expanded"));
   }, []);
 
   const setMode = useCallback((next: SidebarMode) => {
-    preferredModeRef.current = next;
-    setIsOpen((prev) => prev);
+    setPreferredMode(next);
   }, []);
 
   const open = useCallback(() => setIsOpen(true), []);

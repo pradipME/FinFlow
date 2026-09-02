@@ -30,9 +30,10 @@ export function MobileNavigation({ items }: MobileNavigationProps): ReactNode {
         "fixed bottom-0 left-0 right-0",
         "flex items-stretch border-t border-border-default",
         "bg-bg-primary/95 backdrop-blur-md",
+        "pb-[env(safe-area-inset-bottom)]",
         "sm:hidden",
       )}
-      style={{ height: 48, zIndex: 30 }}
+      style={{ height: `calc(56px + env(safe-area-inset-bottom))`, zIndex: 30 }}
       aria-label="Mobile navigation"
     >
       {items.map((item) => (
@@ -41,8 +42,9 @@ export function MobileNavigation({ items }: MobileNavigationProps): ReactNode {
           to={item.href}
           className={({ isActive }) =>
             cn(
-              "flex flex-1 flex-col items-center justify-center gap-0.5",
+              "flex min-h-[48px] flex-1 flex-col items-center justify-center gap-0.5",
               "text-[10px] font-medium transition-colors duration-150",
+              "active:bg-bg-tertiary",
               isActive ? "text-brand-primary" : "text-text-tertiary",
             )
           }

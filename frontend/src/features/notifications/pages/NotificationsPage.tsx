@@ -15,7 +15,7 @@ export function NotificationsPage() {
   const [page, setPage] = useState(0);
   const size = 20;
 
-  const { data, isLoading, error } = useNotifications({ page, size });
+  const { data, isLoading, error, refetch } = useNotifications({ page, size });
   const markRead = useMarkNotificationRead();
   const markAllRead = useMarkAllNotificationsRead();
   const deleteNotification = useDeleteNotification();
@@ -50,7 +50,7 @@ export function NotificationsPage() {
         <ErrorState
           title="Failed to load notifications"
           description="We couldn't fetch your notifications right now."
-          onRetry={() => window.location.reload()}
+          onRetry={() => refetch()}
         />
       </div>
     );

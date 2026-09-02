@@ -1,5 +1,6 @@
 import type { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import { tokenManager } from "./token-manager";
+import { API_ENDPOINTS } from "@/shared/constants";
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -56,7 +57,7 @@ export function setupInterceptors(client: AxiosInstance) {
 
       try {
         const { data } = await client.post<{ data: { accessToken: string; refreshToken: string } }>(
-          "/auth/refresh",
+          API_ENDPOINTS.AUTH.REFRESH,
           { refreshToken },
         );
         tokenManager.setTokens(data.data.accessToken, data.data.refreshToken);

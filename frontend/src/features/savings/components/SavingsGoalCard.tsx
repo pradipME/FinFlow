@@ -3,6 +3,7 @@ import { SavingsGoalStatusBadge } from "./SavingsGoalStatusBadge";
 import type { SavingsGoal } from "../types";
 import { PiggyBank } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
+import { cn } from "@/shared/utils";
 
 interface SavingsGoalCardProps {
   goal: SavingsGoal;
@@ -13,6 +14,7 @@ export function SavingsGoalCard({ goal, onClick }: SavingsGoalCardProps): React.
   const reduced = useReducedMotion();
   const progress = Math.min(100, Math.max(0, goal.progressPercent));
   const complete = progress >= 100;
+  const remainingCents = goal.targetAmountCents - goal.currentAmountCents;
 
   return (
     <button
@@ -38,7 +40,10 @@ export function SavingsGoalCard({ goal, onClick }: SavingsGoalCardProps): React.
 
       <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-bg-tertiary">
         <motion.div
-          className="h-full rounded-full bg-gradient-to-r from-chart-1 to-chart-3"
+          className={cn(
+            "h-full rounded-full bg-gradient-to-r",
+            complete ? "from-credit to-chart-2" : "from-chart-1 to-chart-3",
+          )}
           initial={{ width: reduced ? `${progress}%` : 0 }}
           whileInView={{ width: `${progress}%` }}
           viewport={{ once: true }}
@@ -57,6 +62,21 @@ export function SavingsGoalCard({ goal, onClick }: SavingsGoalCardProps): React.
           <span className="text-text-tertiary">by {formatDate(goal.deadline)}</span>
         )}
       </div>
+
+      <p className="mt-3 border-t border-border-subtle pt-3 text-xs text-text-tertiary">
+        {complete ? (
+          <span className="font-medium text-credit">Goal reached 🎉</span>
+        ) : remainingCents > 0 ? (
+          <span>
+            <span className="font-medium text-text-primary">
+              {formatCurrency(remainingCents / 100, goal.currency)}
+            </span>{" "}
+            remaining to reach your target
+          </span>
+        ) : (
+          <span>Target met — keep saving or raise your goal.</span>
+        )}
+      </p>
     </button>
   );
 }

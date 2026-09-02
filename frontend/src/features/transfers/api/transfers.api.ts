@@ -1,4 +1,4 @@
-import { apiGet, apiPost, apiPatch, apiDelete } from "@/shared/api/client";
+import { apiGet, apiPost, apiPut, apiDelete } from "@/shared/api/client";
 import { API_ENDPOINTS } from "@/shared/constants";
 import type { PaginatedResponse } from "@/shared/types";
 import type {
@@ -27,7 +27,7 @@ export async function updateTemplateApi(
   id: string,
   payload: UpdateTemplatePayload,
 ): Promise<TransferTemplate> {
-  return apiPatch<TransferTemplate>(API_ENDPOINTS.TRANSFERS.TEMPLATE_BY_ID(id), payload);
+  return apiPut<TransferTemplate>(API_ENDPOINTS.TRANSFERS.TEMPLATE_BY_ID(id), payload);
 }
 
 export async function deleteTemplateApi(id: string): Promise<void> {
@@ -51,11 +51,11 @@ export async function createScheduledTransferApi(
 }
 
 export async function pauseScheduledTransferApi(id: string): Promise<ScheduledTransfer> {
-  return apiPost<ScheduledTransfer>(API_ENDPOINTS.TRANSFERS.PAUSE(id), {});
+  return apiPut<ScheduledTransfer>(API_ENDPOINTS.TRANSFERS.PAUSE(id), {});
 }
 
 export async function resumeScheduledTransferApi(id: string): Promise<ScheduledTransfer> {
-  return apiPost<ScheduledTransfer>(API_ENDPOINTS.TRANSFERS.RESUME(id), {});
+  return apiPut<ScheduledTransfer>(API_ENDPOINTS.TRANSFERS.RESUME(id), {});
 }
 
 export async function cancelScheduledTransferApi(id: string): Promise<void> {

@@ -327,8 +327,9 @@ export const CurrencyInput = forwardRef<HTMLInputElement, CurrencyInputProps>(
 
     return (
       <div className={getWrapperClasses(className)}>
-        <Input
+<Input
           ref={setRefs}
+          {...rest}
           type="text"
           inputMode="decimal"
           autoComplete="off"
@@ -355,7 +356,6 @@ export const CurrencyInput = forwardRef<HTMLInputElement, CurrencyInputProps>(
               ? `${generatedId}-minmax-error`
               : rest["aria-describedby"]
           }
-          {...rest}
         />
       </div>
     );

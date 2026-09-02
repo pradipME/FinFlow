@@ -5,24 +5,31 @@ import { Input, Button, Modal, Select } from "@/shared/components";
 import { useCreateDeposit } from "../hooks";
 import { depositSchema } from "../schemas";
 import type { DepositFormData } from "../schemas";
+import type { AccountSummary } from "@/features/accounts/types";
+import { toErrorMessage } from "@/shared/lib";
 
 interface DepositDialogProps {
   open: boolean;
   onClose: () => void;
-  accounts: { id: string; nickname: string | null; accountNumber: string }[];
+  accounts: AccountSummary[];
+  /** Pre-select this account when opening from a specific account context. */
+  defaultAccountId?: string | null;
 }
 
-export function DepositDialog({ open, onClose, accounts }: DepositDialogProps) {
+export function DepositDialog({ open, onClose, accounts, defaultAccountId }: DepositDialogProps) {
   const createDeposit = useCreateDeposit();
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<DepositFormData>({
     resolver: zodResolver(depositSchema),
-    defaultValues: { accountId: "", amountCents: 0, description: "" },
+    defaultValues: { accountId: defaultAccountId ?? "", amountCents: 0, description: "" },
   });
+
+  const currency = accounts.find((a) => a.id === watch("accountId"))?.currency ?? "USD";
 
   async function onSubmit(data: DepositFormData) {
     try {
@@ -35,7 +42,7 @@ export function DepositDialog({ open, onClose, accounts }: DepositDialogProps) {
       reset();
       onClose();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Deposit failed");
+      toast.error(toErrorMessage(err));
     }
   }
 
@@ -59,12 +66,12 @@ export function DepositDialog({ open, onClose, accounts }: DepositDialogProps) {
           error={errors.accountId?.message}
           options={[
             { value: "", label: "Select account..." },
-            ...accounts.map((a) => ({ value: a.id, label: a.nickname ?? a.accountNumber })),
+            ...accounts.map((a) => ({ value: a.id, label: `${a.nickname ?? a.accountNumber} (${a.currency})` })),
           ]}
         />
 
         <Input
-          label="Amount (USD)"
+          label={`Amount (${currency})`}
           type="number"
           step="0.01"
           min="0.01"

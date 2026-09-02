@@ -130,9 +130,7 @@ export function AuthLayout({ children }: AuthLayoutProps): ReactNode {
 
           {/* Footer */}
           <p className="mt-6 text-center text-xs text-text-tertiary">
-            By continuing, you agree to FinFlow&apos;s{" "}
-            <span className="underline transition-colors hover:text-text-secondary">Terms</span> and{" "}
-            <span className="underline transition-colors hover:text-text-secondary">Privacy Policy</span>.
+            By continuing, you agree to FinFlow&apos;s Terms and Privacy Policy.
           </p>
         </motion.div>
       </div>

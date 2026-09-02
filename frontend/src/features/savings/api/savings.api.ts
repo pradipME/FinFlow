@@ -1,4 +1,4 @@
-import { apiGet, apiPost, apiPatch, apiDelete } from "@/shared/api/client";
+import { apiGet, apiPost, apiPut, apiDelete } from "@/shared/api/client";
 import { API_ENDPOINTS } from "@/shared/constants";
 import type { PaginatedResponse } from "@/shared/types";
 import type { SavingsGoal, CreateSavingsGoalPayload, UpdateSavingsGoalPayload, DepositPayload } from "../types";
@@ -16,7 +16,7 @@ export async function createSavingsGoalApi(payload: CreateSavingsGoalPayload): P
 }
 
 export async function updateSavingsGoalApi(id: string, payload: UpdateSavingsGoalPayload): Promise<SavingsGoal> {
-  return apiPatch<SavingsGoal>(API_ENDPOINTS.SAVINGS.BY_ID(id), payload);
+  return apiPut<SavingsGoal>(API_ENDPOINTS.SAVINGS.BY_ID(id), payload);
 }
 
 export async function depositToSavingsGoalApi(id: string, payload: DepositPayload): Promise<SavingsGoal> {
@@ -24,11 +24,11 @@ export async function depositToSavingsGoalApi(id: string, payload: DepositPayloa
 }
 
 export async function pauseSavingsGoalApi(id: string): Promise<SavingsGoal> {
-  return apiPost<SavingsGoal>(API_ENDPOINTS.SAVINGS.PAUSE(id), {});
+  return apiPut<SavingsGoal>(API_ENDPOINTS.SAVINGS.PAUSE(id), {});
 }
 
 export async function resumeSavingsGoalApi(id: string): Promise<SavingsGoal> {
-  return apiPost<SavingsGoal>(API_ENDPOINTS.SAVINGS.RESUME(id), {});
+  return apiPut<SavingsGoal>(API_ENDPOINTS.SAVINGS.RESUME(id), {});
 }
 
 export async function cancelSavingsGoalApi(id: string): Promise<void> {

@@ -37,6 +37,7 @@ export function useCreateDeposit() {
     mutationFn: (payload: DepositPayload) => createDepositApi(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRANSACTIONS });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ACCOUNTS });
     },
   });
 }
@@ -47,6 +48,7 @@ export function useCreateWithdrawal() {
     mutationFn: (payload: WithdrawalPayload) => createWithdrawalApi(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRANSACTIONS });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ACCOUNTS });
     },
   });
 }
@@ -57,6 +59,8 @@ export function useCreateTransfer() {
     mutationFn: (payload: TransferPayload) => createTransferApi(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRANSACTIONS });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ACCOUNTS });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.SAVINGS });
     },
   });
 }
@@ -68,6 +72,7 @@ export function useCancelTransaction() {
     onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRANSACTIONS });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRANSACTION_DETAIL(id) });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ACCOUNTS });
     },
   });
 }

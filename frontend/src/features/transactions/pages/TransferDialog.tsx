@@ -5,24 +5,36 @@ import { Input, Button, Modal, Select } from "@/shared/components";
 import { useCreateTransfer } from "../hooks";
 import { transferSchema } from "../schemas";
 import type { TransferFormData } from "../schemas";
+import type { AccountSummary } from "@/features/accounts/types";
+import { toErrorMessage } from "@/shared/lib";
 
 interface TransferDialogProps {
   open: boolean;
   onClose: () => void;
-  accounts: { id: string; nickname: string | null; accountNumber: string }[];
+  accounts: AccountSummary[];
+  /** Pre-select the source account when opening from a specific account context. */
+  defaultAccountId?: string | null;
 }
 
-export function TransferDialog({ open, onClose, accounts }: TransferDialogProps) {
+export function TransferDialog({ open, onClose, accounts, defaultAccountId }: TransferDialogProps) {
   const createTransfer = useCreateTransfer();
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<TransferFormData>({
     resolver: zodResolver(transferSchema),
-    defaultValues: { sourceAccountId: "", targetAccountId: "", amountCents: 0, description: "" },
+    defaultValues: {
+      sourceAccountId: defaultAccountId ?? "",
+      targetAccountId: "",
+      amountCents: 0,
+      description: "",
+    },
   });
+
+  const sourceCurrency = accounts.find((a) => a.id === watch("sourceAccountId"))?.currency ?? "USD";
 
   async function onSubmit(data: TransferFormData) {
     try {
@@ -36,7 +48,7 @@ export function TransferDialog({ open, onClose, accounts }: TransferDialogProps)
       reset();
       onClose();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Transfer failed");
+      toast.error(toErrorMessage(err));
     }
   }
 
@@ -60,7 +72,7 @@ export function TransferDialog({ open, onClose, accounts }: TransferDialogProps)
           error={errors.sourceAccountId?.message}
           options={[
             { value: "", label: "Select source..." },
-            ...accounts.map((a) => ({ value: a.id, label: a.nickname ?? a.accountNumber })),
+            ...accounts.map((a) => ({ value: a.id, label: `${a.nickname ?? a.accountNumber} (${a.currency})` })),
           ]}
         />
 
@@ -70,12 +82,12 @@ export function TransferDialog({ open, onClose, accounts }: TransferDialogProps)
           error={errors.targetAccountId?.message}
           options={[
             { value: "", label: "Select target..." },
-            ...accounts.map((a) => ({ value: a.id, label: a.nickname ?? a.accountNumber })),
+            ...accounts.map((a) => ({ value: a.id, label: `${a.nickname ?? a.accountNumber} (${a.currency})` })),
           ]}
         />
 
         <Input
-          label="Amount (USD)"
+          label={`Amount (${sourceCurrency})`}
           type="number"
           step="0.01"
           min="0.01"

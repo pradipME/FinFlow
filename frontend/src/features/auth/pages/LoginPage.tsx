@@ -21,15 +21,18 @@ export function LoginPage() {
 
   const {
     register,
+    watch,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
+    defaultValues: { remember: true },
   });
+  const remember = watch("remember");
 
   async function onSubmit(data: LoginFormData) {
     try {
-      await login(data);
+      await login(data, data.remember);
       toast.success("Welcome back!");
       navigate(returnTo, { replace: true });
     } catch (err) {
@@ -82,7 +85,9 @@ export function LoginPage() {
           <label className="flex items-center gap-2 text-sm text-text-secondary">
             <input
               type="checkbox"
+              checked={remember}
               className="h-4 w-4 rounded border-border-default text-brand-primary focus:ring-brand-primary"
+              {...register("remember")}
             />
             Remember me
           </label>

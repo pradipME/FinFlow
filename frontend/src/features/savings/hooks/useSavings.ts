@@ -35,6 +35,7 @@ export function useDepositToSavingsGoal() {
       depositToSavingsGoalApi(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.SAVINGS });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ACCOUNTS });
     },
   });
 }

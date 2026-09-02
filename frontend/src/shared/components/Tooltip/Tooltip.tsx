@@ -21,13 +21,15 @@ const SIDE_POSITIONS = {
  */
 export function Tooltip({ content, children, side = "top", className }: TooltipProps): ReactNode {
   const [open, setOpen] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const show = (): void => {
+    if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => setOpen(true), 150);
   };
   const hide = (): void => {
-    clearTimeout(timer.current);
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = null;
     setOpen(false);
   };
 

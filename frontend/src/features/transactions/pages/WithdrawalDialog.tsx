@@ -5,24 +5,31 @@ import { Input, Button, Modal, Select } from "@/shared/components";
 import { useCreateWithdrawal } from "../hooks";
 import { withdrawalSchema } from "../schemas";
 import type { WithdrawalFormData } from "../schemas";
+import type { AccountSummary } from "@/features/accounts/types";
+import { toErrorMessage } from "@/shared/lib";
 
 interface WithdrawalDialogProps {
   open: boolean;
   onClose: () => void;
-  accounts: { id: string; nickname: string | null; accountNumber: string }[];
+  accounts: AccountSummary[];
+  /** Pre-select this account when opening from a specific account context. */
+  defaultAccountId?: string | null;
 }
 
-export function WithdrawalDialog({ open, onClose, accounts }: WithdrawalDialogProps) {
+export function WithdrawalDialog({ open, onClose, accounts, defaultAccountId }: WithdrawalDialogProps) {
   const createWithdrawal = useCreateWithdrawal();
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<WithdrawalFormData>({
     resolver: zodResolver(withdrawalSchema),
-    defaultValues: { accountId: "", amountCents: 0, description: "" },
+    defaultValues: { accountId: defaultAccountId ?? "", amountCents: 0, description: "" },
   });
+
+  const currency = accounts.find((a) => a.id === watch("accountId"))?.currency ?? "USD";
 
   async function onSubmit(data: WithdrawalFormData) {
     try {
@@ -35,7 +42,7 @@ export function WithdrawalDialog({ open, onClose, accounts }: WithdrawalDialogPr
       reset();
       onClose();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Withdrawal failed");
+      toast.error(toErrorMessage(err));
     }
   }
 
@@ -59,12 +66,12 @@ export function WithdrawalDialog({ open, onClose, accounts }: WithdrawalDialogPr
           error={errors.accountId?.message}
           options={[
             { value: "", label: "Select account..." },
-            ...accounts.map((a) => ({ value: a.id, label: a.nickname ?? a.accountNumber })),
+            ...accounts.map((a) => ({ value: a.id, label: `${a.nickname ?? a.accountNumber} (${a.currency})` })),
           ]}
         />
 
         <Input
-          label="Amount (USD)"
+          label={`Amount (${currency})`}
           type="number"
           step="0.01"
           min="0.01"

@@ -22,9 +22,11 @@ function maskNumber(lastFour: string): string {
 interface CardCardProps {
   card: CardSummary;
   onClick?: () => void;
+  /** Human label for the linked account, e.g. nickname + currency. */
+  accountLabel?: string;
 }
 
-export function CardCard({ card, onClick }: CardCardProps): React.ReactNode {
+export function CardCard({ card, onClick, accountLabel }: CardCardProps): React.ReactNode {
   return (
     <button
       type="button"
@@ -74,13 +76,21 @@ export function CardCard({ card, onClick }: CardCardProps): React.ReactNode {
       </div>
 
       {/* Status strip */}
-      <div className="flex items-center justify-between border border-t-0 border-border-default bg-surface-secondary px-4 py-2.5">
+      <div className="flex items-center justify-between gap-2 border border-t-0 border-border-default bg-surface-secondary px-4 py-2.5">
         <CardStatusBadge status={card.cardStatus} />
-        {card.cardType === "CREDIT" && card.creditLimitCents != null && (
-          <span className="text-xs text-text-tertiary">
-            Limit <span className="font-tabular font-medium text-text-primary">{formatCurrency(card.creditLimitCents / 100, card.currency)}</span>
-          </span>
-        )}
+        <div className="flex shrink-0 items-center gap-3">
+          {accountLabel && (
+            <span className="truncate text-xs text-text-tertiary">
+              <span className="hidden sm:inline">Linked · </span>
+              <span className="text-text-primary">{accountLabel}</span>
+            </span>
+          )}
+          {card.cardType === "CREDIT" && card.creditLimitCents != null && (
+            <span className="text-xs text-text-tertiary">
+              Limit <span className="font-tabular font-medium text-text-primary">{formatCurrency(card.creditLimitCents / 100, card.currency)}</span>
+            </span>
+          )}
+        </div>
       </div>
     </button>
   );

@@ -1,14 +1,20 @@
 export interface ApiResponse<T> {
   success: boolean;
   data: T;
-  error: ApiError | null;
+  meta?: ApiMeta;
+  error?: ApiError | null;
+}
+
+export interface ApiMeta {
   timestamp: string;
   requestId: string;
+  message: string | null;
 }
 
 export interface ApiError {
   code: string;
   message: string;
+  target?: string;
   details?: Record<string, string>;
 }
 
@@ -17,7 +23,7 @@ export interface PaginatedResponse<T> {
   totalElements: number;
   totalPages: number;
   size: number;
-  number: number;
+  page: number;
   first: boolean;
   last: boolean;
 }

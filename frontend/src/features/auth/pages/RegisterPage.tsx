@@ -172,12 +172,7 @@ export function RegisterPage() {
             {...register("termsAccepted")}
           />
           <span className="text-sm text-text-secondary">
-            I agree to the{" "}
-            <span className="underline hover:text-text-primary">Terms</span>{" "}
-            and{" "}
-            <span className="underline hover:text-text-primary">
-              Privacy Policy
-            </span>
+            I agree to the Terms and Privacy Policy.
           </span>
         </label>
         {errors.termsAccepted && (

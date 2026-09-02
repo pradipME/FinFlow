@@ -35,7 +35,7 @@ export function Content({
         marginLeft: sidebarOffset,
       }}
     >
-      <div className={cn("px-4 py-6 sm:px-6 lg:px-8", getContentWidthClasses(width))}>
+      <div className={cn("px-4 py-6 pb-24 sm:px-6 sm:pb-6 lg:px-8", getContentWidthClasses(width))}>
         {children}
       </div>
     </main>

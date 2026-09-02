@@ -30,18 +30,29 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const payload = JSON.parse(
           atob(tokens.accessToken.split(".")[1]),
         ) as Record<string, unknown>;
+        const roles = Array.isArray(payload.roles) ? (payload.roles as string[]) : [];
+        const email = (payload.email as string) ?? "";
+        const username =
+          (payload.username as string) ??
+          (email.split("@")[0] || email || "User");
+        const issuedAt =
+          typeof payload.iat === "number"
+            ? new Date(payload.iat * 1000).toISOString()
+            : new Date().toISOString();
         return {
-          id: payload.sub as string,
-          email: payload.email as string,
-          username: payload.username as string,
+          id: (payload.sub as string) ?? "",
+          email,
+          username,
+          roles,
           status: (payload.status as string) ?? "ACTIVE",
-          createdAt: (payload.iat as string) ?? new Date().toISOString(),
+          createdAt: issuedAt,
         };
       } catch {
         return {
           id: "",
           email: "",
-          username: "",
+          username: "User",
+          roles: [],
           status: "UNKNOWN",
           createdAt: new Date().toISOString(),
         };
@@ -56,7 +67,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     try {
       const tokens = await refreshApi(refreshToken);
-      tokenManager.setTokens(tokens.accessToken, tokens.refreshToken);
+      tokenManager.setTokens(tokens.accessToken, tokens.refreshToken, true);
       const restored = parseUserFromTokens(tokens);
       if (mountedRef.current) setUser(restored);
       return true;
@@ -93,9 +104,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [refreshSession]);
 
   const login = useCallback(
-    async (payload: { identifier: string; password: string }) => {
+    async (payload: { identifier: string; password: string }, remember = true) => {
       const tokens = await loginApi(payload);
-      tokenManager.setTokens(tokens.accessToken, tokens.refreshToken);
+      tokenManager.setTokens(tokens.accessToken, tokens.refreshToken, remember);
       const loggedIn = parseUserFromTokens(tokens);
       setUser(loggedIn);
     },
@@ -115,6 +126,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         id: result.id,
         email: result.email,
         username: result.username,
+        roles: [],
         status: result.status,
         createdAt: result.createdAt,
       } as User;

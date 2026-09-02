@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BadgeCheck, Home, Pencil, UserRound } from "lucide-react";
+import { Home, Pencil, UserRound } from "lucide-react";
 import { Button, ErrorState, Skeleton } from "@/shared/components";
 import { PageHeader } from "@/shared/layout/components/Content/PageHeader";
 import { useProfile, useUpdateProfile } from "../hooks";
@@ -100,7 +100,6 @@ export function ProfilePage() {
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
               <h2 className="text-2xl font-bold tracking-tight text-text-primary">{fullName}</h2>
-              <BadgeCheck size={18} className="text-brand-primary" aria-label="Verified profile" />
             </div>
             <div className="mt-2 flex flex-wrap items-center gap-2">
               <span className="rounded-md border border-border-subtle bg-bg-secondary/60 px-2.5 py-1 font-mono text-xs text-text-secondary">

@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { ShieldCheck, ShieldAlert, Eye, ShieldX, Bell, CheckCheck, CircleCheck, Lock } from "lucide-react";
+import { ShieldCheck, ShieldAlert, Eye, ShieldX, Bell, CircleCheck, Lock } from "lucide-react";
 import { Card, Button, EmptyState, Skeleton, Badge } from "@/shared/components";
 import { PageHeader } from "@/shared/layout/components/Content/PageHeader";
 import { useNotifications, useMarkAllNotificationsRead } from "@/features/notifications/hooks";
@@ -78,10 +78,6 @@ export function SecurityPage() {
             <div className="rounded-lg border border-border-subtle bg-bg-secondary px-4 py-2.5">
               <p className="flex items-center gap-1.5 text-xs text-text-tertiary"><Bell size={13} /> Events</p>
               <p className="mt-0.5 font-medium text-text-primary">{highAlerts} urgent</p>
-            </div>
-            <div className="rounded-lg border border-border-subtle bg-bg-secondary px-4 py-2.5">
-              <p className="flex items-center gap-1.5 text-xs text-text-tertiary"><CheckCheck size={13} /> Verified</p>
-              <p className="mt-0.5 font-medium text-text-primary">Identity confirmed</p>
             </div>
           </div>
         </div>

@@ -12,6 +12,8 @@ export const ROUTES = {
   BENEFICIARIES: "/beneficiaries",
   CARDS: "/cards",
   BUDGETS: "/budgets",
+  SAVINGS: "/savings",
+  PAYMENTS: "/payments",
   SETTINGS: "/settings",
   PROFILE: "/profile",
   ADMIN: "/admin",

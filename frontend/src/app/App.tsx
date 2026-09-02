@@ -1,11 +1,10 @@
 import { lazy, Suspense } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { ROUTES } from "@/shared/constants";
 import { AuthProvider } from "@/features/auth/context";
 import { GuestRoute, ProtectedRoute } from "@/features/auth/components";
 import { AuthLayout } from "./layouts/AuthLayout";
 import { DashboardLayout } from "./layouts/DashboardLayout";
-import { HomePage } from "./pages/HomePage";
 
 const LoginPage = lazy(() =>
   import("@/features/auth/pages/LoginPage").then((m) => ({ default: m.LoginPage })),
@@ -24,6 +23,12 @@ const OtpVerificationPage = lazy(() =>
 );
 const DashboardPage = lazy(() =>
   import("./pages/DashboardPage").then((m) => ({ default: m.DashboardPage })),
+);
+const PaymentsPage = lazy(() =>
+  import("./pages/PaymentsPage").then((m) => ({ default: m.PaymentsPage })),
+);
+const NotFoundPage = lazy(() =>
+  import("./pages/NotFoundPage").then((m) => ({ default: m.NotFoundPage })),
 );
 const AnalyticsPage = lazy(() =>
   import("./pages/AnalyticsPage").then((m) => ({ default: m.AnalyticsPage })),
@@ -138,11 +143,12 @@ function ProtectedRoutes() {
   return (
     <Routes>
       <Route element={<ProtectedRoute />}>
+        <Route path={ROUTES.HOME} element={<Navigate replace to={ROUTES.DASHBOARD} />} />
         <Route
-          path={ROUTES.HOME}
+          path={ROUTES.PAYMENTS}
           element={
             <DashboardLayout>
-              <HomePage />
+              <PaymentsPage />
             </DashboardLayout>
           }
         />
@@ -228,6 +234,10 @@ function ProtectedRoutes() {
         />
         <Route
           path={ROUTES.BUDGETS}
+          element={<Navigate replace to={ROUTES.SAVINGS} />}
+        />
+        <Route
+          path={ROUTES.SAVINGS}
           element={
             <DashboardLayout>
               <SavingsPage />
@@ -279,6 +289,14 @@ function ProtectedRoutes() {
           element={
             <DashboardLayout>
               <AdminUsersPage />
+            </DashboardLayout>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <DashboardLayout>
+              <NotFoundPage />
             </DashboardLayout>
           }
         />

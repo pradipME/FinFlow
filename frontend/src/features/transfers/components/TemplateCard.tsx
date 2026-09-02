@@ -1,14 +1,18 @@
 import { formatCurrency, formatDate } from "@/shared/lib/format";
 import { TransferStatusBadge } from "./TransferStatusBadge";
 import type { TransferTemplate } from "../types";
-import { Repeat, FileText } from "lucide-react";
+import { Repeat, FileText, Send, Receipt } from "lucide-react";
 
 interface TemplateCardProps {
   template: TransferTemplate;
   onClick?: () => void;
+  /** Label for the linked source account. */
+  sourceLabel?: string;
+  /** Label for the target account/beneficiary. */
+  targetLabel?: string;
 }
 
-export function TemplateCard({ template, onClick }: TemplateCardProps): React.ReactNode {
+export function TemplateCard({ template, onClick, sourceLabel, targetLabel }: TemplateCardProps): React.ReactNode {
   return (
     <button
       onClick={onClick}
@@ -29,9 +33,24 @@ export function TemplateCard({ template, onClick }: TemplateCardProps): React.Re
       {template.description && (
         <p className="mt-1 line-clamp-2 text-xs text-text-tertiary">{template.description}</p>
       )}
-      <div className="mt-4 flex items-center justify-between border-t border-border-subtle pt-3 text-xs text-text-tertiary">
-        <span>Created {formatDate(template.createdAt)}</span>
-        <Repeat size={14} className="text-text-disabled" />
+
+      <div className="mt-4 space-y-1.5 border-t border-border-subtle pt-3 text-xs text-text-tertiary">
+        {sourceLabel && (
+          <p className="flex items-center gap-1.5">
+            <Send size={13} className="shrink-0 text-text-disabled" />
+            <span className="truncate">{sourceLabel}</span>
+          </p>
+        )}
+        {targetLabel && (
+          <p className="flex items-center gap-1.5">
+            <Receipt size={13} className="shrink-0 text-text-disabled" />
+            <span className="truncate">{targetLabel}</span>
+          </p>
+        )}
+        <p className="flex items-center justify-between pt-1 text-text-tertiary">
+          <span>Created {formatDate(template.createdAt)}</span>
+          <Repeat size={14} className="text-text-disabled" />
+        </p>
       </div>
     </button>
   );

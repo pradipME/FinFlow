@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useState, useId, type ReactNode } from "react";
 import { cn } from "@/shared/utils";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -32,6 +32,7 @@ export function Tabs({
   className,
 }: TabsProps): ReactNode {
   const reducedMotion = useReducedMotion();
+  const instanceId = useId();
   const isControlled = value !== undefined;
   const [internalValue, setInternalValue] = useState(defaultValue ?? tabs[0]?.value);
   const active = (isControlled ? value : internalValue) ?? tabs[0]?.value;
@@ -87,7 +88,7 @@ export function Tabs({
               {tab.label}
               {variant === "underline" && isActive && (
                 <motion.span
-                  layoutId={`ff-tab-${variant}`}
+                  layoutId={`ff-tab-${instanceId}`}
                   className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-brand-primary"
                   transition={reducedMotion ? { duration: 0 } : { type: "spring", stiffness: 500, damping: 40 }}
                 />

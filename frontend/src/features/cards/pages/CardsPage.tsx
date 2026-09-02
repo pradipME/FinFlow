@@ -1,51 +1,128 @@
-import { EmptyState, ErrorState, Skeleton } from "@/shared/components";
+import { useState } from "react";
+import { toast } from "sonner";
+import { EmptyState, ErrorState, Skeleton, Button } from "@/shared/components";
 import { PageHeader } from "@/shared/layout/components/Content/PageHeader";
 import { CardCard } from "../components";
-import { useCards } from "../hooks";
+import { useCards, useFreezeCard, useUnfreezeCard, useBlockCard } from "../hooks";
+import { useAccounts } from "@/features/accounts/hooks";
+import { CreateCardDialog } from "./CreateCardDialog";
+import { Plus, Snowflake, Sun, Ban } from "lucide-react";
+import type { CardSummary } from "../types";
 
 export function CardsPage() {
   const { data, isLoading, error } = useCards();
+  const { data: accountsData } = useAccounts();
+  const [createOpen, setCreateOpen] = useState(false);
 
-  if (isLoading) {
-    return (
-      <div className="space-y-4">
-        <PageHeader title="Cards" subtitle="Manage your debit and credit cards" />
+  const freezeCard = useFreezeCard();
+  const unfreezeCard = useUnfreezeCard();
+  const blockCard = useBlockCard();
+
+  const accountLabelById = new Map(
+    (accountsData?.content ?? []).map((a) => [
+      a.id,
+      `${a.nickname ?? a.accountNumber} · ${a.currency}`,
+    ]),
+  );
+
+  async function runAction(action: () => Promise<unknown>, successMsg: string) {
+    try {
+      await action();
+      toast.success(successMsg);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Action failed");
+    }
+  }
+
+  return (
+    <div className="space-y-6">
+      <PageHeader
+        title="Cards"
+        subtitle="Manage your debit and credit cards"
+        actions={
+          <Button onClick={() => setCreateOpen(true)}>
+            <Plus size={16} /> Add Card
+          </Button>
+        }
+      />
+
+      {isLoading ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 3 }).map((_, i) => (
             <Skeleton key={i} className="h-40" />
           ))}
         </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="space-y-4">
-        <PageHeader title="Cards" subtitle="Manage your debit and credit cards" />
+      ) : error ? (
         <ErrorState description="Failed to load cards" />
-      </div>
-    );
-  }
-
-  const cards = data?.content ?? [];
-
-  return (
-    <div className="space-y-4">
-      <PageHeader title="Cards" subtitle="Manage your debit and credit cards" />
-
-      {cards.length === 0 ? (
+      ) : (data?.content ?? []).length === 0 ? (
         <EmptyState
-          title="No cards"
-          description="You don't have any cards yet"
+          title="No cards yet"
+          description="Add a card to get a convenient way to pay — directly linked to one of your accounts."
+          action={
+            <Button onClick={() => setCreateOpen(true)}>
+              <Plus size={16} /> Add Card
+            </Button>
+          }
         />
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {cards.map((c) => (
-            <CardCard key={c.id} card={c} />
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {(data?.content ?? []).map((c) => (
+            <CardActions
+              key={c.id}
+              card={c}
+              accountLabel={accountLabelById.get(c.accountId)}
+              onFreeze={freezeCard.mutateAsync}
+              onUnfreeze={unfreezeCard.mutateAsync}
+              onBlock={blockCard.mutateAsync}
+              runAction={runAction}
+            />
           ))}
         </div>
       )}
+
+      <CreateCardDialog open={createOpen} onClose={() => setCreateOpen(false)} />
+    </div>
+  );
+}
+
+function CardActions({
+  card,
+  accountLabel,
+  onFreeze,
+  onUnfreeze,
+  onBlock,
+  runAction,
+}: {
+  card: CardSummary;
+  accountLabel?: string;
+  onFreeze: (id: string) => Promise<unknown>;
+  onUnfreeze: (id: string) => Promise<unknown>;
+  onBlock: (id: string) => Promise<unknown>;
+  runAction: (action: () => Promise<unknown>, msg: string) => Promise<void>;
+}) {
+  const active = card.cardStatus === "ACTIVE";
+  const frozen = card.cardStatus === "FROZEN";
+
+  return (
+    <div className="flex flex-col gap-3">
+      <CardCard card={card} accountLabel={accountLabel} />
+      <div className="flex items-center gap-2">
+        {active && (
+          <Button size="sm" variant="neutral" onClick={() => runAction(() => onFreeze(card.id), "Card frozen")}>
+            <Snowflake size={14} /> Freeze
+          </Button>
+        )}
+        {frozen && (
+          <Button size="sm" variant="neutral" onClick={() => runAction(() => onUnfreeze(card.id), "Card unfrozen")}>
+            <Sun size={14} /> Unfreeze
+          </Button>
+        )}
+        {!["BLOCKED"].includes(card.cardStatus) && (
+          <Button size="sm" variant="neutral" onClick={() => runAction(() => onBlock(card.id), "Card blocked")}>
+            <Ban size={14} /> Block
+          </Button>
+        )}
+      </div>
     </div>
   );
 }

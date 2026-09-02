@@ -1,13 +1,11 @@
 /**
  * CommandPalette — ⌘K global search overlay.
  *
- * Full-screen overlay with a search input and categorized results.
+ * Full-screen overlay with a search input and categorized routes.
  * Keyboard shortcut: Cmd+K (macOS) or Ctrl+K (Windows/Linux).
- *
- * NOTE: This is the shell. Actual search logic and result data
- * will be wired in a future story. For now, it renders the UI structure.
  */
 import { useState, useEffect, useCallback, useRef, type ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 import { Search, X, Command } from "lucide-react";
 import { cn } from "@/shared/utils";
 import { Z_INDEX, SHORTCUTS } from "../../constants";
@@ -19,23 +17,38 @@ interface CommandPaletteProps {
   onClose: () => void;
 }
 
+const PAGES: { label: string; href: string; category: string }[] = [
+  { label: "Dashboard", href: "/dashboard", category: "Navigate" },
+  { label: "Payments", href: "/payments", category: "Navigate" },
+  { label: "Accounts", href: "/accounts", category: "Navigate" },
+  { label: "Transactions", href: "/transactions", category: "Navigate" },
+  { label: "Transfers", href: "/transfers", category: "Navigate" },
+  { label: "Cards", href: "/cards", category: "Navigate" },
+  { label: "Savings", href: "/savings", category: "Navigate" },
+  { label: "Beneficiaries", href: "/beneficiaries", category: "Navigate" },
+  { label: "Notifications", href: "/notifications", category: "Navigate" },
+  { label: "Profile", href: "/profile", category: "Account" },
+  { label: "Settings", href: "/settings", category: "Account" },
+  { label: "Security Center", href: "/security", category: "Account" },
+  { label: "Analytics", href: "/analytics", category: "Account" },
+];
+
 export function CommandPalette({ isOpen, onClose }: CommandPaletteProps): ReactNode {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const handleClose = useCallback(() => {
     setQuery("");
     onClose();
   }, [onClose]);
 
-  // Focus input on open
   useEffect(() => {
     if (isOpen) {
       requestAnimationFrame(() => inputRef.current?.focus());
     }
   }, [isOpen]);
 
-  // Cmd+K / Ctrl+K shortcut
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       const isMod = e.metaKey || e.ctrlKey;
@@ -57,6 +70,19 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps): ReactN
   }, [handleKeyDown]);
 
   if (!isOpen) return null;
+
+  const q = query.trim().toLowerCase();
+  const results = PAGES.filter((p) => !q || p.label.toLowerCase().includes(q) || p.href.includes(q));
+  const grouped = results.reduce<Record<string, typeof results>>((acc, item) => {
+    (acc[item.category] ??= []).push(item);
+    return acc;
+  }, {});
+
+  const run = (href: string) => {
+    setQuery("");
+    onClose();
+    navigate(href);
+  };
 
   return (
     <div
@@ -100,24 +126,40 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps): ReactN
           </button>
         </div>
 
-        {/* Results placeholder */}
+        {/* Results */}
         <div className="max-h-80 overflow-y-auto p-2">
-          <div className="px-3 py-8 text-center text-sm text-text-tertiary">
-            <Command size={24} className="mx-auto mb-2 opacity-50" />
-            <p>Type to search across the application...</p>
-          </div>
+          {Object.entries(grouped).map(([category, items]) => (
+            <div key={category} className="mb-1">
+              <p className="px-3 pb-1 pt-2 text-xs font-semibold uppercase tracking-wide text-text-tertiary">
+                {category}
+              </p>
+              {items.map((item) => (
+                <button
+                  key={item.href}
+                  type="button"
+                  onClick={() => run(item.href)}
+                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-text-primary hover:bg-bg-tertiary"
+                >
+                  <Command size={14} className="text-text-tertiary" />
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          ))}
+          {results.length === 0 && (
+            <div className="px-3 py-8 text-center text-sm text-text-tertiary">
+              No results for “{query}”.
+            </div>
+          )}
         </div>
 
         {/* Footer hint */}
         <div className="flex items-center gap-4 border-t border-border-default px-4 py-2 text-xs text-text-tertiary">
           <span className="flex items-center gap-1">
-            <kbd className="rounded bg-bg-tertiary px-1 py-0.5">↑↓</kbd> navigate
+            <kbd className="rounded bg-bg-tertiary px-1 py-0.5">esc</kbd> close
           </span>
           <span className="flex items-center gap-1">
             <kbd className="rounded bg-bg-tertiary px-1 py-0.5">↵</kbd> select
-          </span>
-          <span className="flex items-center gap-1">
-            <kbd className="rounded bg-bg-tertiary px-1 py-0.5">esc</kbd> close
           </span>
         </div>
       </div>

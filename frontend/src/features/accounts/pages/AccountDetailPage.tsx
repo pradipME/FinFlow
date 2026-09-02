@@ -1,10 +1,16 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, CreditCard, Shield, Clock } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, CreditCard, Shield, Clock, ArrowDownToLine, ArrowUpFromLine, ArrowLeftRight } from "lucide-react";
 import { ROUTES } from "@/shared/constants";
 import { formatCurrency, formatDate } from "@/shared/lib/format";
 import { Button, ErrorState, Skeleton } from "@/shared/components";
 import { PageHeader } from "@/shared/layout";
-import { useAccount, useStatusHistory, useReleaseHold } from "../hooks";
+import {
+  DepositDialog,
+  WithdrawalDialog,
+  TransferDialog,
+} from "@/features/transactions/pages";
+import { useAccount, useAccounts, useStatusHistory, useReleaseHold } from "../hooks";
 import { AccountStatusBadge } from "../components";
 import { ActiveHolds } from "../components";
 import { StatusHistory } from "./StatusHistory";
@@ -19,8 +25,11 @@ export function AccountDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { data: account, isLoading, error, refetch } = useAccount(id!);
+  const { data: accountsData } = useAccounts();
+  const allAccounts = accountsData?.content ?? [];
   const { data: history } = useStatusHistory(id!);
   const releaseHold = useReleaseHold(id!);
+  const [dialog, setDialog] = useState<"deposit" | "withdraw" | "transfer" | null>(null);
 
   if (error) {
     return (
@@ -49,6 +58,31 @@ export function AccountDetailPage() {
         actions={
           <div className="flex items-center gap-3">
             <Button
+              size="sm"
+              variant="primary"
+              leftIcon={<ArrowDownToLine className="h-4 w-4" />}
+              onClick={() => setDialog("deposit")}
+            >
+              Deposit
+            </Button>
+            <Button
+              size="sm"
+              variant="neutral"
+              leftIcon={<ArrowUpFromLine className="h-4 w-4" />}
+              onClick={() => setDialog("withdraw")}
+            >
+              Withdraw
+            </Button>
+            <Button
+              size="sm"
+              variant="neutral"
+              leftIcon={<ArrowLeftRight className="h-4 w-4" />}
+              onClick={() => setDialog("transfer")}
+            >
+              Transfer
+            </Button>
+            <Button
+              size="sm"
               variant="neutral"
               leftIcon={<ArrowLeft className="h-4 w-4" />}
               onClick={() => navigate(ROUTES.ACCOUNTS)}
@@ -144,6 +178,25 @@ export function AccountDetailPage() {
           )}
         </div>
       </div>
+
+      <DepositDialog
+        open={dialog === "deposit"}
+        accounts={allAccounts}
+        defaultAccountId={account.id}
+        onClose={() => setDialog(null)}
+      />
+      <WithdrawalDialog
+        open={dialog === "withdraw"}
+        accounts={allAccounts}
+        defaultAccountId={account.id}
+        onClose={() => setDialog(null)}
+      />
+      <TransferDialog
+        open={dialog === "transfer"}
+        accounts={allAccounts}
+        defaultAccountId={account.id}
+        onClose={() => setDialog(null)}
+      />
     </div>
   );
 }

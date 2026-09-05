@@ -6,7 +6,6 @@ import type {
   AccountDetail,
   StatusHistoryEntry,
   Hold,
-  CreateAccountPayload,
   UpdateAccountPayload,
   ChangeStatusPayload,
   PlaceHoldPayload,
@@ -20,12 +19,6 @@ export async function getMyAccountsApi(
 
 export async function getAccountApi(id: string): Promise<AccountDetail> {
   return apiGet<AccountDetail>(API_ENDPOINTS.ACCOUNTS.BY_ID(id));
-}
-
-export async function createAccountApi(
-  payload: CreateAccountPayload,
-): Promise<AccountDetail> {
-  return apiPost<AccountDetail>(API_ENDPOINTS.ACCOUNTS.BASE, payload);
 }
 
 export async function updateAccountApi(

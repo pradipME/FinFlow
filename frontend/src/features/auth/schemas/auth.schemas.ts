@@ -40,9 +40,9 @@ export const registerSchema = z
     confirmPassword: z.string(),
     phoneNumber: z
       .string()
-      .optional()
-      .refine(
-        (val) => !val || /^\+?[1-9]\d{1,14}$/.test(val),
+      .min(1, "Phone number is required")
+      .regex(
+        /^\+?[1-9]\d{1,14}$/,
         "Please enter a valid phone number in E.164 format",
       ),
     termsAccepted: z.boolean().refine((val) => val === true, {

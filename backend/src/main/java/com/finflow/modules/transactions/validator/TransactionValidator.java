@@ -90,4 +90,25 @@ public class TransactionValidator {
             throw new ValidationException("You do not have access to this account");
         }
     }
+
+    /**
+     * Prevents silent cross-currency transfers: both source and target must
+     * operate in the resolved transaction currency. If the caller requested a
+     * different currency than the accounts, the transfer is rejected rather
+     * than crediting the target in a currency it does not support.
+     */
+    public void validateSameCurrency(Account sourceAccount, Account targetAccount, String currency) {
+        if (currency == null) {
+            throw new ValidationException("Transaction currency is required");
+        }
+        if (!currency.equals(sourceAccount.getCurrency())) {
+            throw new ValidationException(
+                    "Source account currency (" + sourceAccount.getCurrency() + ") does not match requested currency (" + currency + ")");
+        }
+        if (!currency.equals(targetAccount.getCurrency())) {
+            throw new ValidationException(
+                    "Cross-currency transfers are not supported: target account operates in "
+                            + targetAccount.getCurrency() + " but the transaction is in " + currency);
+        }
+    }
 }

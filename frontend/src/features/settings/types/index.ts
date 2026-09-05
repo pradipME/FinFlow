@@ -3,7 +3,6 @@ export type {
   BooleanSettingValue,
   LanguageValue,
   CurrencyDisplayValue,
-  ThemeValue,
   UserSetting,
   UpdateSettingPayload,
   BulkUpdateSettingsPayload,

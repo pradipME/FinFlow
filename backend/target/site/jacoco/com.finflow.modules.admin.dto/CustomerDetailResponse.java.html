@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomerDetailResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.admin.dto</a> &gt; <span class="el_source">CustomerDetailResponse.java</span></div><h1>CustomerDetailResponse.java</h1><pre class="source lang-java linenums">package com.finflow.modules.admin.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
+/**
+ * Detailed customer view used by the admin Customers console.
+ *
+ * &lt;p&gt;Extends the row-level {@link UserManagementResponse} summary with aggregate
+ * counts so the detail page can render account/card/request context.&lt;/p&gt;
+ */
+@Schema(description = &quot;Detailed customer view for the admin Customers console&quot;)
+<span class="nc" id="L12">public record CustomerDetailResponse(</span>
+    @Schema(description = &quot;User ID&quot;)
+    String id,
+    @Schema(description = &quot;User email&quot;)
+    String email,
+    @Schema(description = &quot;User full name&quot;)
+    String fullName,
+    @Schema(description = &quot;Phone number&quot;)
+    String phoneNumber,
+    @Schema(description = &quot;User role&quot;)
+    String role,
+    @Schema(description = &quot;Account status&quot;)
+    String status,
+    @Schema(description = &quot;Registration date&quot;)
+    String createdAt,
+    @Schema(description = &quot;Number of accounts the customer owns&quot;)
+    long accountCount,
+    @Schema(description = &quot;Number of cards the customer holds&quot;)
+    long cardCount,
+    @Schema(description = &quot;Number of pending requests from this customer&quot;)
+    long pendingRequestCount
+) {}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,18 +1,16 @@
-import { useState } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { EmptyState, ErrorState, Skeleton, Button } from "@/shared/components";
 import { PageHeader } from "@/shared/layout/components/Content/PageHeader";
 import { CardCard } from "../components";
 import { useCards, useFreezeCard, useUnfreezeCard, useBlockCard } from "../hooks";
 import { useAccounts } from "@/features/accounts/hooks";
-import { CreateCardDialog } from "./CreateCardDialog";
-import { Plus, Snowflake, Sun, Ban } from "lucide-react";
+import { Snowflake, Sun, Ban, Plus } from "lucide-react";
 import type { CardSummary } from "../types";
 
 export function CardsPage() {
   const { data, isLoading, error } = useCards();
   const { data: accountsData } = useAccounts();
-  const [createOpen, setCreateOpen] = useState(false);
 
   const freezeCard = useFreezeCard();
   const unfreezeCard = useUnfreezeCard();
@@ -40,9 +38,11 @@ export function CardsPage() {
         title="Cards"
         subtitle="Manage your debit and credit cards"
         actions={
-          <Button onClick={() => setCreateOpen(true)}>
-            <Plus size={16} /> Add Card
-          </Button>
+          <Link to="/requests">
+            <Button>
+              <Plus size={16} /> Request Card
+            </Button>
+          </Link>
         }
       />
 
@@ -57,11 +57,13 @@ export function CardsPage() {
       ) : (data?.content ?? []).length === 0 ? (
         <EmptyState
           title="No cards yet"
-          description="Add a card to get a convenient way to pay — directly linked to one of your accounts."
+          description="Submit a card request and an administrator will issue one linked to your account."
           action={
-            <Button onClick={() => setCreateOpen(true)}>
-              <Plus size={16} /> Add Card
-            </Button>
+            <Link to="/requests">
+              <Button>
+                <Plus size={16} /> Request Card
+              </Button>
+            </Link>
           }
         />
       ) : (
@@ -79,8 +81,6 @@ export function CardsPage() {
           ))}
         </div>
       )}
-
-      <CreateCardDialog open={createOpen} onClose={() => setCreateOpen(false)} />
     </div>
   );
 }

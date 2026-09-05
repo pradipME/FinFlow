@@ -1,3 +1,4 @@
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\config\TestDataInitializer.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\FinFlowApplication.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\accounts\controller\AccountController.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\accounts\domain\Account.java
@@ -26,10 +27,17 @@ C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\accounts\service\A
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\accounts\validator\AccountValidator.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\accounts\validator\HoldValidator.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\admin\controller\AdminController.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\admin\controller\AdminEventController.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\admin\domain\AdminAuditLog.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\admin\dto\AdminCreateAccountRequest.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\admin\dto\AdminCreateCustomerRequest.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\admin\dto\AdminDashboardResponse.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\admin\dto\AuditLogResponse.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\admin\dto\CustomerDetailResponse.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\admin\dto\FundAccountRequest.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\admin\dto\UserManagementResponse.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\admin\events\AdminEvent.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\admin\events\AdminEventService.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\admin\mapper\AdminMapper.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\admin\package-info.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\admin\repository\AdminAuditLogRepository.java
@@ -127,6 +135,16 @@ C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\profiles\mapper\Us
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\profiles\package-info.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\profiles\repository\UserProfileRepository.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\profiles\service\UserProfileService.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\requests\controller\RequestController.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\requests\domain\CustomerRequest.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\requests\domain\CustomerRequestStatus.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\requests\domain\CustomerRequestType.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\requests\dto\CreateRequestRequest.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\requests\dto\CustomerRequestResponse.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\requests\dto\RequestDetails.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\requests\dto\ReviewRequestRequest.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\requests\repository\CustomerRequestRepository.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\requests\service\RequestService.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\savings\controller\SavingsGoalController.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\savings\domain\SavingsGoal.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\savings\domain\SavingsGoalStatus.java
@@ -154,6 +172,7 @@ C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\transactions\domai
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\transactions\domain\TransactionStatus.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\transactions\domain\TransactionType.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\transactions\dto\DepositRequest.java
+C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\transactions\dto\MobilePaymentRequest.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\transactions\dto\TransactionDetailResponse.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\transactions\dto\TransactionEntryResponse.java
 C:\Projects\FinFlow\backend\src\main\java\com\finflow\modules\transactions\dto\TransactionSummaryResponse.java

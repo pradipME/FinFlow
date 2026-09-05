@@ -29,5 +29,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByUsernameIgnoreCaseAndIsDeletedFalse(String username);
 
+    Optional<User> findByPhoneNumberAndIsDeletedFalse(String phoneNumber);
+
     long countByStatusAndIsDeletedFalse(UserStatus status);
 }

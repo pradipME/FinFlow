@@ -51,7 +51,7 @@ export function RegisterPage() {
         email: data.email,
         username: data.username,
         password: data.password,
-        phoneNumber: data.phoneNumber || undefined,
+        phoneNumber: data.phoneNumber,
         termsAccepted: data.termsAccepted,
       });
       toast.success("Account created! You can now sign in.");
@@ -95,7 +95,7 @@ export function RegisterPage() {
         />
 
         <Input
-          label="Phone Number (optional)"
+          label="Phone Number"
           type="tel"
           placeholder="+1234567890"
           error={errors.phoneNumber?.message}

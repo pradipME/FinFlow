@@ -26,6 +26,10 @@ import java.util.UUID;
                 example = &quot;john_doe&quot;)
         String username,
 
+        @Schema(description = &quot;Phone number in E.164 format&quot;,
+                example = &quot;+2348012345678&quot;)
+        String phoneNumber,
+
         @Schema(description = &quot;Account status&quot;,
                 example = &quot;ACTIVE&quot;)
         String status,

@@ -5,7 +5,7 @@ export type {
   TransactionSummary,
   TransactionEntry,
   TransactionDetail,
-  DepositPayload,
   WithdrawalPayload,
   TransferPayload,
+  MobilePaymentPayload,
 } from "./transactions.types";

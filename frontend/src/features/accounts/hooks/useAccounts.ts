@@ -3,7 +3,6 @@ import { QUERY_KEYS } from "@/shared/constants";
 import {
   getMyAccountsApi,
   getAccountApi,
-  createAccountApi,
   updateAccountApi,
   changeStatusApi,
   closeAccountApi,
@@ -13,7 +12,6 @@ import {
   getActiveHoldsApi,
 } from "../api";
 import type {
-  CreateAccountPayload,
   UpdateAccountPayload,
   ChangeStatusPayload,
   PlaceHoldPayload,
@@ -33,16 +31,6 @@ export function useAccount(id: string) {
     queryKey: QUERY_KEYS.ACCOUNT_DETAIL(id),
     queryFn: () => getAccountApi(id),
     enabled: !!id,
-  });
-}
-
-export function useCreateAccount() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (payload: CreateAccountPayload) => createAccountApi(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ACCOUNTS });
-    },
   });
 }
 

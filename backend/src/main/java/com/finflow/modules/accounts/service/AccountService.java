@@ -53,19 +53,58 @@ public class AccountService {
         this.holdValidator = holdValidator;
     }
 
+    /**
+     * Maps an existing account to its full detail, for admin read surfaces.
+     * No ownership check is applied — caller (admin path) is responsible for authz.
+     */
+    public AccountDetailResponse toAdminAccountDetail(Account account) {
+        return accountMapper.toDetailResponse(account);
+    }
+
     @Transactional
     public AccountDetailResponse createAccount(CreateAccountRequest request) {
         String currentUserId = SecurityUtil.getCurrentUserId();
+        return createAccount(request.accountType(), request.currency(), request.nickname(),
+                AccountStatus.ACTIVE, currentUserId);
+    }
 
+    /**
+     * Creates an account for a customer as part of the bank-style workflow.
+     *
+     * <p>This method is intended for admin-driven actions (an approved
+     * ACCOUNT_REQUEST or an admin directly creating an account). The created
+     * account is linked to {@code customerId} and starts {@link AccountStatus#ACTIVE}
+     * because it has been approved/created by an administrator.</p>
+     *
+     * @param customerId the customer owning the account
+     * @param accountType the account type
+     * @param currency optional currency code (defaults to USD)
+     * @param nickname optional nickname
+     * @return the created account detail
+     */
+    @Transactional
+    public AccountDetailResponse createAccountForCustomer(String customerId, AccountType accountType,
+                                                          String currency, String nickname) {
+        return createAccount(accountType, currency, nickname, AccountStatus.ACTIVE, customerId);
+    }
+
+    private AccountDetailResponse createAccount(AccountType accountType, String currency,
+                                                String nickname, AccountStatus initialStatus, String ownerId) {
         String accountNumber = generateUniqueAccountNumber();
-        Account account = new Account(currentUserId, accountNumber, request.accountType(), request.currency());
+        Account account = new Account(ownerId, accountNumber, accountType, currency);
+        if (nickname != null) {
+            account.setNickname(nickname);
+        }
+        if (initialStatus == AccountStatus.ACTIVE) {
+            account.activateOnCreate();
+        }
 
         account = accountRepository.save(account);
-        log.info("Account created: id={}, owner={}, type={}", account.getId(), currentUserId, request.accountType());
+        log.info("Account created: id={}, owner={}, type={}", account.getId(), ownerId, accountType);
 
-        AccountHolder holder = new AccountHolder(account, currentUserId, OwnershipType.PRIMARY);
+        AccountHolder holder = new AccountHolder(account, ownerId, OwnershipType.PRIMARY);
         accountHolderRepository.save(holder);
-        log.info("Primary holder added: accountId={}, userId={}", account.getId(), currentUserId);
+        log.info("Primary holder added: accountId={}, userId={}", account.getId(), ownerId);
 
         return accountMapper.toDetailResponse(account);
     }

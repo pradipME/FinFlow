@@ -23,5 +23,6 @@ public interface UserMapper {
      * @return the response DTO containing non-sensitive fields
      */
     @Mapping(source = "status", target = "status")
+    @Mapping(source = "phoneNumber", target = "phoneNumber")
     RegisterResponse toRegisterResponse(User user);
 }

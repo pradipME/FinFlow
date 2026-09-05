@@ -58,10 +58,10 @@ describe("registerSchema", () => {
     expect(result.success).toBe(true);
   });
 
-  it("accepts without optional phone number", () => {
+  it("rejects without phone number (required)", () => {
     const { phoneNumber: _, ...withoutPhone } = valid;
     const result = registerSchema.safeParse(withoutPhone);
-    expect(result.success).toBe(true);
+    expect(result.success).toBe(false);
   });
 
   it("rejects mismatched passwords", () => {

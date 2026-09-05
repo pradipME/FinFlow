@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.finflow.modules.settings.service.SettingServiceTest
 -------------------------------------------------------------------------------
-Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.314 s -- in com.finflow.modules.settings.service.SettingServiceTest
+Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.346 s -- in com.finflow.modules.settings.service.SettingServiceTest

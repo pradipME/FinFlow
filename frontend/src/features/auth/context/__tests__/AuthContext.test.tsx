@@ -87,4 +87,56 @@ describe("AuthProvider", () => {
     expect(result.current.isAuthenticated).toBe(false);
     expect(result.current.user).toBeNull();
   });
+
+  it("restores a session from a persisted refresh token on mount (refresh must not log out)", async () => {
+    const { refreshApi } = await import("../../api");
+    vi.mocked(refreshApi).mockResolvedValue({
+      accessToken:
+        "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjM0IiwiZW1haWwiOiJ0ZXN0QGV4YW1wbGUuY29tIiwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsInN0YXR1cyI6IkFDVElERSIsInJvbGVzIjpbIkNVU1RPTUVSIl0sImlhdCI6MTcwMDAwMDAwMH0.abc123",
+      refreshToken: "persisted-refresh-token",
+      tokenType: "Bearer",
+      expiresIn: 900,
+    });
+
+    tokenManager.setTokens(
+      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjM0IiwiZW1haWwiOiJ0ZXN0QGV4YW1wbGUuY29tIiwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsInN0YXR1cyI6IkFDVElERSIsInJvbGVzIjpbIkNVU1RPTUVSIl0sImlhdCI6MTcwMDAwMDAwMH0.abc123",
+      "persisted-refresh-token",
+    );
+
+    expect(tokenManager.hasRefreshToken()).toBe(true);
+
+    const { result } = renderHook(() => useAuth(), {
+      wrapper: createWrapper(),
+    });
+
+    expect(result.current.isLoading).toBe(true);
+
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 10));
+    });
+
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.isAuthenticated).toBe(true);
+    expect(result.current.user?.email).toBe("test@example.com");
+    expect(result.current.user?.roles).toContain("CUSTOMER");
+  });
+
+  it("falls back to a logged-out state when the persisted refresh token is invalid", async () => {
+    const { refreshApi } = await import("../../api");
+    vi.mocked(refreshApi).mockRejectedValue(new Error("invalid refresh token"));
+
+    tokenManager.setTokens("access-token", "expired-refresh-token");
+
+    const { result } = renderHook(() => useAuth(), {
+      wrapper: createWrapper(),
+    });
+
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 10));
+    });
+
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.isAuthenticated).toBe(false);
+    expect(result.current.user).toBeNull();
+  });
 });

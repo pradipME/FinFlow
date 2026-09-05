@@ -24,5 +24,10 @@ public interface UserRoleRepository extends JpaRepository<UserRole, UUID> {
            "WHERE ur.user = :user AND r.isActive = true")
     List<UserRole> findByUser(@Param("user") User user);
 
+    @Query("SELECT ur FROM UserRole ur " +
+           "JOIN FETCH ur.role r " +
+           "WHERE ur.user.id = :userId AND r.isActive = true")
+    List<UserRole> findByUserId(@Param("userId") UUID userId);
+
     boolean existsByUserAndRole_NameAndRole_IsActiveTrue(User user, String roleName);
 }

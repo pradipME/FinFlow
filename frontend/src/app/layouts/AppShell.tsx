@@ -16,7 +16,6 @@ import {
   Content,
   SearchBar,
   NotificationButton,
-  ThemeSwitcher,
   UserMenu,
   CommandPalette,
   useSidebar,
@@ -37,8 +36,8 @@ import {
   ChartPie,
   ScanSearch,
   LayoutDashboard,
-  Landmark,
   BadgeCheck,
+  ClipboardList,
   type LucideIcon,
 } from "lucide-react";
 
@@ -70,6 +69,7 @@ const defaultGroups: NavGroup[] = [
       { id: "transactions", label: "Transactions", href: "/transactions", icon: ArrowLeftRight },
       { id: "transfers", label: "Transfers", href: "/transfers", icon: ArrowLeftRight },
       { id: "cards", label: "Cards", href: "/cards", icon: CreditCard },
+      { id: "requests", label: "Requests", href: "/requests", icon: ClipboardList },
       { id: "savings", label: "Savings", href: "/savings", icon: PiggyBank },
       { id: "analytics", label: "Analytics", href: "/analytics", icon: ChartPie },
       { id: "beneficiaries", label: "Beneficiaries", href: "/beneficiaries", icon: Users },
@@ -86,16 +86,6 @@ const defaultGroups: NavGroup[] = [
     ],
   },
 ];
-
-const adminGroup: NavGroup = {
-  id: "admin",
-  label: "Admin",
-  items: [
-    { id: "admin-dashboard", label: "Admin Dashboard", href: "/admin/dashboard", icon: Landmark },
-    { id: "admin-users", label: "Users", href: "/admin/users", icon: Users },
-    { id: "admin-audit", label: "Audit Logs", href: "/admin/audit-logs", icon: ScanSearch },
-  ],
-};
 
 const mobileTabs: { href: string; label: string; icon: LucideIcon }[] = [
   { href: "/dashboard", label: "Home", icon: Home },
@@ -130,10 +120,7 @@ export function AppShell({ children, navGroups, headerActions }: AppShellProps):
     navigate("/login", { replace: true });
   }, [logout, navigate]);
 
-  const isAdmin = (user?.roles ?? []).some((r) => r.toUpperCase().includes("ADMIN"));
-  const effectiveGroups =
-    navGroups ??
-    (isAdmin ? [...defaultGroups.slice(0, 1), adminGroup, ...defaultGroups.slice(1)] : defaultGroups);
+  const effectiveGroups = navGroups ?? defaultGroups;
 
   const sidebarOffset =
     sidebar.mode === "overlay" || sidebar.mode === "offscreen" || vpWidth < 768
@@ -145,7 +132,7 @@ export function AppShell({ children, navGroups, headerActions }: AppShellProps):
   const fullName = [profile?.firstName, profile?.lastName].filter(Boolean).join(" ");
   const displayName = fullName || user?.username || "Account Holder";
   const displayEmail = user?.email ?? "";
-  const roleLabel = isAdmin ? "Administrator" : "Member";
+  const roleLabel = "Member";
 
   return (
     <div className="min-h-screen bg-bg-secondary">
@@ -190,7 +177,6 @@ export function AppShell({ children, navGroups, headerActions }: AppShellProps):
           <>
             {headerActions}
             <NotificationButton count={unreadCount ?? 0} onClick={() => navigate("/notifications")} />
-            <ThemeSwitcher />
           </>
         }
       />

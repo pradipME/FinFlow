@@ -43,44 +43,36 @@ public class CardController {
 <span class="nc" id="L43">        return ResponseEntity.ok(ApiResponse.ok(cardService.getCardById(SecurityUtil.getCurrentUserId(), cardId)));</span>
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = &quot;Create a new card&quot;)
-    public ResponseEntity&lt;ApiResponse&lt;CardResponse&gt;&gt; createCard(@Valid @RequestBody CreateCardRequest request) {
-<span class="nc" id="L50">        return ResponseEntity.status(HttpStatus.CREATED)</span>
-<span class="nc" id="L51">                .body(ApiResponse.ok(cardService.createCard(SecurityUtil.getCurrentUserId(), request)));</span>
-    }
-
     @PutMapping(&quot;/{cardId}&quot;)
     @Operation(summary = &quot;Update card details&quot;)
     public ResponseEntity&lt;ApiResponse&lt;CardResponse&gt;&gt; updateCard(@PathVariable UUID cardId,
                                                                 @RequestBody UpdateCardRequest request) {
-<span class="nc" id="L58">        return ResponseEntity.ok(ApiResponse.ok(cardService.updateCard(SecurityUtil.getCurrentUserId(), cardId, request)));</span>
+<span class="nc" id="L50">        return ResponseEntity.ok(ApiResponse.ok(cardService.updateCard(SecurityUtil.getCurrentUserId(), cardId, request)));</span>
     }
 
     @PutMapping(&quot;/{cardId}/freeze&quot;)
     @Operation(summary = &quot;Freeze a card&quot;)
     public ResponseEntity&lt;ApiResponse&lt;CardResponse&gt;&gt; freezeCard(@PathVariable UUID cardId) {
-<span class="nc" id="L64">        return ResponseEntity.ok(ApiResponse.ok(cardService.freezeCard(SecurityUtil.getCurrentUserId(), cardId)));</span>
+<span class="nc" id="L56">        return ResponseEntity.ok(ApiResponse.ok(cardService.freezeCard(SecurityUtil.getCurrentUserId(), cardId)));</span>
     }
 
     @PutMapping(&quot;/{cardId}/unfreeze&quot;)
     @Operation(summary = &quot;Unfreeze a card&quot;)
     public ResponseEntity&lt;ApiResponse&lt;CardResponse&gt;&gt; unfreezeCard(@PathVariable UUID cardId) {
-<span class="nc" id="L70">        return ResponseEntity.ok(ApiResponse.ok(cardService.unfreezeCard(SecurityUtil.getCurrentUserId(), cardId)));</span>
+<span class="nc" id="L62">        return ResponseEntity.ok(ApiResponse.ok(cardService.unfreezeCard(SecurityUtil.getCurrentUserId(), cardId)));</span>
     }
 
     @PutMapping(&quot;/{cardId}/block&quot;)
     @Operation(summary = &quot;Block a card&quot;)
     public ResponseEntity&lt;ApiResponse&lt;CardResponse&gt;&gt; blockCard(@PathVariable UUID cardId) {
-<span class="nc" id="L76">        return ResponseEntity.ok(ApiResponse.ok(cardService.blockCard(SecurityUtil.getCurrentUserId(), cardId)));</span>
+<span class="nc" id="L68">        return ResponseEntity.ok(ApiResponse.ok(cardService.blockCard(SecurityUtil.getCurrentUserId(), cardId)));</span>
     }
 
     @DeleteMapping(&quot;/{cardId}&quot;)
     @Operation(summary = &quot;Cancel a card&quot;)
     public ResponseEntity&lt;ApiResponse&lt;Void&gt;&gt; cancelCard(@PathVariable UUID cardId) {
-<span class="nc" id="L82">        cardService.cancelCard(SecurityUtil.getCurrentUserId(), cardId);</span>
-<span class="nc" id="L83">        return ResponseEntity.ok(ApiResponse.ok(null, &quot;Card cancelled successfully&quot;));</span>
+<span class="nc" id="L74">        cardService.cancelCard(SecurityUtil.getCurrentUserId(), cardId);</span>
+<span class="nc" id="L75">        return ResponseEntity.ok(ApiResponse.ok(null, &quot;Card cancelled successfully&quot;));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

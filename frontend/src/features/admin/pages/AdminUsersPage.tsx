@@ -1,12 +1,81 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Users } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { ChevronLeft, ChevronRight, Plus, Users } from "lucide-react";
 import { PageHeader } from "@/shared/layout";
-import { Button, EmptyState, ErrorState, Skeleton } from "@/shared/components";
-import { useAdminUsers } from "../hooks";
+import { Button, EmptyState, ErrorState, Input, Modal, PasswordInput, Skeleton } from "@/shared/components";
+import { ROUTES } from "@/shared/constants";
+import { useAdminUsers, useCreateAdminCustomer } from "../hooks";
+import type { AdminUserSummary } from "../types";
 import { UserManagementRow } from "../components";
 
+function CreateCustomerModal({ onClose }: { onClose: () => void }) {
+  const create = useCreateAdminCustomer();
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+
+  const submit = () => {
+    if (!email || !username || !phoneNumber || !password) {
+      toast.warning("Email, username, phone and password are required.");
+      return;
+    }
+    create.mutate(
+      { email, username, phoneNumber, password },
+      {
+        onSuccess: () => {
+          toast.success("Customer created");
+          onClose();
+        },
+        onError: (e: unknown) => {
+          const msg =
+            e instanceof Error && e.message ? e.message : "Could not create customer";
+          toast.error(msg);
+        },
+      },
+    );
+  };
+
+  return (
+    <Modal open onClose={onClose} title="Create customer">
+      <div className="space-y-4">
+        <div>
+          <label className="mb-1 block text-sm font-medium text-text-secondary">Email</label>
+          <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="customer@finflow.com" />
+        </div>
+        <div>
+          <label className="mb-1 block text-sm font-medium text-text-secondary">Username</label>
+          <Input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="customer_01" />
+        </div>
+        <div>
+          <label className="mb-1 block text-sm font-medium text-text-secondary">Phone</label>
+          <Input value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} placeholder="+2348012345678" />
+        </div>
+        <div>
+          <label className="mb-1 block text-sm font-medium text-text-secondary">Initial password</label>
+          <PasswordInput
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            autoComplete="new-password"
+            placeholder="8+ chars, upper/lower/digit/symbol"
+          />
+        </div>
+        <div className="flex justify-end gap-2">
+          <Button variant="ghost" onClick={onClose}>Cancel</Button>
+          <Button onClick={submit} isLoading={create.isPending} isDisabled={create.isPending}>
+            Create customer
+          </Button>
+        </div>
+      </div>
+    </Modal>
+  );
+}
+
 export function AdminUsersPage() {
+  const navigate = useNavigate();
   const [page, setPage] = useState(0);
+  const [creating, setCreating] = useState(false);
   const { data, isLoading, error, refetch } = useAdminUsers({ page, size: 20 });
 
   if (error) {
@@ -38,9 +107,22 @@ export function AdminUsersPage() {
   const users = data?.content ?? [];
   const totalPages = data?.totalPages ?? 0;
 
+  const openCustomer = (user: AdminUserSummary) => {
+    navigate(`${ROUTES.ADMIN}/users/${user.id}`);
+  };
+
   return (
     <div className="space-y-6">
-      <PageHeader title="User Management" subtitle="Manage platform users" />
+      <PageHeader
+        title="User Management"
+        subtitle="Manage platform users"
+        actions={
+          <Button size="sm" leftIcon={<Plus size={16} />} onClick={() => setCreating(true)}>
+            Create customer
+          </Button>
+        }
+      />
+      {creating && <CreateCustomerModal onClose={() => setCreating(false)} />}
 
       {users.length === 0 ? (
         <EmptyState
@@ -65,14 +147,16 @@ export function AdminUsersPage() {
                   <tr className="border-b border-border-subtle bg-surface-active/40">
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">Name</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">Email</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">Phone</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">Role</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">Status</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">Registered</th>
+                    <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-text-secondary">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border-subtle">
                   {users.map((user) => (
-                    <UserManagementRow key={user.id} user={user} />
+                    <UserManagementRow key={user.id} user={user} onView={openCustomer} />
                   ))}
                 </tbody>
               </table>

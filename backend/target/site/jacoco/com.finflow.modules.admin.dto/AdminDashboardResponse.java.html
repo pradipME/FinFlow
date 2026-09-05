@@ -6,11 +6,29 @@ import io.swagger.v3.oas.annotations.media.Schema;
 <span class="fc" id="L6">public record AdminDashboardResponse(</span>
     @Schema(description = &quot;Total registered users&quot;)
     long totalUsers,
-    @Schema(description = &quot;Total active accounts&quot;)
+    @Schema(description = &quot;Users with ACTIVE status&quot;)
+    long activeUsers,
+    @Schema(description = &quot;Total active accounts (all statuses)&quot;)
     long totalAccounts,
-    @Schema(description = &quot;Total transactions processed&quot;)
+    @Schema(description = &quot;Accounts with ACTIVE status&quot;)
+    long activeAccounts,
+    @Schema(description = &quot;Total cards issued&quot;)
+    long totalCards,
+    @Schema(description = &quot;Cards with ACTIVE status&quot;)
+    long activeCards,
+    @Schema(description = &quot;Total funds across all customer accounts (sum of available balances in cents)&quot;)
+    long totalFundsCents,
+    @Schema(description = &quot;Pending account requests&quot;)
+    long pendingAccountRequests,
+    @Schema(description = &quot;Pending card requests&quot;)
+    long pendingCardRequests,
+    @Schema(description = &quot;Total pending requests (account + card)&quot;)
+    long pendingRequests,
+    @Schema(description = &quot;Pending customer requests submitted in the last 7 days&quot;)
+    long recentCustomerRequests,
+    @Schema(description = &quot;Total transactions in the system&quot;)
     long totalTransactions,
-    @Schema(description = &quot;Recent admin activity count&quot;)
-    int recentActivity
+    @Schema(description = &quot;Transactions processed in the last 7 days&quot;)
+    long recentTransactions
 ) {}
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

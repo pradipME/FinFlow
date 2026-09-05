@@ -32,15 +32,15 @@ export function TransactionRow({ transaction }: TransactionRowProps): React.Reac
     <button
       type="button"
       onClick={() => navigate(`${ROUTES.TRANSACTIONS}/${transaction.id}`)}
-      className="flex w-full items-center justify-between gap-3 px-3 py-3 text-left transition-colors hover:bg-bg-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+      className="flex w-full items-center justify-between gap-4 rounded-2xl border border-border-default bg-surface-primary px-4 py-3.5 text-left transition-shadow hover:shadow-elevation-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
     >
       <div className="flex min-w-0 flex-1 items-center gap-3">
-        <span className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-lg", meta.tone)}>
-          <Icon size={16} />
+        <span className={cn("flex h-11 w-11 shrink-0 items-center justify-center rounded-full", meta.tone)}>
+          <Icon size={20} />
         </span>
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <p className="truncate text-sm font-medium text-text-primary">{meta.label}</p>
+            <p className="truncate text-sm font-semibold text-text-primary">{meta.label}</p>
             <TransactionStatusBadge status={transaction.transactionStatus} />
           </div>
           <p className="mt-0.5 truncate text-xs text-text-tertiary">
@@ -51,7 +51,7 @@ export function TransactionRow({ transaction }: TransactionRowProps): React.Reac
       </div>
       <span
         className={cn(
-          "font-tabular shrink-0 text-sm font-semibold",
+          "font-tabular shrink-0 text-lg font-semibold",
           meta.sign === "+" ? "text-credit" : meta.sign === "-" ? "text-text-primary" : "text-text-secondary",
         )}
       >

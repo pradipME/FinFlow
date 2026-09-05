@@ -59,6 +59,14 @@ public class Account extends BaseSoftDeletableEntity {
         this.accountStatus = AccountStatus.ACTIVE;
     }
 
+    /**
+     * Activates an account during administrator-driven creation, bypassing the
+     * PENDING lifecycle gate. Intended for admin-created/approved accounts.
+     */
+    public void activateOnCreate() {
+        this.accountStatus = AccountStatus.ACTIVE;
+    }
+
     public void restrict(String reason) {
         if (this.accountStatus == AccountStatus.CLOSED) {
             throw new IllegalStateException("Cannot restrict a closed account");

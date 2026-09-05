@@ -6,6 +6,8 @@ import com.finflow.modules.cards.domain.CardType;
 import com.finflow.modules.cards.dto.*;
 import com.finflow.modules.cards.mapper.CardMapper;
 import com.finflow.modules.cards.repository.CardRepository;
+import com.finflow.modules.accounts.domain.Account;
+import com.finflow.modules.accounts.repository.AccountRepository;
 import com.finflow.shared.exception.BusinessRuleException;
 import com.finflow.shared.exception.ResourceNotFoundException;
 import com.finflow.shared.exception.ValidationException;
@@ -22,84 +24,138 @@ public class CardService {
 
     private final CardRepository cardRepository;
     private final CardMapper mapper;
+    private final AccountRepository accountRepository;
 
-<span class="fc" id="L26">    public CardService(CardRepository cardRepository, CardMapper mapper) {</span>
-<span class="fc" id="L27">        this.cardRepository = cardRepository;</span>
-<span class="fc" id="L28">        this.mapper = mapper;</span>
-<span class="fc" id="L29">    }</span>
+<span class="fc" id="L29">    public CardService(CardRepository cardRepository, CardMapper mapper, AccountRepository accountRepository) {</span>
+<span class="fc" id="L30">        this.cardRepository = cardRepository;</span>
+<span class="fc" id="L31">        this.mapper = mapper;</span>
+<span class="fc" id="L32">        this.accountRepository = accountRepository;</span>
+<span class="fc" id="L33">    }</span>
 
     @Transactional(readOnly = true)
     public Page&lt;CardResponse&gt; getCards(String ownerId, Pageable pageable) {
-<span class="fc" id="L33">        return cardRepository.findByOwnerId(ownerId, pageable).map(mapper::toCardResponse);</span>
+<span class="fc" id="L37">        return cardRepository.findByOwnerId(ownerId, pageable).map(mapper::toCardResponse);</span>
     }
 
     @Transactional(readOnly = true)
     public CardResponse getCardById(String ownerId, UUID cardId) {
-<span class="fc" id="L38">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
-<span class="fc" id="L39">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
-<span class="fc" id="L40">        return mapper.toCardResponse(card);</span>
+<span class="fc" id="L42">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
+<span class="fc" id="L43">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
+<span class="fc" id="L44">        return mapper.toCardResponse(card);</span>
     }
 
     public CardResponse createCard(String ownerId, CreateCardRequest req) {
-<span class="pc bpc" id="L44" title="2 of 6 branches missed.">        if (req.cardType() == null || req.cardholderName() == null || req.cardholderName().isBlank())</span>
-<span class="fc" id="L45">            throw new ValidationException(&quot;Cardholder name and card type are required&quot;);</span>
+<span class="pc bpc" id="L48" title="2 of 6 branches missed.">        if (req.cardType() == null || req.cardholderName() == null || req.cardholderName().isBlank())</span>
+<span class="fc" id="L49">            throw new ValidationException(&quot;Cardholder name and card type are required&quot;);</span>
 
-        CardType cardType;
-        try {
-<span class="fc" id="L49">            cardType = CardType.valueOf(req.cardType());</span>
-<span class="nc" id="L50">        } catch (IllegalArgumentException e) {</span>
-<span class="nc" id="L51">            throw new ValidationException(&quot;Invalid card type: &quot; + req.cardType());</span>
-<span class="fc" id="L52">        }</span>
+<span class="fc" id="L51">        validateAccountOwnership(req.accountId(), ownerId);</span>
 
-<span class="fc" id="L54">        String hash = UUID.randomUUID().toString().replace(&quot;-&quot;, &quot;&quot;);</span>
-<span class="fc" id="L55">        String lastFour = hash.substring(hash.length() - 4);</span>
-<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        String currency = req.currency() != null ? req.currency() : &quot;USD&quot;;</span>
-
-<span class="fc" id="L58">        Card card = new Card(ownerId, req.accountId(), hash, lastFour, cardType,</span>
-<span class="fc" id="L59">            req.cardholderName(), 12, 2028, currency);</span>
-<span class="fc" id="L60">        card.setCreditLimitCents(req.creditLimitCents());</span>
-<span class="fc" id="L61">        card.setDailyLimitCents(req.dailyLimitCents());</span>
-<span class="fc" id="L62">        card.setMonthlyLimitCents(req.monthlyLimitCents());</span>
-
-<span class="fc" id="L64">        card.activate();</span>
-<span class="fc" id="L65">        return mapper.toCardResponse(cardRepository.save(card));</span>
+<span class="fc" id="L53">        CardType cardType = parseCardType(req.cardType());</span>
+<span class="fc" id="L54">        return createAndSave(ownerId, req.accountId(), cardType, req.cardholderName(),</span>
+<span class="fc" id="L55">                req.creditLimitCents(), req.dailyLimitCents(), req.monthlyLimitCents(), req.currency());</span>
     }
 
+    /**
+     * Creates a card for a customer as part of the bank-style workflow
+     * (invoked by an ADMIN approving a CARD_REQUEST).
+     *
+     * &lt;p&gt;Server-side ownership is enforced: {@code accountId} must belong to
+     * {@code customerId} before a card is issued, preventing cross-customer
+     * card creation (IDOR).&lt;/p&gt;
+     *
+     * @param customerId the customer who will own the card
+     * @param accountId the account the card is linked to (must belong to the customer)
+     * @param cardType the card type
+     * @param cardholderName the cardholder name
+     * @param creditLimitCents optional credit limit
+     * @param dailyLimitCents optional daily limit
+     * @param monthlyLimitCents optional monthly limit
+     * @param currency optional currency
+     * @return the created (ACTIVE) card
+     */
+    @Transactional
+    public CardResponse createCardForCustomer(String customerId, String accountId, CardType cardType,
+                                              String cardholderName, Long creditLimitCents,
+                                              Long dailyLimitCents, Long monthlyLimitCents, String currency) {
+<span class="nc" id="L80">        validateAccountOwnership(accountId, customerId);</span>
+<span class="nc" id="L81">        return createAndSave(customerId, accountId, cardType, cardholderName,</span>
+                creditLimitCents, dailyLimitCents, monthlyLimitCents, currency);
+    }
+
+    private CardResponse createAndSave(String ownerId, String accountId, CardType cardType,
+                                       String cardholderName, Long creditLimitCents,
+                                       Long dailyLimitCents, Long monthlyLimitCents, String currency) {
+<span class="fc" id="L88">        String hash = UUID.randomUUID().toString().replace(&quot;-&quot;, &quot;&quot;);</span>
+<span class="fc" id="L89">        String lastFour = hash.substring(hash.length() - 4);</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        String curr = currency != null ? currency : &quot;USD&quot;;</span>
+
+<span class="fc" id="L92">        Card card = new Card(ownerId, accountId, hash, lastFour, cardType,</span>
+<span class="fc" id="L93">            cardholderName, 12, 2028, curr);</span>
+<span class="fc" id="L94">        card.setCreditLimitCents(creditLimitCents);</span>
+<span class="fc" id="L95">        card.setDailyLimitCents(dailyLimitCents);</span>
+<span class="fc" id="L96">        card.setMonthlyLimitCents(monthlyLimitCents);</span>
+
+<span class="fc" id="L98">        card.activate();</span>
+<span class="fc" id="L99">        return mapper.toCardResponse(cardRepository.save(card));</span>
+    }
+
+    private CardType parseCardType(String raw) {
+        try {
+<span class="fc" id="L104">            return CardType.valueOf(raw);</span>
+<span class="nc" id="L105">        } catch (IllegalArgumentException | NullPointerException e) {</span>
+<span class="nc" id="L106">            throw new ValidationException(&quot;Invalid card type: &quot; + raw);</span>
+        }
+    }
+
+    private void validateAccountOwnership(String accountId, String ownerId) {
+        UUID accountUuid;
+        try {
+<span class="fc" id="L113">            accountUuid = UUID.fromString(accountId);</span>
+<span class="nc" id="L114">        } catch (IllegalArgumentException | NullPointerException e) {</span>
+<span class="nc" id="L115">            throw new ValidationException(&quot;Invalid account id&quot;);</span>
+<span class="fc" id="L116">        }</span>
+<span class="fc" id="L117">        Account account = accountRepository.findByIdAndIsDeletedFalse(accountUuid)</span>
+<span class="pc" id="L118">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Account&quot;, accountId));</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (!account.getOwnerId().equals(ownerId)) {</span>
+<span class="fc" id="L120">            throw new ValidationException(&quot;Account does not belong to the card owner&quot;);</span>
+        }
+<span class="fc" id="L122">    }</span>
+
     public CardResponse updateCard(String ownerId, UUID cardId, UpdateCardRequest req) {
-<span class="nc" id="L69">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
-<span class="nc" id="L70">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
-<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (req.cardholderName() != null) card.setCardholderName(req.cardholderName());</span>
-<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (req.dailyLimitCents() != null) card.setDailyLimitCents(req.dailyLimitCents());</span>
-<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (req.monthlyLimitCents() != null) card.setMonthlyLimitCents(req.monthlyLimitCents());</span>
-<span class="nc" id="L74">        return mapper.toCardResponse(cardRepository.save(card));</span>
+<span class="nc" id="L125">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
+<span class="nc" id="L126">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        if (req.cardholderName() != null) card.setCardholderName(req.cardholderName());</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        if (req.dailyLimitCents() != null) card.setDailyLimitCents(req.dailyLimitCents());</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        if (req.monthlyLimitCents() != null) card.setMonthlyLimitCents(req.monthlyLimitCents());</span>
+<span class="nc" id="L130">        return mapper.toCardResponse(cardRepository.save(card));</span>
     }
 
     public CardResponse freezeCard(String ownerId, UUID cardId) {
-<span class="fc" id="L78">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
-<span class="pc" id="L79">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
-<span class="fc" id="L80">        card.freeze();</span>
-<span class="fc" id="L81">        return mapper.toCardResponse(cardRepository.save(card));</span>
+<span class="fc" id="L134">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
+<span class="pc" id="L135">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
+<span class="fc" id="L136">        card.freeze();</span>
+<span class="fc" id="L137">        return mapper.toCardResponse(cardRepository.save(card));</span>
     }
 
     public CardResponse unfreezeCard(String ownerId, UUID cardId) {
-<span class="fc" id="L85">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
-<span class="pc" id="L86">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
-<span class="fc" id="L87">        card.unfreeze();</span>
-<span class="fc" id="L88">        return mapper.toCardResponse(cardRepository.save(card));</span>
+<span class="fc" id="L141">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
+<span class="pc" id="L142">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
+<span class="fc" id="L143">        card.unfreeze();</span>
+<span class="fc" id="L144">        return mapper.toCardResponse(cardRepository.save(card));</span>
     }
 
     public CardResponse blockCard(String ownerId, UUID cardId) {
-<span class="fc" id="L92">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
-<span class="pc" id="L93">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
-<span class="fc" id="L94">        card.block();</span>
-<span class="fc" id="L95">        return mapper.toCardResponse(cardRepository.save(card));</span>
+<span class="fc" id="L148">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
+<span class="pc" id="L149">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
+<span class="fc" id="L150">        card.block();</span>
+<span class="fc" id="L151">        return mapper.toCardResponse(cardRepository.save(card));</span>
     }
 
     public void cancelCard(String ownerId, UUID cardId) {
-<span class="fc" id="L99">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
-<span class="pc" id="L100">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
-<span class="fc" id="L101">        card.cancel();</span>
-<span class="fc" id="L102">        cardRepository.save(card);</span>
-<span class="fc" id="L103">    }</span>
+<span class="fc" id="L155">        Card card = cardRepository.findByIdAndOwnerId(cardId, ownerId)</span>
+<span class="pc" id="L156">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
+<span class="fc" id="L157">        card.cancel();</span>
+<span class="fc" id="L158">        cardRepository.save(card);</span>
+<span class="fc" id="L159">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

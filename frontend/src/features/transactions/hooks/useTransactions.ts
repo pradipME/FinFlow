@@ -3,15 +3,15 @@ import { QUERY_KEYS } from "@/shared/constants";
 import {
   getMyTransactionsApi,
   getTransactionApi,
-  createDepositApi,
   createWithdrawalApi,
   createTransferApi,
+  createPaymentApi,
   cancelTransactionApi,
 } from "../api";
 import type {
-  DepositPayload,
   WithdrawalPayload,
   TransferPayload,
+  MobilePaymentPayload,
 } from "../types";
 
 export function useTransactions(
@@ -28,17 +28,6 @@ export function useTransaction(id: string) {
     queryKey: QUERY_KEYS.TRANSACTION_DETAIL(id),
     queryFn: () => getTransactionApi(id),
     enabled: !!id,
-  });
-}
-
-export function useCreateDeposit() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (payload: DepositPayload) => createDepositApi(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRANSACTIONS });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ACCOUNTS });
-    },
   });
 }
 
@@ -61,6 +50,17 @@ export function useCreateTransfer() {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRANSACTIONS });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ACCOUNTS });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.SAVINGS });
+    },
+  });
+}
+
+export function useCreatePayment() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: MobilePaymentPayload) => createPaymentApi(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TRANSACTIONS });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ACCOUNTS });
     },
   });
 }

@@ -36,22 +36,6 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @PostMapping("/deposit")
-    @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Create a deposit", description = "Deposits funds into an account.")
-    public ResponseEntity<ApiResponse<TransactionDetailResponse>> createDeposit(
-            @Valid @RequestBody DepositRequest request,
-            @RequestHeader(value = RequestHeaders.IDEMPOTENCY_KEY, required = false) String idempotencyKey) {
-        if (idempotencyKey != null) {
-            request = new DepositRequest(request.accountId(), request.amountCents(),
-                    request.currency(), request.description(), idempotencyKey);
-        }
-        log.info("Deposit request: accountId={}, amountCents={}", request.accountId(), request.amountCents());
-        TransactionDetailResponse response = transactionService.createDeposit(request);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.ok(response, "Deposit completed successfully"));
-    }
-
     @PostMapping("/withdrawal")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a withdrawal", description = "Withdraws funds from an account.")
@@ -83,6 +67,24 @@ public class TransactionController {
         TransactionDetailResponse response = transactionService.createTransfer(request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.ok(response, "Transfer completed successfully"));
+    }
+
+    @PostMapping("/pay")
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Pay another customer by mobile number",
+            description = "Debits the sender's account and credits the recipient resolved by mobile number.")
+    public ResponseEntity<ApiResponse<TransactionDetailResponse>> payByMobile(
+            @Valid @RequestBody MobilePaymentRequest request,
+            @RequestHeader(value = RequestHeaders.IDEMPOTENCY_KEY, required = false) String idempotencyKey) {
+        if (idempotencyKey != null) {
+            request = new MobilePaymentRequest(request.sourceAccountId(), request.recipientMobile(),
+                    request.amountCents(), request.currency(), request.description(), idempotencyKey);
+        }
+        log.info("Mobile payment request: source={}, recipient={}, amountCents={}",
+                request.sourceAccountId(), request.recipientMobile(), request.amountCents());
+        TransactionDetailResponse response = transactionService.payByMobile(request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.ok(response, "Payment completed successfully"));
     }
 
     @GetMapping("/{transactionId}")

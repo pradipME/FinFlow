@@ -29,35 +29,39 @@ public class CorsConfig {
 <span class="nc" id="L29">        origins.add(&quot;https://*.finflow.com&quot;);</span>
 <span class="nc" id="L30">        origins.add(&quot;http://localhost:3000&quot;);</span>
 <span class="nc" id="L31">        origins.add(&quot;http://localhost:5173&quot;);</span>
-<span class="nc" id="L32">        origins.addAll(configuredOrigins);</span>
+        // Vite dev server picks the first free port (5173, 5174, 5175, ...).
+        // Allow any localhost port so local development works regardless of
+        // which port Vite binds to.
+<span class="nc" id="L35">        origins.add(&quot;http://localhost:*&quot;);</span>
+<span class="nc" id="L36">        origins.addAll(configuredOrigins);</span>
 
-<span class="nc" id="L34">        config.setAllowedOriginPatterns(List.copyOf(origins));</span>
-<span class="nc" id="L35">        config.setAllowedMethods(List.of(&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;PATCH&quot;, &quot;DELETE&quot;, &quot;OPTIONS&quot;));</span>
-<span class="nc" id="L36">        config.setAllowedHeaders(List.of(</span>
+<span class="nc" id="L38">        config.setAllowedOriginPatterns(List.copyOf(origins));</span>
+<span class="nc" id="L39">        config.setAllowedMethods(List.of(&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;PATCH&quot;, &quot;DELETE&quot;, &quot;OPTIONS&quot;));</span>
+<span class="nc" id="L40">        config.setAllowedHeaders(List.of(</span>
                 &quot;Authorization&quot;, &quot;Content-Type&quot;, &quot;X-Request-Id&quot;,
                 &quot;X-Idempotency-Key&quot;, &quot;Idempotency-Key&quot;, &quot;Accept&quot;, &quot;Origin&quot;,
                 &quot;X-Device-Fingerprint&quot;
         ));
-<span class="nc" id="L41">        config.setExposedHeaders(List.of(</span>
+<span class="nc" id="L45">        config.setExposedHeaders(List.of(</span>
                 &quot;X-Request-Id&quot;, &quot;X-RateLimit-Limit&quot;, &quot;X-RateLimit-Remaining&quot;,
                 &quot;X-RateLimit-Reset&quot;, &quot;Api-Version&quot;
         ));
-<span class="nc" id="L45">        config.setAllowCredentials(true);</span>
-<span class="nc" id="L46">        config.setMaxAge(86400L);</span>
+<span class="nc" id="L49">        config.setAllowCredentials(true);</span>
+<span class="nc" id="L50">        config.setMaxAge(86400L);</span>
 
-<span class="nc" id="L48">        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();</span>
-<span class="nc" id="L49">        source.registerCorsConfiguration(&quot;/**&quot;, config);</span>
-<span class="nc" id="L50">        return source;</span>
+<span class="nc" id="L52">        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();</span>
+<span class="nc" id="L53">        source.registerCorsConfiguration(&quot;/**&quot;, config);</span>
+<span class="nc" id="L54">        return source;</span>
     }
 
     private static List&lt;String&gt; parseOrigins(String raw) {
-<span class="nc bnc" id="L54" title="All 4 branches missed.">        if (raw == null || raw.isBlank()) {</span>
-<span class="nc" id="L55">            return List.of();</span>
+<span class="nc bnc" id="L58" title="All 4 branches missed.">        if (raw == null || raw.isBlank()) {</span>
+<span class="nc" id="L59">            return List.of();</span>
         }
-<span class="nc" id="L57">        return Arrays.stream(raw.split(&quot;,&quot;))</span>
-<span class="nc" id="L58">                .map(String::trim)</span>
-<span class="nc bnc" id="L59" title="All 2 branches missed.">                .filter(origin -&gt; !origin.isEmpty())</span>
-<span class="nc" id="L60">                .toList();</span>
+<span class="nc" id="L61">        return Arrays.stream(raw.split(&quot;,&quot;))</span>
+<span class="nc" id="L62">                .map(String::trim)</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">                .filter(origin -&gt; !origin.isEmpty())</span>
+<span class="nc" id="L64">                .toList();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

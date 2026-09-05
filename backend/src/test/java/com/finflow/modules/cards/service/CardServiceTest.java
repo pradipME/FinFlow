@@ -1,5 +1,8 @@
 package com.finflow.modules.cards.service;
 
+import com.finflow.modules.accounts.domain.Account;
+import com.finflow.modules.accounts.domain.AccountType;
+import com.finflow.modules.accounts.repository.AccountRepository;
 import com.finflow.modules.cards.domain.*;
 import com.finflow.modules.cards.dto.*;
 import com.finflow.modules.cards.mapper.CardMapper;
@@ -36,6 +39,7 @@ class CardServiceTest {
 
     @Mock private CardRepository cardRepository;
     @Mock private CardMapper mapper;
+    @Mock private AccountRepository accountRepository;
 
     @InjectMocks private CardService service;
 
@@ -107,8 +111,14 @@ class CardServiceTest {
         @Test
         @DisplayName("creates and activates a debit card")
         void createsDebitCard() {
-            CreateCardRequest req = new CreateCardRequest(UUID.randomUUID().toString(), "DEBIT",
+            String accountId = UUID.randomUUID().toString();
+            CreateCardRequest req = new CreateCardRequest(accountId, "DEBIT",
                 "John Doe", null, 50000L, 500000L, "USD");
+            Account account = new Account(ownerId, "ACC123456", AccountType.CHECKING, "USD");
+            ReflectionTestUtils.setField(account, "id", UUID.fromString(accountId));
+            when(accountRepository.findByIdAndIsDeletedFalse(UUID.fromString(accountId)))
+                .thenReturn(Optional.of(account));
+
             Card saved = buildCard();
             CardResponse resp = mock(CardResponse.class);
             when(cardRepository.save(any(Card.class))).thenReturn(saved);
@@ -118,6 +128,21 @@ class CardServiceTest {
 
             assertThat(result).isEqualTo(resp);
             verify(cardRepository).save(any(Card.class));
+        }
+
+        @Test
+        @DisplayName("throws ValidationException when account does not belong to owner")
+        void throwsWhenAccountNotOwned() {
+            String accountId = UUID.randomUUID().toString();
+            CreateCardRequest req = new CreateCardRequest(accountId, "DEBIT",
+                "John Doe", null, null, null, "USD");
+            Account other = new Account(UUID.randomUUID().toString(), "ACC123456", AccountType.CHECKING, "USD");
+            ReflectionTestUtils.setField(other, "id", UUID.fromString(accountId));
+            when(accountRepository.findByIdAndIsDeletedFalse(UUID.fromString(accountId)))
+                .thenReturn(Optional.of(other));
+
+            assertThatThrownBy(() -> service.createCard(ownerId, req))
+                .isInstanceOf(ValidationException.class);
         }
 
         @Test

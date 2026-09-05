@@ -48,6 +48,11 @@ public interface AccountRepository extends JpaRepository<Account, UUID> {
     @Query("SELECT a FROM Account a WHERE a.id = :id AND a.isDeleted = false")
     Optional<Account> findByIdAndIsDeletedFalse(@Param("id") UUID id);
 
-    @Query("SELECT a FROM Account a WHERE a.ownerId = :ownerId AND a.isDeleted = false")
+    @Query("SELECT COUNT(a) FROM Account a WHERE a.ownerId = :ownerId AND a.isDeleted = false")
     long countByOwnerId(@Param("ownerId") String ownerId);
+
+    @Query("SELECT COALESCE(SUM(a.availableBalanceCents), 0) FROM Account a WHERE a.isDeleted = false")
+    long sumAvailableBalanceCents();
+
+    long countByAccountStatusAndIsDeletedFalse(AccountStatus status);
 }

@@ -35,6 +35,50 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
 
     Optional<Transaction> findByIdempotencyKey(String idempotencyKey);
 
+    @Query("SELECT t FROM Transaction t WHERE t.userId = :userId " +
+           "AND (:type IS NULL OR t.transactionType = :type) " +
+           "AND (:status IS NULL OR t.transactionStatus = :status) " +
+           "AND (:accountId IS NULL OR t.sourceAccountId = :accountId OR t.targetAccountId = :accountId) " +
+           "AND (:fromDate IS NULL OR t.createdAt >= :fromDate) " +
+           "AND (:toDate IS NULL OR t.createdAt <= :toDate) " +
+           "ORDER BY t.createdAt DESC")
+    Page<Transaction> findMyTransactions(
+            @Param("userId") String userId,
+            @Param("type") TransactionType type,
+            @Param("status") TransactionStatus status,
+            @Param("accountId") String accountId,
+            @Param("fromDate") LocalDateTime fromDate,
+            @Param("toDate") LocalDateTime toDate,
+            Pageable pageable);
+
     @Query("SELECT t FROM Transaction t WHERE t.sourceAccountId = :accountId OR t.targetAccountId = :accountId ORDER BY t.createdAt DESC")
     Page<Transaction> findByAccountId(@Param("accountId") String accountId, Pageable pageable);
+
+    /**
+     * Returns transactions the customer can see: those they initiated, or those
+     * that touch an account owned by them (source or target). This makes both
+     * outgoing and incoming transfers visible while preventing access to other
+     * customers' transactions (IDOR-safe).
+     */
+    @Query("SELECT DISTINCT t FROM Transaction t WHERE " +
+           "(t.userId = :userId " +
+           "OR (:accountIds IS NOT NULL AND (t.sourceAccountId IN :accountIds OR t.targetAccountId IN :accountIds))) " +
+           "AND (:type IS NULL OR t.transactionType = :type) " +
+           "AND (:status IS NULL OR t.transactionStatus = :status) " +
+           "AND (:accountId IS NULL OR t.sourceAccountId = :accountId OR t.targetAccountId = :accountId) " +
+           "AND (:fromDate IS NULL OR t.createdAt >= :fromDate) " +
+           "AND (:toDate IS NULL OR t.createdAt <= :toDate) " +
+           "ORDER BY t.createdAt DESC")
+    Page<Transaction> findCustomerVisible(
+            @Param("userId") String userId,
+            @Param("accountIds") java.util.Collection<String> accountIds,
+            @Param("type") TransactionType type,
+            @Param("status") TransactionStatus status,
+            @Param("accountId") String accountId,
+            @Param("fromDate") LocalDateTime fromDate,
+            @Param("toDate") LocalDateTime toDate,
+            Pageable pageable);
+
+    @Query("SELECT COUNT(t) FROM Transaction t WHERE t.createdAt >= :fromDate")
+    long countSince(@Param("fromDate") LocalDateTime fromDate);
 }

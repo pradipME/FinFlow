@@ -9,23 +9,24 @@ import java.time.format.DateTimeFormatter;
 @Mapper(componentModel = &quot;spring&quot;)
 public interface UserProfileMapper {
 
-    default UserProfileResponse toResponse(UserProfile profile) {
+    default UserProfileResponse toResponse(UserProfile profile, String phoneNumber) {
 <span class="nc bnc" id="L13" title="All 2 branches missed.">        if (profile == null) return null;</span>
 <span class="nc" id="L14">        return new UserProfileResponse(</span>
 <span class="nc bnc" id="L15" title="All 2 branches missed.">                profile.getId() != null ? profile.getId().toString() : null,</span>
 <span class="nc" id="L16">                profile.getUserId(),</span>
-<span class="nc" id="L17">                profile.getFirstName(),</span>
-<span class="nc" id="L18">                profile.getLastName(),</span>
-<span class="nc bnc" id="L19" title="All 2 branches missed.">                profile.getDateOfBirth() != null ? profile.getDateOfBirth().toString() : null,</span>
-<span class="nc" id="L20">                profile.getAddressLine1(),</span>
-<span class="nc" id="L21">                profile.getAddressLine2(),</span>
-<span class="nc" id="L22">                profile.getCity(),</span>
-<span class="nc" id="L23">                profile.getState(),</span>
-<span class="nc" id="L24">                profile.getPostalCode(),</span>
-<span class="nc" id="L25">                profile.getCountry(),</span>
-<span class="nc" id="L26">                profile.getAvatarUrl(),</span>
-<span class="nc bnc" id="L27" title="All 2 branches missed.">                profile.getCreatedAt() != null ? profile.getCreatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) : null,</span>
-<span class="nc bnc" id="L28" title="All 2 branches missed.">                profile.getUpdatedAt() != null ? profile.getUpdatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) : null</span>
+                phoneNumber,
+<span class="nc" id="L18">                profile.getFirstName(),</span>
+<span class="nc" id="L19">                profile.getLastName(),</span>
+<span class="nc bnc" id="L20" title="All 2 branches missed.">                profile.getDateOfBirth() != null ? profile.getDateOfBirth().toString() : null,</span>
+<span class="nc" id="L21">                profile.getAddressLine1(),</span>
+<span class="nc" id="L22">                profile.getAddressLine2(),</span>
+<span class="nc" id="L23">                profile.getCity(),</span>
+<span class="nc" id="L24">                profile.getState(),</span>
+<span class="nc" id="L25">                profile.getPostalCode(),</span>
+<span class="nc" id="L26">                profile.getCountry(),</span>
+<span class="nc" id="L27">                profile.getAvatarUrl(),</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">                profile.getCreatedAt() != null ? profile.getCreatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) : null,</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">                profile.getUpdatedAt() != null ? profile.getUpdatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) : null</span>
         );
     }
 }

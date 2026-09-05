@@ -8,6 +8,7 @@ C:\Projects\FinFlow\backend\src\test\java\com\finflow\modules\beneficiaries\serv
 C:\Projects\FinFlow\backend\src\test\java\com\finflow\modules\cards\service\CardServiceTest.java
 C:\Projects\FinFlow\backend\src\test\java\com\finflow\modules\notifications\service\NotificationServiceTest.java
 C:\Projects\FinFlow\backend\src\test\java\com\finflow\modules\profiles\service\UserProfileServiceTest.java
+C:\Projects\FinFlow\backend\src\test\java\com\finflow\modules\requests\service\RequestServiceTest.java
 C:\Projects\FinFlow\backend\src\test\java\com\finflow\modules\savings\service\SavingsGoalServiceTest.java
 C:\Projects\FinFlow\backend\src\test\java\com\finflow\modules\settings\service\SettingServiceTest.java
 C:\Projects\FinFlow\backend\src\test\java\com\finflow\modules\transactions\service\TransactionServiceTest.java

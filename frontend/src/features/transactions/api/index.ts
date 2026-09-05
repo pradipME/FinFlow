@@ -1,8 +1,8 @@
 export {
   getMyTransactionsApi,
   getTransactionApi,
-  createDepositApi,
   createWithdrawalApi,
   createTransferApi,
+  createPaymentApi,
   cancelTransactionApi,
 } from "./transactions.api";

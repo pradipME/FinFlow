@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowDownToLine, ArrowUpFromLine, ArrowLeftRight } from "lucide-react";
 import { ROUTES } from "@/shared/constants";
 import { formatCurrency, formatDate } from "@/shared/lib/format";
-import { DepositDialog, WithdrawalDialog, TransferDialog } from "@/features/transactions/pages";
+import { WithdrawalDialog, TransferDialog } from "@/features/transactions/pages";
 import type { AccountSummary, AccountType } from "../types";
 import { AccountStatusBadge } from "./AccountStatusBadge";
 
@@ -38,7 +37,7 @@ interface AccountCardProps {
 export function AccountCard({ account, accounts }: AccountCardProps) {
   const navigate = useNavigate();
   const meta = ACCOUNT_TYPE_META[account.accountType];
-  const [dialog, setDialog] = useState<"deposit" | "withdraw" | "transfer" | null>(null);
+  const [dialog, setDialog] = useState<"withdraw" | "transfer" | null>(null);
   // Include this account when building the transfer account list
   const allAccounts =
     accounts && accounts.length > 0
@@ -94,19 +93,12 @@ export function AccountCard({ account, accounts }: AccountCardProps) {
         </button>
 
         {/* Quick actions */}
-        <div className="relative mt-3 grid grid-cols-3 gap-2">
-          <ActionBtn label="Deposit" icon={ArrowDownToLine} onClick={() => setDialog("deposit")} />
-          <ActionBtn label="Withdraw" icon={ArrowUpFromLine} onClick={() => setDialog("withdraw")} />
-          <ActionBtn label="Transfer" icon={ArrowLeftRight} onClick={() => setDialog("transfer")} />
+        <div className="relative mt-3 grid grid-cols-2 gap-2">
+          <ActionBtn label="Withdraw" onClick={() => setDialog("withdraw")} />
+          <ActionBtn label="Transfer" onClick={() => setDialog("transfer")} />
         </div>
       </div>
 
-      <DepositDialog
-        open={dialog === "deposit"}
-        accounts={allAccounts}
-        defaultAccountId={account.id}
-        onClose={() => setDialog(null)}
-      />
       <WithdrawalDialog
         open={dialog === "withdraw"}
         accounts={allAccounts}
@@ -125,11 +117,9 @@ export function AccountCard({ account, accounts }: AccountCardProps) {
 
 function ActionBtn({
   label,
-  icon: Icon,
   onClick,
 }: {
   label: string;
-  icon: typeof ArrowDownToLine;
   onClick: () => void;
 }): React.ReactNode {
   return (
@@ -138,7 +128,6 @@ function ActionBtn({
       onClick={onClick}
       className="flex flex-col items-center gap-1 rounded-lg border border-border-subtle bg-bg-secondary px-2 py-2 text-xs font-medium text-text-secondary transition-colors hover:border-brand-primary/40 hover:text-brand-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
     >
-      <Icon size={15} />
       {label}
     </button>
   );

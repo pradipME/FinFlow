@@ -1,0 +1,9 @@
+CREATE SCHEMA IF NOT EXISTS finflow_auth;
+CREATE SCHEMA IF NOT EXISTS finflow_accounts;
+CREATE SCHEMA IF NOT EXISTS finflow_transactions;
+CREATE SCHEMA IF NOT EXISTS finflow_admin;
+CREATE SCHEMA IF NOT EXISTS finflow_requests;
+CREATE SCHEMA IF NOT EXISTS finflow_notifications;
+CREATE SCHEMA IF NOT EXISTS finflow_profiles;
+CREATE SCHEMA IF NOT EXISTS finflow_savings;
+CREATE SCHEMA IF NOT EXISTS finflow_settings;

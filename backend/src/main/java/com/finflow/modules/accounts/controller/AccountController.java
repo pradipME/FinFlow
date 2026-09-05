@@ -39,22 +39,6 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Create a new account", description = "Creates a new account for the authenticated user.")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Account created"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Validation error")
-    })
-    public ResponseEntity<ApiResponse<AccountDetailResponse>> createAccount(
-            @Valid @RequestBody CreateAccountRequest request,
-            @RequestHeader(value = RequestHeaders.IDEMPOTENCY_KEY, required = false) String idempotencyKey) {
-        log.info("Create account request: type={}", request.accountType());
-        AccountDetailResponse response = accountService.createAccount(request);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.ok(response, "Account created successfully"));
-    }
-
     @GetMapping("/{accountId}")
     @Operation(summary = "Get account details", description = "Returns full account details for the authenticated user.")
     @ApiResponses({

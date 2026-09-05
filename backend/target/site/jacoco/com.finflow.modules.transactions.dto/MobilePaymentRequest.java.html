@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MobilePaymentRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.transactions.dto</a> &gt; <span class="el_source">MobilePaymentRequest.java</span></div><h1>MobilePaymentRequest.java</h1><pre class="source lang-java linenums">package com.finflow.modules.transactions.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
+@Schema(description = &quot;Request body for paying another customer by mobile number&quot;)
+<span class="nc" id="L9">public record MobilePaymentRequest(</span>
+    @NotNull(message = &quot;Source account ID is required&quot;)
+    @Schema(description = &quot;Sender's account ID&quot;)
+    String sourceAccountId,
+
+    @NotBlank(message = &quot;Recipient mobile number is required&quot;)
+    @Pattern(regexp = &quot;^\\+?[1-9]\\d{1,14}$&quot;, message = &quot;Invalid mobile number format&quot;)
+    @Schema(description = &quot;Recipient mobile number in E.164 format&quot;, example = &quot;+9876543210&quot;)
+    String recipientMobile,
+
+    @NotNull(message = &quot;Amount is required&quot;)
+    @Schema(description = &quot;Amount in cents&quot;, example = &quot;500000&quot;)
+    Long amountCents,
+
+    @Schema(description = &quot;Currency code&quot;, example = &quot;USD&quot;)
+    String currency,
+
+    @Schema(description = &quot;Payment description&quot;, example = &quot;Coffee payment&quot;)
+    String description,
+
+    @Schema(description = &quot;Idempotency key&quot;)
+    String idempotencyKey
+) {}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

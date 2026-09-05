@@ -1,64 +1,432 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdminService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.admin.service</a> &gt; <span class="el_source">AdminService.java</span></div><h1>AdminService.java</h1><pre class="source lang-java linenums">package com.finflow.modules.admin.service;
 
+import com.finflow.modules.accounts.domain.Account;
+import com.finflow.modules.accounts.domain.AccountStatus;
+import com.finflow.modules.accounts.dto.AccountDetailResponse;
+import com.finflow.modules.accounts.repository.AccountRepository;
+import com.finflow.modules.accounts.service.AccountService;
 import com.finflow.modules.admin.domain.AdminAuditLog;
+import com.finflow.modules.admin.dto.AdminCreateAccountRequest;
+import com.finflow.modules.admin.dto.AdminCreateCustomerRequest;
 import com.finflow.modules.admin.dto.AdminDashboardResponse;
 import com.finflow.modules.admin.dto.AuditLogResponse;
+import com.finflow.modules.admin.dto.CustomerDetailResponse;
+import com.finflow.modules.admin.dto.FundAccountRequest;
 import com.finflow.modules.admin.dto.UserManagementResponse;
 import com.finflow.modules.admin.mapper.AdminMapper;
 import com.finflow.modules.admin.repository.AdminAuditLogRepository;
+import com.finflow.modules.auth.domain.User;
+import com.finflow.modules.auth.domain.UserRole;
+import com.finflow.modules.auth.domain.UserStatus;
+import com.finflow.modules.auth.dto.RegisterRequest;
+import com.finflow.modules.auth.dto.RegisterResponse;
+import com.finflow.modules.auth.repository.UserRepository;
+import com.finflow.modules.auth.repository.UserRoleRepository;
+import com.finflow.modules.auth.service.RegistrationService;
+import com.finflow.modules.cards.domain.Card;
+import com.finflow.modules.cards.domain.CardStatus;
+import com.finflow.modules.cards.dto.CardResponse;
+import com.finflow.modules.cards.repository.CardRepository;
+import com.finflow.modules.requests.domain.CustomerRequestStatus;
+import com.finflow.modules.requests.domain.CustomerRequestType;
+import com.finflow.modules.requests.repository.CustomerRequestRepository;
+import com.finflow.modules.transactions.domain.EntryType;
+import com.finflow.modules.transactions.domain.Transaction;
+import com.finflow.modules.transactions.domain.TransactionEntry;
+import com.finflow.modules.transactions.domain.TransactionType;
+import com.finflow.modules.transactions.dto.TransactionDetailResponse;
+import com.finflow.modules.transactions.dto.TransactionSummaryResponse;
+import com.finflow.modules.transactions.mapper.TransactionMapper;
+import com.finflow.modules.transactions.repository.TransactionRepository;
+import com.finflow.modules.transactions.validator.TransactionValidator;
 import com.finflow.shared.dto.PageResponse;
 import com.finflow.shared.exception.BusinessRuleException;
+import com.finflow.shared.exception.ResourceNotFoundException;
+import com.finflow.shared.exception.ValidationException;
 import com.finflow.shared.util.SecurityUtil;
+import com.finflow.modules.admin.events.AdminEvent;
+import com.finflow.modules.admin.events.AdminEventService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 public class AdminService {
 
+<span class="fc" id="L66">    private static final Logger log = LoggerFactory.getLogger(AdminService.class);</span>
+
     private final AdminAuditLogRepository auditLogRepository;
     private final AdminMapper adminMapper;
+    private final AccountRepository accountRepository;
+    private final AccountService accountService;
+    private final CardRepository cardRepository;
+    private final TransactionRepository transactionRepository;
+    private final TransactionMapper transactionMapper;
+    private final TransactionValidator transactionValidator;
+    private final UserRepository userRepository;
+    private final UserRoleRepository userRoleRepository;
+    private final RegistrationService registrationService;
+    private final CustomerRequestRepository customerRequestRepository;
+    private final AdminEventService adminEventService;
 
-<span class="fc" id="L24">    public AdminService(AdminAuditLogRepository auditLogRepository, AdminMapper adminMapper) {</span>
-<span class="fc" id="L25">        this.auditLogRepository = auditLogRepository;</span>
-<span class="fc" id="L26">        this.adminMapper = adminMapper;</span>
-<span class="fc" id="L27">    }</span>
+    public AdminService(AdminAuditLogRepository auditLogRepository,
+                        AdminMapper adminMapper,
+                        AccountRepository accountRepository,
+                        AccountService accountService,
+                        CardRepository cardRepository,
+                        TransactionRepository transactionRepository,
+                        TransactionMapper transactionMapper,
+                        TransactionValidator transactionValidator,
+                        UserRepository userRepository,
+                        UserRoleRepository userRoleRepository,
+                        RegistrationService registrationService,
+                        CustomerRequestRepository customerRequestRepository,
+<span class="fc" id="L94">                        AdminEventService adminEventService) {</span>
+<span class="fc" id="L95">        this.auditLogRepository = auditLogRepository;</span>
+<span class="fc" id="L96">        this.adminMapper = adminMapper;</span>
+<span class="fc" id="L97">        this.accountRepository = accountRepository;</span>
+<span class="fc" id="L98">        this.accountService = accountService;</span>
+<span class="fc" id="L99">        this.cardRepository = cardRepository;</span>
+<span class="fc" id="L100">        this.transactionRepository = transactionRepository;</span>
+<span class="fc" id="L101">        this.transactionMapper = transactionMapper;</span>
+<span class="fc" id="L102">        this.transactionValidator = transactionValidator;</span>
+<span class="fc" id="L103">        this.userRepository = userRepository;</span>
+<span class="fc" id="L104">        this.userRoleRepository = userRoleRepository;</span>
+<span class="fc" id="L105">        this.registrationService = registrationService;</span>
+<span class="fc" id="L106">        this.customerRequestRepository = customerRequestRepository;</span>
+<span class="fc" id="L107">        this.adminEventService = adminEventService;</span>
+<span class="fc" id="L108">    }</span>
 
     private void requireAdmin() {
-<span class="pc bpc" id="L30" title="1 of 4 branches missed.">        if (!SecurityUtil.isAdmin() &amp;&amp; !SecurityUtil.isSuperAdmin()) {</span>
-<span class="fc" id="L31">            throw new BusinessRuleException(&quot;FORBIDDEN&quot;, &quot;Admin access required&quot;);</span>
+<span class="pc bpc" id="L111" title="1 of 4 branches missed.">        if (!SecurityUtil.isAdmin() &amp;&amp; !SecurityUtil.isSuperAdmin()) {</span>
+<span class="fc" id="L112">            throw new BusinessRuleException(&quot;FORBIDDEN&quot;, &quot;Admin access required&quot;);</span>
         }
-<span class="fc" id="L33">    }</span>
+<span class="fc" id="L114">    }</span>
+
+    private String adminId() {
+<span class="nc" id="L117">        return SecurityUtil.getCurrentUserId();</span>
+    }
 
     @Transactional(readOnly = true)
     public PageResponse&lt;AuditLogResponse&gt; getAuditLogs(Pageable pageable) {
-<span class="fc" id="L37">        requireAdmin();</span>
-<span class="fc" id="L38">        Page&lt;AdminAuditLog&gt; page = auditLogRepository.findAllLogs(pageable);</span>
-<span class="fc" id="L39">        return PageResponse.of(</span>
-<span class="fc" id="L40">            page.getContent().stream().map(adminMapper::toAuditLogResponse).toList(),</span>
-<span class="fc" id="L41">            page.getNumber(),</span>
-<span class="fc" id="L42">            page.getSize(),</span>
-<span class="fc" id="L43">            page.getTotalElements()</span>
+<span class="fc" id="L122">        requireAdmin();</span>
+<span class="fc" id="L123">        Page&lt;AdminAuditLog&gt; page = auditLogRepository.findAllLogs(pageable);</span>
+<span class="fc" id="L124">        return PageResponse.of(</span>
+<span class="fc" id="L125">            page.getContent().stream().map(adminMapper::toAuditLogResponse).toList(),</span>
+<span class="fc" id="L126">            page.getNumber(),</span>
+<span class="fc" id="L127">            page.getSize(),</span>
+<span class="fc" id="L128">            page.getTotalElements()</span>
         );
     }
 
     public AuditLogResponse logAction(String adminUserId, String action, String targetType, String targetId, String details) {
-<span class="fc" id="L48">        AdminAuditLog log = new AdminAuditLog(adminUserId, action, targetType, targetId, details, null);</span>
-<span class="fc" id="L49">        return adminMapper.toAuditLogResponse(auditLogRepository.save(log));</span>
+<span class="fc" id="L133">        AdminAuditLog logRecord = new AdminAuditLog(adminUserId, action, targetType, targetId, details, null);</span>
+<span class="fc" id="L134">        return adminMapper.toAuditLogResponse(auditLogRepository.save(logRecord));</span>
     }
+
+    // ---------------- Dashboard ----------------
 
     @Transactional(readOnly = true)
     public AdminDashboardResponse getDashboardStats() {
-<span class="fc" id="L54">        requireAdmin();</span>
-<span class="fc" id="L55">        return new AdminDashboardResponse(0L, 0L, 0L, 0);</span>
+<span class="fc" id="L141">        requireAdmin();</span>
+<span class="fc" id="L142">        long totalUsers = userRepository.count();</span>
+<span class="fc" id="L143">        long activeUsers = userRepository.countByStatusAndIsDeletedFalse(UserStatus.ACTIVE);</span>
+<span class="fc" id="L144">        long totalAccounts = accountRepository.count();</span>
+<span class="fc" id="L145">        long activeAccounts = accountRepository.countByAccountStatusAndIsDeletedFalse(AccountStatus.ACTIVE);</span>
+<span class="fc" id="L146">        long totalCards = cardRepository.count();</span>
+<span class="fc" id="L147">        long activeCards = cardRepository.countByCardStatus(CardStatus.ACTIVE);</span>
+<span class="fc" id="L148">        long totalFundsCents = accountRepository.sumAvailableBalanceCents();</span>
+<span class="fc" id="L149">        long pendingAccountRequests = customerRequestRepository.countByRequestTypeAndRequestStatus(</span>
+                CustomerRequestType.ACCOUNT_REQUEST, CustomerRequestStatus.PENDING);
+<span class="fc" id="L151">        long pendingCardRequests = customerRequestRepository.countByRequestTypeAndRequestStatus(</span>
+                CustomerRequestType.CARD_REQUEST, CustomerRequestStatus.PENDING);
+<span class="fc" id="L153">        long pendingRequests = pendingAccountRequests + pendingCardRequests;</span>
+<span class="fc" id="L154">        long recentCustomerRequests = customerRequestRepository.countByRequestStatusAndCreatedAtGreaterThan(</span>
+<span class="fc" id="L155">                CustomerRequestStatus.PENDING, LocalDateTime.now().minusDays(7));</span>
+<span class="fc" id="L156">        long totalTransactions = transactionRepository.count();</span>
+<span class="fc" id="L157">        long recentTransactions = transactionRepository.countSince(LocalDateTime.now().minusDays(7));</span>
+<span class="fc" id="L158">        return new AdminDashboardResponse(</span>
+                totalUsers, activeUsers,
+                totalAccounts, activeAccounts,
+                totalCards, activeCards,
+                totalFundsCents,
+                pendingAccountRequests, pendingCardRequests, pendingRequests,
+                recentCustomerRequests,
+                totalTransactions, recentTransactions);
     }
+
+    // ---------------- User management ----------------
 
     @Transactional(readOnly = true)
     public PageResponse&lt;UserManagementResponse&gt; getUserList(Pageable pageable) {
-<span class="fc" id="L60">        requireAdmin();</span>
-<span class="fc" id="L61">        return PageResponse.of(java.util.List.of(), pageable.getPageNumber(), pageable.getPageSize(), 0L);</span>
+<span class="fc" id="L172">        requireAdmin();</span>
+<span class="fc" id="L173">        Page&lt;User&gt; page = userRepository.findAll(pageable);</span>
+<span class="fc" id="L174">        return PageResponse.of(page.getContent().stream().map(this::toUserManagement).toList(),</span>
+<span class="fc" id="L175">                page.getNumber(), page.getSize(), page.getTotalElements());</span>
+    }
+
+    private String getUserRole(UUID userId) {
+<span class="nc" id="L179">        List&lt;UserRole&gt; roles = userRoleRepository.findByUserId(userId);</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">        if (roles.isEmpty()) {</span>
+<span class="nc" id="L181">            return &quot;CUSTOMER&quot;;</span>
+        }
+<span class="nc" id="L183">        return roles.stream()</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">                .filter(ur -&gt; ur.getRole() != null)</span>
+<span class="nc" id="L185">                .findFirst()</span>
+<span class="nc" id="L186">                .map(ur -&gt; ur.getRole().getName())</span>
+<span class="nc" id="L187">                .orElse(&quot;CUSTOMER&quot;);</span>
+    }
+
+    private UserManagementResponse toUserManagement(User user) {
+<span class="nc" id="L191">        String role = getUserRole(user.getId());</span>
+<span class="nc" id="L192">        return new UserManagementResponse(</span>
+<span class="nc" id="L193">                user.getId().toString(),</span>
+<span class="nc" id="L194">                user.getEmail(),</span>
+<span class="nc" id="L195">                user.getUsername(),</span>
+<span class="nc" id="L196">                user.getPhoneNumber(),</span>
+                role,
+<span class="nc bnc" id="L198" title="All 2 branches missed.">                user.getStatus() != null ? user.getStatus().name() : &quot;ACTIVE&quot;,</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                user.getCreatedAt() != null ? user.getCreatedAt().toString() : null</span>
+        );
+    }
+
+    // ---------------- Customer management ----------------
+
+    /**
+     * Provisions a new customer record as an admin. Reuses the registration flow
+     * (validation, password hashing, CUSTOMER role assignment) so behavior stays
+     * consistent with self-registration, while terms are accepted on the customer's
+     * behalf at the point of admin provisioning.
+     */
+    public UserManagementResponse createCustomer(AdminCreateCustomerRequest request) {
+<span class="nc" id="L212">        requireAdmin();</span>
+<span class="nc" id="L213">        RegisterRequest registerRequest = new RegisterRequest(</span>
+<span class="nc" id="L214">                request.email(), request.phoneNumber(), request.username(), request.password(), true);</span>
+<span class="nc" id="L215">        RegisterResponse created = registrationService.register(registerRequest);</span>
+<span class="nc" id="L216">        logAction(adminId(), &quot;CUSTOMER_CREATE&quot;, &quot;USER&quot;, created.id().toString(),</span>
+<span class="nc" id="L217">                &quot;Provisioned customer &quot; + created.email());</span>
+<span class="nc" id="L218">        adminEventService.sendToAdmins(&quot;new-customer&quot;, Map.of(</span>
+                &quot;type&quot;, &quot;CUSTOMER_CREATE&quot;,
+<span class="nc" id="L220">                &quot;userId&quot;, created.id().toString(),</span>
+<span class="nc" id="L221">                &quot;email&quot;, created.email()</span>
+        ));
+<span class="nc" id="L223">        return new UserManagementResponse(</span>
+<span class="nc" id="L224">                created.id().toString(),</span>
+<span class="nc" id="L225">                created.email(),</span>
+<span class="nc" id="L226">                created.username(),</span>
+<span class="nc" id="L227">                created.phoneNumber(),</span>
+                &quot;CUSTOMER&quot;,
+<span class="nc" id="L229">                created.status(),</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">                created.createdAt() != null ? created.createdAt().toString() : null</span>
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public CustomerDetailResponse getUserDetails(String userId) {
+<span class="nc" id="L236">        requireAdmin();</span>
+<span class="nc" id="L237">        User user = getUserOrThrow(userId);</span>
+<span class="nc" id="L238">        UserManagementResponse summary = toUserManagement(user);</span>
+<span class="nc" id="L239">        long accountCount = accountRepository.countByOwnerId(userId);</span>
+<span class="nc" id="L240">        long cardCount = cardRepository.countByOwnerId(userId);</span>
+<span class="nc" id="L241">        long pendingRequestCount = customerRequestRepository.countByCustomerIdAndRequestStatus(</span>
+                userId, CustomerRequestStatus.PENDING);
+<span class="nc" id="L243">        return new CustomerDetailResponse(</span>
+<span class="nc" id="L244">                summary.id(), summary.email(), summary.fullName(), summary.phoneNumber(), summary.role(), summary.status(),</span>
+<span class="nc" id="L245">                summary.createdAt(), accountCount, cardCount, pendingRequestCount);</span>
+    }
+
+    // ---------------- Account management ----------------
+
+    @Transactional(readOnly = true)
+    public PageResponse&lt;AccountDetailResponse&gt; getAccounts(Pageable pageable) {
+<span class="nc" id="L252">        requireAdmin();</span>
+<span class="nc" id="L253">        Page&lt;Account&gt; page = accountRepository.findAll(pageable);</span>
+<span class="nc" id="L254">        return PageResponse.of(</span>
+<span class="nc" id="L255">                page.getContent().stream().map(accountService::toAdminAccountDetail).toList(),</span>
+<span class="nc" id="L256">                page.getNumber(), page.getSize(), page.getTotalElements());</span>
+    }
+
+    @Transactional(readOnly = true)
+    public AccountDetailResponse getAccount(UUID accountId) {
+<span class="nc" id="L261">        requireAdmin();</span>
+<span class="nc" id="L262">        Account account = accountRepository.findByIdAndIsDeletedFalse(accountId)</span>
+<span class="nc" id="L263">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Account&quot;, accountId.toString()));</span>
+<span class="nc" id="L264">        return accountService.toAdminAccountDetail(account);</span>
+    }
+
+    public AccountDetailResponse createAccountForCustomer(AdminCreateAccountRequest request) {
+<span class="nc" id="L268">        requireAdmin();</span>
+<span class="nc" id="L269">        User customer = getUserOrThrow(request.customerId());</span>
+<span class="nc" id="L270">        AccountDetailResponse created = accountService.createAccountForCustomer(</span>
+<span class="nc" id="L271">                customer.getId().toString(), request.accountType(), request.currency(), request.nickname());</span>
+<span class="nc" id="L272">        logAction(adminId(), &quot;ACCOUNT_CREATE&quot;, &quot;ACCOUNT&quot;, created.id(),</span>
+<span class="nc" id="L273">                &quot;Created &quot; + request.accountType() + &quot; account for customer &quot; + request.customerId());</span>
+<span class="nc" id="L274">        adminEventService.sendToAdmins(&quot;new-account-request&quot;, Map.of(</span>
+                &quot;type&quot;, &quot;ACCOUNT_CREATE&quot;,
+<span class="nc" id="L276">                &quot;accountId&quot;, created.id(),</span>
+<span class="nc" id="L277">                &quot;customerId&quot;, request.customerId()</span>
+        ));
+<span class="nc" id="L279">        return created;</span>
+    }
+
+    /**
+     * Funds a customer account as an ADMIN, producing a real DEPOSIT transaction and
+     * atomically crediting the account balance. This is the bank-style funding path.
+     */
+    @Transactional(readOnly = false)
+    public TransactionDetailResponse fundAccount(UUID accountId, FundAccountRequest request) {
+<span class="nc" id="L288">        requireAdmin();</span>
+<span class="nc" id="L289">        String adminUserId = adminId();</span>
+<span class="nc" id="L290">        transactionValidator.validateAmountPositive(request.amountCents());</span>
+
+<span class="nc" id="L292">        Account account = accountRepository.findByIdAndLock(accountId)</span>
+<span class="nc" id="L293">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Account&quot;, accountId.toString()));</span>
+<span class="nc" id="L294">        transactionValidator.validateAccountOperational(account);</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">        if (account.getOwnerId().equals(adminUserId)) {</span>
+<span class="nc" id="L296">            throw new ValidationException(&quot;Cannot fund an account owned by an admin in this flow&quot;);</span>
+        }
+
+<span class="nc" id="L299">        String currency = account.getCurrency();</span>
+
+<span class="nc" id="L301">        Transaction transaction = new Transaction(TransactionType.DEPOSIT, request.amountCents(), currency, adminUserId);</span>
+<span class="nc" id="L302">        transaction.setTargetAccountId(accountId.toString());</span>
+<span class="nc bnc" id="L303" title="All 2 branches missed.">        transaction.setDescription(request.description() != null ? request.description() : &quot;Admin funding&quot;);</span>
+<span class="nc" id="L304">        transaction.setReferenceNumber(generateReferenceNumber());</span>
+<span class="nc" id="L305">        transaction.setIdempotencyKey(&quot;ADMIN-FUND-&quot; + UUID.randomUUID());</span>
+
+<span class="nc" id="L307">        long beforeCents = account.getAvailableBalanceCents();</span>
+<span class="nc" id="L308">        account.credit(request.amountCents());</span>
+<span class="nc" id="L309">        long afterCents = account.getAvailableBalanceCents();</span>
+<span class="nc" id="L310">        accountRepository.save(account);</span>
+
+<span class="nc" id="L312">        TransactionEntry creditEntry = new TransactionEntry(</span>
+<span class="nc" id="L313">                accountId.toString(), EntryType.CREDIT, request.amountCents(),</span>
+<span class="nc" id="L314">                currency, beforeCents, afterCents, &quot;Admin funding&quot;);</span>
+<span class="nc" id="L315">        transaction.addEntry(creditEntry);</span>
+<span class="nc" id="L316">        transaction.markCompleted();</span>
+<span class="nc" id="L317">        transaction = transactionRepository.save(transaction);</span>
+
+<span class="nc" id="L319">        logAction(adminUserId, &quot;ACCOUNT_FUND&quot;, &quot;ACCOUNT&quot;, accountId.toString(),</span>
+<span class="nc" id="L320">                &quot;Credited &quot; + request.amountCents() + &quot; &quot; + currency);</span>
+<span class="nc" id="L321">        adminEventService.sendToAdmins(&quot;account-funded&quot;, Map.of(</span>
+                &quot;type&quot;, &quot;ACCOUNT_FUND&quot;,
+<span class="nc" id="L323">                &quot;accountId&quot;, accountId.toString(),</span>
+<span class="nc" id="L324">                &quot;amountCents&quot;, request.amountCents(),</span>
+                &quot;currency&quot;, currency,
+<span class="nc" id="L326">                &quot;referenceNumber&quot;, transaction.getReferenceNumber()</span>
+        ));
+
+<span class="nc" id="L329">        log.info(&quot;Admin funded account: accountId={}, amountCents={}, txn={}&quot;,</span>
+<span class="nc" id="L330">                accountId, request.amountCents(), transaction.getReferenceNumber());</span>
+<span class="nc" id="L331">        return transactionMapper.toDetailResponse(transaction);</span>
+    }
+
+    // ---------------- Card management ----------------
+
+    @Transactional(readOnly = true)
+    public PageResponse&lt;CardResponse&gt; getCards(Pageable pageable) {
+<span class="nc" id="L338">        requireAdmin();</span>
+<span class="nc" id="L339">        Page&lt;Card&gt; page = cardRepository.findAll(pageable);</span>
+<span class="nc" id="L340">        return PageResponse.of(page.getContent().stream().map(this::toCardResponse).toList(),</span>
+<span class="nc" id="L341">                page.getNumber(), page.getSize(), page.getTotalElements());</span>
+    }
+
+    @Transactional(readOnly = true)
+    public CardResponse getCard(UUID cardId) {
+<span class="nc" id="L346">        requireAdmin();</span>
+<span class="nc" id="L347">        Card card = cardRepository.findById(cardId)</span>
+<span class="nc" id="L348">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Card&quot;, cardId.toString()));</span>
+<span class="nc" id="L349">        return toCardResponse(card);</span>
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse&lt;CardResponse&gt; getCardsByAccount(String accountId) {
+<span class="nc" id="L354">        requireAdmin();</span>
+<span class="nc" id="L355">        var cards = cardRepository.findByAccountId(accountId);</span>
+<span class="nc" id="L356">        return PageResponse.of(cards.stream().map(this::toCardResponse).toList(),</span>
+<span class="nc" id="L357">                0, cards.size(), cards.size());</span>
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse&lt;CardResponse&gt; getCardsByUser(String userId, Pageable pageable) {
+<span class="nc" id="L362">        requireAdmin();</span>
+<span class="nc" id="L363">        getUserOrThrow(userId);</span>
+<span class="nc" id="L364">        Page&lt;Card&gt; page = cardRepository.findByOwnerId(userId, pageable);</span>
+<span class="nc" id="L365">        return PageResponse.of(page.getContent().stream().map(this::toCardResponse).toList(),</span>
+<span class="nc" id="L366">                page.getNumber(), page.getSize(), page.getTotalElements());</span>
+    }
+
+    // ---------------- Transaction management ----------------
+
+    @Transactional(readOnly = true)
+    public PageResponse&lt;TransactionSummaryResponse&gt; getTransactions(Pageable pageable) {
+<span class="nc" id="L373">        requireAdmin();</span>
+<span class="nc" id="L374">        Page&lt;Transaction&gt; page = transactionRepository.findAll(pageable);</span>
+<span class="nc" id="L375">        return PageResponse.of(</span>
+<span class="nc" id="L376">                transactionMapper.toSummaryResponseList(page.getContent()),</span>
+<span class="nc" id="L377">                page.getNumber(), page.getSize(), page.getTotalElements());</span>
+    }
+
+    @Transactional(readOnly = true)
+    public TransactionDetailResponse getTransaction(UUID transactionId) {
+<span class="nc" id="L382">        requireAdmin();</span>
+<span class="nc" id="L383">        return transactionMapper.toDetailResponse(</span>
+<span class="nc" id="L384">                transactionValidator.getAndValidateTransaction(transactionId));</span>
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse&lt;AccountDetailResponse&gt; getAccountsByUser(String userId, Pageable pageable) {
+<span class="nc" id="L389">        requireAdmin();</span>
+<span class="nc" id="L390">        getUserOrThrow(userId);</span>
+<span class="nc" id="L391">        Page&lt;Account&gt; page = accountRepository.findByOwnerId(userId, pageable);</span>
+<span class="nc" id="L392">        return PageResponse.of(page.getContent().stream().map(accountService::toAdminAccountDetail).toList(),</span>
+<span class="nc" id="L393">                page.getNumber(), page.getSize(), page.getTotalElements());</span>
+    }
+
+    // ---------------- Helpers ----------------
+
+    private User getUserOrThrow(String userId) {
+        UUID uuid;
+        try {
+<span class="nc" id="L401">            uuid = UUID.fromString(userId);</span>
+<span class="nc" id="L402">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L403">            throw new ValidationException(&quot;Invalid customer id&quot;);</span>
+<span class="nc" id="L404">        }</span>
+<span class="nc" id="L405">        return userRepository.findById(uuid)</span>
+<span class="nc" id="L406">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;User&quot;, userId));</span>
+    }
+
+    private CardResponse toCardResponse(Card card) {
+<span class="nc" id="L410">        return new CardResponse(</span>
+<span class="nc" id="L411">                card.getId().toString(),</span>
+<span class="nc" id="L412">                card.getAccountId(),</span>
+<span class="nc" id="L413">                card.getCardLastFour(),</span>
+<span class="nc" id="L414">                card.getCardType(),</span>
+<span class="nc" id="L415">                card.getCardStatus(),</span>
+<span class="nc" id="L416">                card.getCardholderName(),</span>
+<span class="nc" id="L417">                card.getExpiryMonth(),</span>
+<span class="nc" id="L418">                card.getExpiryYear(),</span>
+<span class="nc" id="L419">                card.getCreditLimitCents(),</span>
+<span class="nc" id="L420">                card.getDailyLimitCents(),</span>
+<span class="nc" id="L421">                card.getMonthlyLimitCents(),</span>
+<span class="nc" id="L422">                card.getCurrency(),</span>
+<span class="nc bnc" id="L423" title="All 2 branches missed.">                card.getPinSet() != null ? card.getPinSet() : false,</span>
+<span class="nc bnc" id="L424" title="All 2 branches missed.">                card.getCreatedAt() != null ? card.getCreatedAt().toString() : null</span>
+        );
+    }
+
+    private String generateReferenceNumber() {
+<span class="nc" id="L429">        return &quot;TXN-&quot; + System.currentTimeMillis() + &quot;-&quot; + UUID.randomUUID().toString().substring(0, 8).toUpperCase();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

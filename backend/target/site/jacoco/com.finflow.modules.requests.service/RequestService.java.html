@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RequestService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.requests.service</a> &gt; <span class="el_source">RequestService.java</span></div><h1>RequestService.java</h1><pre class="source lang-java linenums">package com.finflow.modules.requests.service;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.finflow.modules.accounts.domain.AccountType;
+import com.finflow.modules.accounts.dto.AccountDetailResponse;
+import com.finflow.modules.accounts.service.AccountService;
+import com.finflow.modules.cards.domain.CardType;
+import com.finflow.modules.cards.dto.CardResponse;
+import com.finflow.modules.cards.service.CardService;
+import com.finflow.modules.requests.domain.CustomerRequest;
+import com.finflow.modules.requests.domain.CustomerRequestStatus;
+import com.finflow.modules.requests.domain.CustomerRequestType;
+import com.finflow.modules.requests.dto.CustomerRequestResponse;
+import com.finflow.modules.requests.dto.CreateRequestRequest;
+import com.finflow.modules.requests.dto.RequestDetails;
+import com.finflow.modules.requests.repository.CustomerRequestRepository;
+import com.finflow.modules.admin.events.AdminEventService;
+import com.finflow.shared.dto.PageResponse;
+import com.finflow.shared.exception.BusinessRuleException;
+import com.finflow.shared.exception.ResourceNotFoundException;
+import com.finflow.shared.exception.ValidationException;
+import com.finflow.shared.util.SecurityUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
+import java.util.UUID;
+
+@Service
+public class RequestService {
+
+<span class="fc" id="L37">    private static final Logger log = LoggerFactory.getLogger(RequestService.class);</span>
+
+    private final CustomerRequestRepository requestRepository;
+    private final AccountService accountService;
+    private final CardService cardService;
+    private final ObjectMapper objectMapper;
+    private final AdminEventService adminEventService;
+
+    public RequestService(CustomerRequestRepository requestRepository,
+                          AccountService accountService,
+                          CardService cardService,
+                          ObjectMapper objectMapper,
+<span class="fc" id="L49">                          AdminEventService adminEventService) {</span>
+<span class="fc" id="L50">        this.requestRepository = requestRepository;</span>
+<span class="fc" id="L51">        this.accountService = accountService;</span>
+<span class="fc" id="L52">        this.cardService = cardService;</span>
+<span class="fc" id="L53">        this.objectMapper = objectMapper;</span>
+<span class="fc" id="L54">        this.adminEventService = adminEventService;</span>
+<span class="fc" id="L55">    }</span>
+
+    protected void requireAdmin() {
+<span class="pc bpc" id="L58" title="1 of 4 branches missed.">        if (!SecurityUtil.isAdmin() &amp;&amp; !SecurityUtil.isSuperAdmin()) {</span>
+<span class="fc" id="L59">            throw new ValidationException(&quot;Admin access required&quot;);</span>
+        }
+<span class="fc" id="L61">    }</span>
+
+    // ---------------- Customer endpoints ----------------
+
+    @Transactional
+    public CustomerRequestResponse createRequest(CreateRequestRequest request) {
+<span class="fc" id="L67">        String customerId = SecurityUtil.getCurrentUserId();</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">        RequestDetails details = request.details() != null ? request.details() : RequestDetails.empty();</span>
+<span class="fc" id="L69">        validateRequestDetails(request.requestType(), details, request.targetAccountId());</span>
+
+<span class="fc" id="L71">        String detailsJson = serialize(details);</span>
+<span class="fc" id="L72">        CustomerRequest entity = new CustomerRequest(customerId, request.requestType(),</span>
+<span class="fc" id="L73">                request.targetAccountId(), detailsJson);</span>
+<span class="fc" id="L74">        entity = requestRepository.save(entity);</span>
+<span class="fc" id="L75">        log.info(&quot;Customer request created: id={}, type={}, customer={}&quot;,</span>
+<span class="fc" id="L76">                entity.getId(), request.requestType(), customerId);</span>
+<span class="fc" id="L77">        adminEventService.sendToAdmins(&quot;new-request&quot;, Map.of(</span>
+                &quot;type&quot;, &quot;CUSTOMER_REQUEST&quot;,
+<span class="fc" id="L79">                &quot;requestId&quot;, entity.getId().toString(),</span>
+<span class="fc" id="L80">                &quot;requestType&quot;, request.requestType().name(),</span>
+                &quot;customerId&quot;, customerId
+        ));
+<span class="fc" id="L83">        return toResponse(entity);</span>
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse&lt;CustomerRequestResponse&gt; getMyRequests(Pageable pageable) {
+<span class="fc" id="L88">        String customerId = SecurityUtil.getCurrentUserId();</span>
+<span class="fc" id="L89">        Page&lt;CustomerRequest&gt; page = requestRepository.findByCustomerId(customerId, pageable);</span>
+<span class="fc" id="L90">        return PageResponse.of(page.getContent().stream().map(this::toResponse).toList(),</span>
+<span class="fc" id="L91">                page.getNumber(), page.getSize(), page.getTotalElements());</span>
+    }
+
+    // ---------------- Admin endpoints ----------------
+
+    @Transactional(readOnly = true)
+    public PageResponse&lt;CustomerRequestResponse&gt; getAllRequests(CustomerRequestStatus status, Pageable pageable) {
+<span class="nc" id="L98">        requireAdmin();</span>
+<span class="nc" id="L99">        Page&lt;CustomerRequest&gt; page = requestRepository.findByStatus(status, pageable);</span>
+<span class="nc" id="L100">        return PageResponse.of(page.getContent().stream().map(this::toResponse).toList(),</span>
+<span class="nc" id="L101">                page.getNumber(), page.getSize(), page.getTotalElements());</span>
+    }
+
+    @Transactional
+    public CustomerRequestResponse approve(UUID requestId) {
+<span class="fc" id="L106">        requireAdmin();</span>
+<span class="fc" id="L107">        String adminId = SecurityUtil.getCurrentUserId();</span>
+<span class="fc" id="L108">        CustomerRequest entity = getPending(requestId);</span>
+
+<span class="pc bpc" id="L110" title="1 of 3 branches missed.">        switch (entity.getRequestType()) {</span>
+            case ACCOUNT_REQUEST -&gt; {
+<span class="fc" id="L112">                RequestDetails d = deserialize(entity.getDetails());</span>
+<span class="fc" id="L113">                AccountType type = parseAccountType(d.accountType());</span>
+<span class="fc" id="L114">                AccountDetailResponse created = accountService.createAccountForCustomer(</span>
+<span class="fc" id="L115">                        entity.getCustomerId(), type, d.currency(), d.nickname());</span>
+<span class="fc" id="L116">                log.info(&quot;Account created via approved request: accountId={}, customer={}&quot;,</span>
+<span class="fc" id="L117">                        created.id(), entity.getCustomerId());</span>
+<span class="fc" id="L118">            }</span>
+            case CARD_REQUEST -&gt; {
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">                if (entity.getTargetAccountId() == null) {</span>
+<span class="nc" id="L121">                    throw new ValidationException(&quot;Card request has no target account&quot;);</span>
+                }
+<span class="fc" id="L123">                RequestDetails d = deserialize(entity.getDetails());</span>
+<span class="fc" id="L124">                CardType type = parseCardType(d.cardType());</span>
+<span class="fc" id="L125">                CardResponse created = cardService.createCardForCustomer(</span>
+<span class="fc" id="L126">                        entity.getCustomerId(), entity.getTargetAccountId(), type,</span>
+<span class="fc" id="L127">                        d.cardholderName(), d.creditLimitCents(), d.dailyLimitCents(),</span>
+<span class="fc" id="L128">                        d.monthlyLimitCents(), d.currency());</span>
+<span class="fc" id="L129">                log.info(&quot;Card created via approved request: cardId={}, customer={}&quot;,</span>
+<span class="fc" id="L130">                        created.id(), entity.getCustomerId());</span>
+<span class="fc" id="L131">            }</span>
+<span class="nc" id="L132">            default -&gt; throw new BusinessRuleException(&quot;INVALID_REQUEST&quot;, &quot;Unsupported request type&quot;);</span>
+        }
+
+<span class="fc" id="L135">        entity.approve(adminId);</span>
+<span class="fc" id="L136">        entity = requestRepository.save(entity);</span>
+<span class="fc" id="L137">        adminEventService.sendToAdmins(&quot;request-review&quot;, Map.of(</span>
+                &quot;type&quot;, &quot;REQUEST_APPROVED&quot;,
+<span class="fc" id="L139">                &quot;requestId&quot;, entity.getId().toString(),</span>
+<span class="fc" id="L140">                &quot;requestType&quot;, entity.getRequestType().name(),</span>
+<span class="fc" id="L141">                &quot;customerId&quot;, entity.getCustomerId()</span>
+        ));
+<span class="fc" id="L143">        return toResponse(entity);</span>
+    }
+
+    @Transactional
+    public CustomerRequestResponse reject(UUID requestId, String reason) {
+<span class="fc" id="L148">        requireAdmin();</span>
+<span class="fc" id="L149">        String adminId = SecurityUtil.getCurrentUserId();</span>
+<span class="fc" id="L150">        CustomerRequest entity = getPending(requestId);</span>
+<span class="fc" id="L151">        entity.reject(adminId, reason);</span>
+<span class="fc" id="L152">        entity = requestRepository.save(entity);</span>
+<span class="fc" id="L153">        log.info(&quot;Customer request rejected: id={}&quot;, requestId);</span>
+<span class="fc" id="L154">        adminEventService.sendToAdmins(&quot;request-review&quot;, Map.of(</span>
+                &quot;type&quot;, &quot;REQUEST_REJECTED&quot;,
+<span class="fc" id="L156">                &quot;requestId&quot;, entity.getId().toString(),</span>
+<span class="fc" id="L157">                &quot;requestType&quot;, entity.getRequestType().name(),</span>
+<span class="fc" id="L158">                &quot;customerId&quot;, entity.getCustomerId()</span>
+        ));
+<span class="fc" id="L160">        return toResponse(entity);</span>
+    }
+
+    private CustomerRequest getPending(UUID requestId) {
+<span class="fc" id="L164">        CustomerRequest entity = requestRepository.findById(requestId)</span>
+<span class="pc" id="L165">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;CustomerRequest&quot;, requestId.toString()));</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">        if (entity.getRequestStatus() != CustomerRequestStatus.PENDING) {</span>
+<span class="fc" id="L167">            throw new BusinessRuleException(&quot;REQUEST_NOT_PENDING&quot;,</span>
+                    &quot;Only PENDING requests can be reviewed&quot;);
+        }
+<span class="fc" id="L170">        return entity;</span>
+    }
+
+    private void validateRequestDetails(CustomerRequestType type, RequestDetails details, String targetAccountId) {
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">        if (type == null) {</span>
+<span class="nc" id="L175">            throw new ValidationException(&quot;requestType is required&quot;);</span>
+        }
+<span class="pc bpc" id="L177" title="1 of 3 branches missed.">        switch (type) {</span>
+            case CARD_REQUEST -&gt; {
+<span class="pc bpc" id="L179" title="3 of 4 branches missed.">                if (targetAccountId == null || targetAccountId.isBlank()) {</span>
+<span class="fc" id="L180">                    throw new ValidationException(&quot;targetAccountId is required for CARD_REQUEST&quot;);</span>
+                }
+<span class="nc bnc" id="L182" title="All 6 branches missed.">                if (details.cardType() == null || details.cardholderName() == null || details.cardholderName().isBlank()) {</span>
+<span class="nc" id="L183">                    throw new ValidationException(&quot;cardType and cardholderName are required for CARD_REQUEST&quot;);</span>
+                }
+<span class="nc" id="L185">                parseCardType(details.cardType());</span>
+<span class="nc" id="L186">            }</span>
+            case ACCOUNT_REQUEST -&gt; {
+<span class="fc" id="L188">                parseAccountType(details.accountType());</span>
+<span class="fc" id="L189">            }</span>
+<span class="nc" id="L190">            default -&gt; throw new BusinessRuleException(&quot;INVALID_REQUEST&quot;, &quot;Unsupported request type&quot;);</span>
+        }
+<span class="fc" id="L192">    }</span>
+
+    private AccountType parseAccountType(String raw) {
+        try {
+<span class="fc" id="L196">            return AccountType.valueOf(raw);</span>
+<span class="nc" id="L197">        } catch (IllegalArgumentException | NullPointerException e) {</span>
+<span class="nc" id="L198">            throw new ValidationException(&quot;Invalid or missing accountType&quot;);</span>
+        }
+    }
+
+    private CardType parseCardType(String raw) {
+        try {
+<span class="fc" id="L204">            return CardType.valueOf(raw);</span>
+<span class="nc" id="L205">        } catch (IllegalArgumentException | NullPointerException e) {</span>
+<span class="nc" id="L206">            throw new ValidationException(&quot;Invalid or missing cardType&quot;);</span>
+        }
+    }
+
+    private String serialize(RequestDetails details) {
+        try {
+<span class="fc" id="L212">            return objectMapper.writeValueAsString(details);</span>
+<span class="nc" id="L213">        } catch (JsonProcessingException e) {</span>
+<span class="nc" id="L214">            throw new BusinessRuleException(&quot;INTERNAL_ERROR&quot;, &quot;Failed to serialize request details&quot;);</span>
+        }
+    }
+
+    private RequestDetails deserialize(String json) {
+<span class="pc bpc" id="L219" title="2 of 4 branches missed.">        if (json == null || json.isBlank()) {</span>
+<span class="nc" id="L220">            return RequestDetails.empty();</span>
+        }
+        try {
+<span class="fc" id="L223">            return objectMapper.readValue(json, RequestDetails.class);</span>
+<span class="nc" id="L224">        } catch (JsonProcessingException e) {</span>
+<span class="nc" id="L225">            return RequestDetails.empty();</span>
+        }
+    }
+
+    private CustomerRequestResponse toResponse(CustomerRequest e) {
+<span class="fc" id="L230">        return new CustomerRequestResponse(</span>
+<span class="fc" id="L231">                e.getId().toString(),</span>
+<span class="fc" id="L232">                e.getCustomerId(),</span>
+<span class="fc" id="L233">                e.getRequestType(),</span>
+<span class="fc" id="L234">                e.getRequestStatus(),</span>
+<span class="fc" id="L235">                e.getTargetAccountId(),</span>
+<span class="fc" id="L236">                deserialize(e.getDetails()),</span>
+<span class="fc" id="L237">                e.getReviewedBy(),</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">                e.getReviewedAt() != null ? e.getReviewedAt().toString() : null,</span>
+<span class="fc" id="L239">                e.getRejectionReason(),</span>
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">                e.getCreatedAt() != null ? e.getCreatedAt().toString() : null</span>
+        );
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

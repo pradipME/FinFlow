@@ -59,91 +59,99 @@ public class Account extends BaseSoftDeletableEntity {
 <span class="fc" id="L59">        this.accountStatus = AccountStatus.ACTIVE;</span>
 <span class="fc" id="L60">    }</span>
 
+    /**
+     * Activates an account during administrator-driven creation, bypassing the
+     * PENDING lifecycle gate. Intended for admin-created/approved accounts.
+     */
+    public void activateOnCreate() {
+<span class="fc" id="L67">        this.accountStatus = AccountStatus.ACTIVE;</span>
+<span class="fc" id="L68">    }</span>
+
     public void restrict(String reason) {
-<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (this.accountStatus == AccountStatus.CLOSED) {</span>
-<span class="fc" id="L64">            throw new IllegalStateException(&quot;Cannot restrict a closed account&quot;);</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (this.accountStatus == AccountStatus.CLOSED) {</span>
+<span class="fc" id="L72">            throw new IllegalStateException(&quot;Cannot restrict a closed account&quot;);</span>
         }
-<span class="fc" id="L66">        this.accountStatus = AccountStatus.RESTRICTED;</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L74">        this.accountStatus = AccountStatus.RESTRICTED;</span>
+<span class="fc" id="L75">    }</span>
 
     public void suspend() {
-<span class="nc bnc" id="L70" title="All 2 branches missed.">        if (this.accountStatus == AccountStatus.CLOSED) {</span>
-<span class="nc" id="L71">            throw new IllegalStateException(&quot;Cannot suspend a closed account&quot;);</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        if (this.accountStatus == AccountStatus.CLOSED) {</span>
+<span class="nc" id="L79">            throw new IllegalStateException(&quot;Cannot suspend a closed account&quot;);</span>
         }
-<span class="nc" id="L73">        this.accountStatus = AccountStatus.SUSPENDED;</span>
-<span class="nc" id="L74">    }</span>
+<span class="nc" id="L81">        this.accountStatus = AccountStatus.SUSPENDED;</span>
+<span class="nc" id="L82">    }</span>
 
     public void close() {
-<span class="fc bfc" id="L77" title="All 2 branches covered.">        if (this.accountStatus == AccountStatus.CLOSED) {</span>
-<span class="fc" id="L78">            throw new IllegalStateException(&quot;Account is already closed&quot;);</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (this.accountStatus == AccountStatus.CLOSED) {</span>
+<span class="fc" id="L86">            throw new IllegalStateException(&quot;Account is already closed&quot;);</span>
         }
-<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (this.ledgerBalanceCents != 0L) {</span>
-<span class="fc" id="L81">            throw new IllegalStateException(&quot;Cannot close account with non-zero balance&quot;);</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        if (this.ledgerBalanceCents != 0L) {</span>
+<span class="fc" id="L89">            throw new IllegalStateException(&quot;Cannot close account with non-zero balance&quot;);</span>
         }
-<span class="fc" id="L83">        this.accountStatus = AccountStatus.CLOSED;</span>
-<span class="fc" id="L84">    }</span>
+<span class="fc" id="L91">        this.accountStatus = AccountStatus.CLOSED;</span>
+<span class="fc" id="L92">    }</span>
 
     public void reactivate() {
-<span class="pc bpc" id="L87" title="3 of 4 branches missed.">        if (this.accountStatus != AccountStatus.RESTRICTED &amp;&amp; this.accountStatus != AccountStatus.SUSPENDED) {</span>
-<span class="nc" id="L88">            throw new IllegalStateException(&quot;Only RESTRICTED or SUSPENDED accounts can be reactivated&quot;);</span>
+<span class="pc bpc" id="L95" title="3 of 4 branches missed.">        if (this.accountStatus != AccountStatus.RESTRICTED &amp;&amp; this.accountStatus != AccountStatus.SUSPENDED) {</span>
+<span class="nc" id="L96">            throw new IllegalStateException(&quot;Only RESTRICTED or SUSPENDED accounts can be reactivated&quot;);</span>
         }
-<span class="fc" id="L90">        this.accountStatus = AccountStatus.ACTIVE;</span>
-<span class="fc" id="L91">    }</span>
+<span class="fc" id="L98">        this.accountStatus = AccountStatus.ACTIVE;</span>
+<span class="fc" id="L99">    }</span>
 
     public boolean isOperational() {
-<span class="nc bnc" id="L94" title="All 2 branches missed.">        return this.accountStatus == AccountStatus.ACTIVE;</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        return this.accountStatus == AccountStatus.ACTIVE;</span>
     }
 
     public void debit(long amountCents) {
-<span class="fc bfc" id="L98" title="All 2 branches covered.">        if (amountCents &lt;= 0) {</span>
-<span class="fc" id="L99">            throw new IllegalArgumentException(&quot;Debit amount must be positive&quot;);</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (amountCents &lt;= 0) {</span>
+<span class="fc" id="L107">            throw new IllegalArgumentException(&quot;Debit amount must be positive&quot;);</span>
         }
-<span class="fc bfc" id="L101" title="All 2 branches covered.">        if (this.availableBalanceCents &lt; amountCents) {</span>
-<span class="fc" id="L102">            throw new IllegalStateException(&quot;Insufficient available balance&quot;);</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (this.availableBalanceCents &lt; amountCents) {</span>
+<span class="fc" id="L110">            throw new IllegalStateException(&quot;Insufficient available balance&quot;);</span>
         }
-<span class="fc" id="L104">        this.ledgerBalanceCents -= amountCents;</span>
-<span class="fc" id="L105">        this.availableBalanceCents -= amountCents;</span>
-<span class="fc" id="L106">    }</span>
-
-    public void credit(long amountCents) {
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        if (amountCents &lt;= 0) {</span>
-<span class="nc" id="L110">            throw new IllegalArgumentException(&quot;Credit amount must be positive&quot;);</span>
-        }
-<span class="fc" id="L112">        this.ledgerBalanceCents += amountCents;</span>
-<span class="fc" id="L113">        this.availableBalanceCents += amountCents;</span>
+<span class="fc" id="L112">        this.ledgerBalanceCents -= amountCents;</span>
+<span class="fc" id="L113">        this.availableBalanceCents -= amountCents;</span>
 <span class="fc" id="L114">    }</span>
 
-    public void placeHold(long amountCents) {
+    public void credit(long amountCents) {
 <span class="pc bpc" id="L117" title="1 of 2 branches missed.">        if (amountCents &lt;= 0) {</span>
-<span class="nc" id="L118">            throw new IllegalArgumentException(&quot;Hold amount must be positive&quot;);</span>
+<span class="nc" id="L118">            throw new IllegalArgumentException(&quot;Credit amount must be positive&quot;);</span>
         }
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">        if (this.availableBalanceCents &lt; amountCents) {</span>
-<span class="nc" id="L121">            throw new IllegalStateException(&quot;Insufficient available balance for hold&quot;);</span>
+<span class="fc" id="L120">        this.ledgerBalanceCents += amountCents;</span>
+<span class="fc" id="L121">        this.availableBalanceCents += amountCents;</span>
+<span class="fc" id="L122">    }</span>
+
+    public void placeHold(long amountCents) {
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">        if (amountCents &lt;= 0) {</span>
+<span class="nc" id="L126">            throw new IllegalArgumentException(&quot;Hold amount must be positive&quot;);</span>
         }
-<span class="fc" id="L123">        this.availableBalanceCents -= amountCents;</span>
-<span class="fc" id="L124">    }</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        if (this.availableBalanceCents &lt; amountCents) {</span>
+<span class="nc" id="L129">            throw new IllegalStateException(&quot;Insufficient available balance for hold&quot;);</span>
+        }
+<span class="fc" id="L131">        this.availableBalanceCents -= amountCents;</span>
+<span class="fc" id="L132">    }</span>
 
     public void releaseHold(long amountCents) {
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        if (amountCents &lt;= 0) {</span>
-<span class="nc" id="L128">            throw new IllegalArgumentException(&quot;Release amount must be positive&quot;);</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">        if (amountCents &lt;= 0) {</span>
+<span class="nc" id="L136">            throw new IllegalArgumentException(&quot;Release amount must be positive&quot;);</span>
         }
-<span class="fc" id="L130">        this.availableBalanceCents += amountCents;</span>
-<span class="fc" id="L131">    }</span>
+<span class="fc" id="L138">        this.availableBalanceCents += amountCents;</span>
+<span class="fc" id="L139">    }</span>
 
-<span class="nc" id="L133">    public String getOwnerId() { return ownerId; }</span>
-<span class="nc" id="L134">    public String getAccountNumber() { return accountNumber; }</span>
-<span class="nc" id="L135">    public AccountType getAccountType() { return accountType; }</span>
-<span class="fc" id="L136">    public AccountStatus getAccountStatus() { return accountStatus; }</span>
-<span class="nc" id="L137">    public String getNickname() { return nickname; }</span>
-<span class="nc" id="L138">    public String getCurrency() { return currency; }</span>
-<span class="fc" id="L139">    public Long getLedgerBalanceCents() { return ledgerBalanceCents; }</span>
-<span class="fc" id="L140">    public Long getAvailableBalanceCents() { return availableBalanceCents; }</span>
-<span class="nc" id="L141">    public java.util.Set&lt;AccountStatusHistory&gt; getStatusHistory() { return statusHistory; }</span>
-<span class="nc" id="L142">    public java.util.Set&lt;Hold&gt; getHolds() { return holds; }</span>
+<span class="fc" id="L141">    public String getOwnerId() { return ownerId; }</span>
+<span class="nc" id="L142">    public String getAccountNumber() { return accountNumber; }</span>
+<span class="nc" id="L143">    public AccountType getAccountType() { return accountType; }</span>
+<span class="fc" id="L144">    public AccountStatus getAccountStatus() { return accountStatus; }</span>
+<span class="nc" id="L145">    public String getNickname() { return nickname; }</span>
+<span class="fc" id="L146">    public String getCurrency() { return currency; }</span>
+<span class="fc" id="L147">    public Long getLedgerBalanceCents() { return ledgerBalanceCents; }</span>
+<span class="fc" id="L148">    public Long getAvailableBalanceCents() { return availableBalanceCents; }</span>
+<span class="nc" id="L149">    public java.util.Set&lt;AccountStatusHistory&gt; getStatusHistory() { return statusHistory; }</span>
+<span class="nc" id="L150">    public java.util.Set&lt;Hold&gt; getHolds() { return holds; }</span>
 
-<span class="nc" id="L144">    public void setNickname(String nickname) { this.nickname = nickname; }</span>
-<span class="fc" id="L145">    public void setAccountStatus(AccountStatus accountStatus) { this.accountStatus = accountStatus; }</span>
-<span class="fc" id="L146">    public void setLedgerBalanceCents(Long ledgerBalanceCents) { this.ledgerBalanceCents = ledgerBalanceCents; }</span>
-<span class="fc" id="L147">    public void setAvailableBalanceCents(Long availableBalanceCents) { this.availableBalanceCents = availableBalanceCents; }</span>
+<span class="fc" id="L152">    public void setNickname(String nickname) { this.nickname = nickname; }</span>
+<span class="fc" id="L153">    public void setAccountStatus(AccountStatus accountStatus) { this.accountStatus = accountStatus; }</span>
+<span class="fc" id="L154">    public void setLedgerBalanceCents(Long ledgerBalanceCents) { this.ledgerBalanceCents = ledgerBalanceCents; }</span>
+<span class="fc" id="L155">    public void setAvailableBalanceCents(Long availableBalanceCents) { this.availableBalanceCents = availableBalanceCents; }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

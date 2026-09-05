@@ -9,11 +9,12 @@ import java.time.format.DateTimeFormatter;
 @Mapper(componentModel = "spring")
 public interface UserProfileMapper {
 
-    default UserProfileResponse toResponse(UserProfile profile) {
+    default UserProfileResponse toResponse(UserProfile profile, String phoneNumber) {
         if (profile == null) return null;
         return new UserProfileResponse(
                 profile.getId() != null ? profile.getId().toString() : null,
                 profile.getUserId(),
+                phoneNumber,
                 profile.getFirstName(),
                 profile.getLastName(),
                 profile.getDateOfBirth() != null ? profile.getDateOfBirth().toString() : null,

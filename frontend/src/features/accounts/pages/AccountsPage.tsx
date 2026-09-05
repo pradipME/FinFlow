@@ -1,15 +1,14 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { Plus, Wallet } from "lucide-react";
 import { PageHeader } from "@/shared/layout";
 import { Button, EmptyState, ErrorState, Skeleton, Tabs } from "@/shared/components";
 import { useAccounts } from "../hooks";
 import { AccountCard, AccountsTable } from "../components";
-import { CreateAccountModal } from "./CreateAccountModal";
 import { formatCurrency } from "@/shared/lib/format";
 
 export function AccountsPage() {
   const [view, setView] = useState<"grid" | "table">("grid");
-  const [showCreateModal, setShowCreateModal] = useState(false);
   const { data, isLoading, error, refetch } = useAccounts({ page: 0, size: 50 });
 
   const summary = useMemo(() => {
@@ -62,9 +61,9 @@ export function AccountsPage() {
                 { value: "table", label: "Table" },
               ]}
             />
-            <Button leftIcon={<Plus className="h-4 w-4" />} onClick={() => setShowCreateModal(true)}>
-              New Account
-            </Button>
+            <Link to="/requests">
+              <Button leftIcon={<Plus className="h-4 w-4" />}>Request Account</Button>
+            </Link>
           </div>
         }
       />
@@ -90,11 +89,11 @@ export function AccountsPage() {
       {accounts.length === 0 ? (
         <EmptyState
           title="No accounts yet"
-          description="Create your first account to get started."
+          description="Submit an account request and an administrator will set one up for you."
           action={
-            <Button leftIcon={<Plus className="h-4 w-4" />} onClick={() => setShowCreateModal(true)}>
-              Create Account
-            </Button>
+            <Link to="/requests">
+              <Button leftIcon={<Plus className="h-4 w-4" />}>Request an account</Button>
+            </Link>
           }
         />
       ) : view === "grid" ? (
@@ -106,8 +105,6 @@ export function AccountsPage() {
       ) : (
         <AccountsTable accounts={accounts} />
       )}
-
-      <CreateAccountModal open={showCreateModal} onClose={() => setShowCreateModal(false)} />
     </div>
   );
 }

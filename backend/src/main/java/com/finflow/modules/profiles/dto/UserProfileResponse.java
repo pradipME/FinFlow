@@ -10,6 +10,9 @@ public record UserProfileResponse(
         @Schema(description = "User ID")
         String userId,
 
+        @Schema(description = "Mobile phone number")
+        String phoneNumber,
+
         @Schema(description = "First name")
         String firstName,
 

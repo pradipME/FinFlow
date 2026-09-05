@@ -1,7 +1,6 @@
 export {
   getMyAccountsApi,
   getAccountApi,
-  createAccountApi,
   updateAccountApi,
   changeStatusApi,
   closeAccountApi,

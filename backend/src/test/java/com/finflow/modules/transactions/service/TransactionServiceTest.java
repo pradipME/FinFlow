@@ -4,6 +4,8 @@ import com.finflow.modules.accounts.domain.Account;
 import com.finflow.modules.accounts.domain.AccountStatus;
 import com.finflow.modules.accounts.domain.AccountType;
 import com.finflow.modules.accounts.repository.AccountRepository;
+import com.finflow.modules.admin.events.AdminEventService;
+import com.finflow.modules.auth.repository.UserRepository;
 import com.finflow.modules.transactions.domain.Transaction;
 import com.finflow.modules.transactions.domain.TransactionStatus;
 import com.finflow.modules.transactions.domain.TransactionType;
@@ -41,8 +43,10 @@ class TransactionServiceTest {
 
     @Mock private TransactionRepository transactionRepository;
     @Mock private AccountRepository accountRepository;
+    @Mock private UserRepository userRepository;
     @Mock private TransactionMapper transactionMapper;
     @Mock private TransactionValidator transactionValidator;
+    @Mock private AdminEventService adminEventService;
 
     @InjectMocks private TransactionService transactionService;
 
@@ -253,6 +257,27 @@ class TransactionServiceTest {
 
             assertThatThrownBy(() -> transactionService.createTransfer(request))
                     .isInstanceOf(BusinessRuleException.class);
+        }
+
+        @Test
+        @DisplayName("Should reject cross-currency transfers")
+        void createTransfer_crossCurrency() {
+            TransferRequest request = new TransferRequest(
+                    testAccountId.toString(), testTargetAccountId.toString(),
+                    3000L, "EUR", "FX", null);
+
+            when(transactionValidator.getAndValidateAccount(testAccountId)).thenReturn(testAccount);
+            when(transactionValidator.getAndValidateAccount(testTargetAccountId)).thenReturn(testTargetAccount);
+
+            doThrow(new ValidationException(
+                    "Cross-currency transfers are not supported: target account operates in USD but the transaction is in EUR"))
+                    .when(transactionValidator).validateSameCurrency(testAccount, testTargetAccount, "EUR");
+
+            assertThatThrownBy(() -> transactionService.createTransfer(request))
+                    .isInstanceOf(ValidationException.class)
+                    .hasMessageContaining("Cross-currency");
+
+            verify(transactionValidator).validateSameCurrency(testAccount, testTargetAccount, "EUR");
         }
     }
 

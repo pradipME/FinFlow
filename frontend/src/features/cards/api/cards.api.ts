@@ -1,7 +1,7 @@
-import { apiGet, apiPost, apiPut, apiDelete } from "@/shared/api/client";
+import { apiGet, apiPut, apiDelete } from "@/shared/api/client";
 import { API_ENDPOINTS } from "@/shared/constants";
 import type { PaginatedResponse } from "@/shared/types";
-import type { CardSummary, CreateCardPayload, UpdateCardPayload } from "../types";
+import type { CardSummary, UpdateCardPayload } from "../types";
 
 export async function getCardsApi(
   params?: Record<string, unknown>,
@@ -11,10 +11,6 @@ export async function getCardsApi(
 
 export async function getCardApi(id: string): Promise<CardSummary> {
   return apiGet<CardSummary>(API_ENDPOINTS.CARDS.BY_ID(id));
-}
-
-export async function createCardApi(payload: CreateCardPayload): Promise<CardSummary> {
-  return apiPost<CardSummary>(API_ENDPOINTS.CARDS.BASE, payload);
 }
 
 export async function updateCardApi(id: string, payload: UpdateCardPayload): Promise<CardSummary> {

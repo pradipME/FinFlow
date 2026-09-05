@@ -1,16 +1,17 @@
 import { formatDate } from "@/shared/lib/format";
-import { Badge } from "@/shared/components";
+import { Badge, Button } from "@/shared/components";
 import type { AdminUserSummary } from "../types";
 
 interface UserManagementRowProps {
   user: AdminUserSummary;
+  onView?: (user: AdminUserSummary) => void;
 }
 
 function getInitials(name: string): string {
   return name.trim().split(/\s+/).slice(0, 2).map((p) => p.charAt(0)?.toUpperCase()).join("") || "?";
 }
 
-export function UserManagementRow({ user }: UserManagementRowProps) {
+export function UserManagementRow({ user, onView }: UserManagementRowProps) {
   return (
     <tr className="border-b border-border-subtle transition-colors last:border-b-0 hover:bg-surface-active/50">
       <td className="px-4 py-3">
@@ -22,6 +23,7 @@ export function UserManagementRow({ user }: UserManagementRowProps) {
         </div>
       </td>
       <td className="px-4 py-3 text-sm text-text-secondary">{user.email}</td>
+      <td className="px-4 py-3 text-sm text-text-secondary">{user.phoneNumber}</td>
       <td className="px-4 py-3">
         <Badge variant="outline" size="sm" shape="pill">
           {user.role}
@@ -37,6 +39,13 @@ export function UserManagementRow({ user }: UserManagementRowProps) {
         </Badge>
       </td>
       <td className="px-4 py-3 text-xs text-text-tertiary">{formatDate(user.createdAt)}</td>
+      {onView && (
+        <td className="px-4 py-3 text-right">
+          <Button size="sm" variant="outline" onClick={() => onView(user)}>
+            View
+          </Button>
+        </td>
+      )}
     </tr>
   );
 }

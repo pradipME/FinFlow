@@ -10,6 +10,8 @@ public record UserManagementResponse(
     String email,
     @Schema(description = "User full name")
     String fullName,
+    @Schema(description = "Phone number")
+    String phoneNumber,
     @Schema(description = "User role")
     String role,
     @Schema(description = "Account status")

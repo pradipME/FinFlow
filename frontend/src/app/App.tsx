@@ -2,9 +2,12 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { ROUTES } from "@/shared/constants";
 import { AuthProvider } from "@/features/auth/context";
-import { GuestRoute, ProtectedRoute } from "@/features/auth/components";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { GuestRoute } from "@/features/auth/components";
+import { Spinner } from "@/shared/components";
 import { AuthLayout } from "./layouts/AuthLayout";
 import { DashboardLayout } from "./layouts/DashboardLayout";
+import { AdminLayout } from "./layouts/AdminLayout";
 
 const LoginPage = lazy(() =>
   import("@/features/auth/pages/LoginPage").then((m) => ({ default: m.LoginPage })),
@@ -69,6 +72,9 @@ const SettingsPage = lazy(() =>
 const ProfilePage = lazy(() =>
   import("@/features/profile/pages/ProfilePage").then((m) => ({ default: m.ProfilePage })),
 );
+const RequestsPage = lazy(() =>
+  import("@/features/requests/pages/RequestsPage").then((m) => ({ default: m.RequestsPage })),
+);
 const AdminDashboardPage = lazy(() =>
   import("@/features/admin/pages/AdminDashboardPage").then((m) => ({ default: m.AdminDashboardPage })),
 );
@@ -77,6 +83,27 @@ const AdminAuditLogsPage = lazy(() =>
 );
 const AdminUsersPage = lazy(() =>
   import("@/features/admin/pages/AdminUsersPage").then((m) => ({ default: m.AdminUsersPage })),
+);
+const AdminCustomerDetailPage = lazy(() =>
+  import("@/features/admin/pages/AdminCustomerDetailPage").then((m) => ({ default: m.AdminCustomerDetailPage })),
+);
+const AdminAccountsPage = lazy(() =>
+  import("@/features/admin/pages/AdminAccountsPage").then((m) => ({ default: m.AdminAccountsPage })),
+);
+const AdminCardsPage = lazy(() =>
+  import("@/features/admin/pages/AdminCardsPage").then((m) => ({ default: m.AdminCardsPage })),
+);
+const AdminTransactionsPage = lazy(() =>
+  import("@/features/admin/pages/AdminTransactionsPage").then((m) => ({ default: m.AdminTransactionsPage })),
+);
+const AdminRequestsPage = lazy(() =>
+  import("@/features/admin/pages/AdminRequestsPage").then((m) => ({ default: m.AdminRequestsPage })),
+);
+const AdminSecurityPage = lazy(() =>
+  import("@/features/admin/pages/AdminSecurityPage").then((m) => ({ default: m.AdminSecurityPage })),
+);
+const AdminSettingsPage = lazy(() =>
+  import("@/features/admin/pages/AdminSettingsPage").then((m) => ({ default: m.AdminSettingsPage })),
 );
 
 function PageFallback() {
@@ -90,208 +117,95 @@ function PageFallback() {
   );
 }
 
-function AuthRoutes() {
+function isAdminRole(roles: string[] | undefined): boolean {
+  if (!roles) return false;
+  return roles.some((r) => r === "ADMIN" || r === "SUPER_ADMIN" || r === "ROLE_ADMIN" || r === "ROLE_SUPER_ADMIN");
+}
+
+function AdminRouter() {
+  const { isAuthenticated, isLoading, user } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-bg-secondary">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to={ROUTES.LOGIN} replace />;
+  }
+
+  if (!isAdminRole(user?.roles)) {
+    return <Navigate to={ROUTES.DASHBOARD} replace />;
+  }
+
   return (
-    <Routes>
-      <Route element={<GuestRoute />}>
-        <Route
-          path={ROUTES.LOGIN}
-          element={
-            <AuthLayout>
-              <LoginPage />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path={ROUTES.REGISTER}
-          element={
-            <AuthLayout>
-              <RegisterPage />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path={ROUTES.FORGOT_PASSWORD}
-          element={
-            <AuthLayout>
-              <ForgotPasswordPage />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path={ROUTES.RESET_PASSWORD}
-          element={
-            <AuthLayout>
-              <ResetPasswordPage />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path={ROUTES.VERIFY_OTP}
-          element={
-            <AuthLayout>
-              <OtpVerificationPage />
-            </AuthLayout>
-          }
-        />
-      </Route>
-    </Routes>
+    <AdminLayout>
+      <Routes>
+        <Route index element={<AdminDashboardPage />} />
+        <Route path={ROUTES.ADMIN} element={<AdminDashboardPage />} />
+        <Route path={`${ROUTES.ADMIN}/dashboard`} element={<AdminDashboardPage />} />
+        <Route path={ROUTES.ADMIN_ACCOUNTS} element={<AdminAccountsPage />} />
+        <Route path={`${ROUTES.ADMIN_ACCOUNTS}/:id`} element={<AdminAccountsPage />} />
+        <Route path={ROUTES.ADMIN_CARDS} element={<AdminCardsPage />} />
+        <Route path={`${ROUTES.ADMIN_CARDS}/:id`} element={<AdminCardsPage />} />
+        <Route path={ROUTES.ADMIN_TRANSACTIONS} element={<AdminTransactionsPage />} />
+        <Route path={`${ROUTES.ADMIN_TRANSACTIONS}/:id`} element={<AdminTransactionsPage />} />
+        <Route path={ROUTES.ADMIN_REQUESTS} element={<AdminRequestsPage />} />
+        <Route path={`${ROUTES.ADMIN_REQUESTS}/:id`} element={<AdminRequestsPage />} />
+        <Route path={`${ROUTES.ADMIN}/audit-logs`} element={<AdminAuditLogsPage />} />
+        <Route path={ROUTES.ADMIN_USERS} element={<AdminUsersPage />} />
+        <Route path={`${ROUTES.ADMIN_USERS}/:id`} element={<AdminCustomerDetailPage />} />
+        <Route path={`${ROUTES.ADMIN}/security`} element={<AdminSecurityPage />} />
+        <Route path={`${ROUTES.ADMIN}/settings`} element={<AdminSettingsPage />} />
+        <Route path="*" element={<Navigate to={ROUTES.ADMIN} replace />} />
+      </Routes>
+    </AdminLayout>
   );
 }
 
-function ProtectedRoutes() {
+function CustomerRouter() {
+  const { isAuthenticated, isLoading, user } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-bg-primary">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to={ROUTES.LOGIN} replace />;
+  }
+
+  if (isAdminRole(user?.roles)) {
+    return <Navigate to={ROUTES.ADMIN} replace />;
+  }
+
   return (
-    <Routes>
-      <Route element={<ProtectedRoute />}>
+    <DashboardLayout>
+      <Routes>
         <Route path={ROUTES.HOME} element={<Navigate replace to={ROUTES.DASHBOARD} />} />
-        <Route
-          path={ROUTES.PAYMENTS}
-          element={
-            <DashboardLayout>
-              <PaymentsPage />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path={ROUTES.DASHBOARD}
-          element={
-            <DashboardLayout>
-              <DashboardPage />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path={ROUTES.ANALYTICS}
-          element={
-            <DashboardLayout>
-              <AnalyticsPage />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path={ROUTES.SECURITY}
-          element={
-            <DashboardLayout>
-              <SecurityPage />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path={ROUTES.ACCOUNTS}
-          element={
-            <DashboardLayout>
-              <AccountsPage />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path={`${ROUTES.ACCOUNTS}/:id`}
-          element={
-            <DashboardLayout>
-              <AccountDetailPage />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path={ROUTES.TRANSACTIONS}
-          element={
-            <DashboardLayout>
-              <TransactionsPage />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path={`${ROUTES.TRANSACTIONS}/:id`}
-          element={
-            <DashboardLayout>
-              <TransactionDetailPage />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path={ROUTES.BENEFICIARIES}
-          element={
-            <DashboardLayout>
-              <BeneficiariesPage />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path={ROUTES.TRANSFERS}
-          element={
-            <DashboardLayout>
-              <TransfersPage />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path={ROUTES.CARDS}
-          element={
-            <DashboardLayout>
-              <CardsPage />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path={ROUTES.BUDGETS}
-          element={<Navigate replace to={ROUTES.SAVINGS} />}
-        />
-        <Route
-          path={ROUTES.SAVINGS}
-          element={
-            <DashboardLayout>
-              <SavingsPage />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path={ROUTES.NOTIFICATIONS}
-          element={
-            <DashboardLayout>
-              <NotificationsPage />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path={ROUTES.SETTINGS}
-          element={
-            <DashboardLayout>
-              <SettingsPage />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path={ROUTES.PROFILE}
-          element={
-            <DashboardLayout>
-              <ProfilePage />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path={ROUTES.ADMIN}
-          element={
-            <DashboardLayout>
-              <AdminDashboardPage />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path={`${ROUTES.ADMIN}/audit-logs`}
-          element={
-            <DashboardLayout>
-              <AdminAuditLogsPage />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path={`${ROUTES.ADMIN}/users`}
-          element={
-            <DashboardLayout>
-              <AdminUsersPage />
-            </DashboardLayout>
-          }
-        />
+        <Route path={ROUTES.PAYMENTS} element={<PaymentsPage />} />
+        <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
+        <Route path={ROUTES.ANALYTICS} element={<AnalyticsPage />} />
+        <Route path={ROUTES.SECURITY} element={<SecurityPage />} />
+        <Route path={ROUTES.ACCOUNTS} element={<AccountsPage />} />
+        <Route path={`${ROUTES.ACCOUNTS}/:id`} element={<AccountDetailPage />} />
+        <Route path={ROUTES.TRANSACTIONS} element={<TransactionsPage />} />
+        <Route path={`${ROUTES.TRANSACTIONS}/:id`} element={<TransactionDetailPage />} />
+        <Route path={ROUTES.BENEFICIARIES} element={<BeneficiariesPage />} />
+        <Route path={ROUTES.TRANSFERS} element={<TransfersPage />} />
+        <Route path={ROUTES.CARDS} element={<CardsPage />} />
+        <Route path={ROUTES.BUDGETS} element={<Navigate replace to={ROUTES.SAVINGS} />} />
+        <Route path={ROUTES.SAVINGS} element={<SavingsPage />} />
+        <Route path={ROUTES.NOTIFICATIONS} element={<NotificationsPage />} />
+        <Route path={ROUTES.SETTINGS} element={<SettingsPage />} />
+        <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+        <Route path={ROUTES.REQUESTS} element={<RequestsPage />} />
         <Route
           path="*"
           element={
@@ -300,8 +214,8 @@ function ProtectedRoutes() {
             </DashboardLayout>
           }
         />
-      </Route>
-    </Routes>
+      </Routes>
+    </DashboardLayout>
   );
 }
 
@@ -310,10 +224,76 @@ export function App() {
     <BrowserRouter>
       <AuthProvider>
         <Suspense fallback={<PageFallback />}>
-          <AuthRoutes />
-          <ProtectedRoutes />
+          <Routes>
+            <Route element={<GuestRoute />}>
+              <Route
+                path={ROUTES.LOGIN}
+                element={
+                  <AuthLayout>
+                    <LoginPage />
+                  </AuthLayout>
+                }
+              />
+              <Route
+                path={ROUTES.REGISTER}
+                element={
+                  <AuthLayout>
+                    <RegisterPage />
+                  </AuthLayout>
+                }
+              />
+              <Route
+                path={ROUTES.FORGOT_PASSWORD}
+                element={
+                  <AuthLayout>
+                    <ForgotPasswordPage />
+                  </AuthLayout>
+                }
+              />
+              <Route
+                path={ROUTES.RESET_PASSWORD}
+                element={
+                  <AuthLayout>
+                    <ResetPasswordPage />
+                  </AuthLayout>
+                }
+              />
+              <Route
+                path={ROUTES.VERIFY_OTP}
+                element={
+                  <AuthLayout>
+                    <OtpVerificationPage />
+                  </AuthLayout>
+                }
+              />
+            </Route>
+
+            <Route path="/*" element={<CustomerOrAdminRouter />} />
+          </Routes>
         </Suspense>
       </AuthProvider>
     </BrowserRouter>
   );
+}
+
+function CustomerOrAdminRouter() {
+  const { isAuthenticated, isLoading, user } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-bg-primary">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to={ROUTES.LOGIN} replace />;
+  }
+
+  if (isAdminRole(user?.roles)) {
+    return <AdminRouter />;
+  }
+
+  return <CustomerRouter />;
 }

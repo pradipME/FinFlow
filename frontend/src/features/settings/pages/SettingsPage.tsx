@@ -2,7 +2,12 @@ import { Bell, ShieldCheck, SlidersHorizontal } from "lucide-react";
 import { PageHeader } from "@/shared/layout/components/Content/PageHeader";
 import { ErrorState, Skeleton } from "@/shared/components";
 import { useSettings } from "../hooks";
-import { SettingToggle, SettingSelect, SettingsSection } from "../components";
+import {
+  SettingToggle,
+  SettingSelect,
+  SettingsSection,
+  AppearanceSection,
+} from "../components";
 import type { SettingKey } from "../types";
 
 const LANGUAGE_OPTIONS = [
@@ -18,19 +23,12 @@ const CURRENCY_OPTIONS = [
   { value: "GBP", label: "British Pound (GBP)" },
 ];
 
-const THEME_OPTIONS = [
-  { value: "light", label: "Light" },
-  { value: "dark", label: "Dark" },
-  { value: "system", label: "System" },
-];
-
 const DEFAULTS: Record<SettingKey, string> = {
   notification_email: "true",
   notification_sms: "false",
   two_factor_enabled: "false",
   language: "en",
   currency_display: "USD",
-  theme: "light",
 };
 
 export function SettingsPage() {
@@ -40,11 +38,9 @@ export function SettingsPage() {
     return (
       <div className="space-y-6">
         <PageHeader title="Settings" subtitle="Manage your account preferences" />
-        <div className="space-y-4">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <Skeleton key={i} className="h-40" />
-          ))}
-        </div>
+        <Skeleton className="h-40" />
+        <Skeleton className="h-40" />
+        <Skeleton className="h-40" />
       </div>
     );
   }
@@ -76,9 +72,7 @@ export function SettingsPage() {
       <SettingsSection
         title="Notifications"
         description="Choose how you want to be notified"
-        icon={
-          <Bell size={16} />
-        }
+        icon={<Bell size={16} />}
       >
         <SettingToggle
           settingKey="notification_email"
@@ -126,14 +120,9 @@ export function SettingsPage() {
           value={getValue("currency_display")}
           options={CURRENCY_OPTIONS}
         />
-        <SettingSelect
-          settingKey="theme"
-          label="Theme"
-          description="Choose your visual theme"
-          value={getValue("theme")}
-          options={THEME_OPTIONS}
-        />
       </SettingsSection>
+
+      <AppearanceSection />
     </div>
   );
 }

@@ -1,12 +1,11 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { ArrowLeft, CreditCard, Shield, Clock, ArrowDownToLine, ArrowUpFromLine, ArrowLeftRight } from "lucide-react";
+import { ArrowLeft, CreditCard, Shield, Clock, ArrowUpFromLine, ArrowLeftRight } from "lucide-react";
 import { ROUTES } from "@/shared/constants";
 import { formatCurrency, formatDate } from "@/shared/lib/format";
 import { Button, ErrorState, Skeleton } from "@/shared/components";
 import { PageHeader } from "@/shared/layout";
 import {
-  DepositDialog,
   WithdrawalDialog,
   TransferDialog,
 } from "@/features/transactions/pages";
@@ -29,7 +28,7 @@ export function AccountDetailPage() {
   const allAccounts = accountsData?.content ?? [];
   const { data: history } = useStatusHistory(id!);
   const releaseHold = useReleaseHold(id!);
-  const [dialog, setDialog] = useState<"deposit" | "withdraw" | "transfer" | null>(null);
+  const [dialog, setDialog] = useState<"withdraw" | "transfer" | null>(null);
 
   if (error) {
     return (
@@ -57,14 +56,6 @@ export function AccountDetailPage() {
         subtitle={`${ACCOUNT_TYPE_LABELS[account.accountType] ?? account.accountType} · ${account.accountNumber}`}
         actions={
           <div className="flex items-center gap-3">
-            <Button
-              size="sm"
-              variant="primary"
-              leftIcon={<ArrowDownToLine className="h-4 w-4" />}
-              onClick={() => setDialog("deposit")}
-            >
-              Deposit
-            </Button>
             <Button
               size="sm"
               variant="neutral"
@@ -179,12 +170,6 @@ export function AccountDetailPage() {
         </div>
       </div>
 
-      <DepositDialog
-        open={dialog === "deposit"}
-        accounts={allAccounts}
-        defaultAccountId={account.id}
-        onClose={() => setDialog(null)}
-      />
       <WithdrawalDialog
         open={dialog === "withdraw"}
         accounts={allAccounts}

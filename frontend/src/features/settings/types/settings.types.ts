@@ -3,13 +3,11 @@ export type SettingKey =
   | "notification_sms"
   | "two_factor_enabled"
   | "language"
-  | "currency_display"
-  | "theme";
+  | "currency_display";
 
 export type BooleanSettingValue = "true" | "false";
 export type LanguageValue = "en" | "es" | "fr" | "de";
 export type CurrencyDisplayValue = "USD" | "EUR" | "GBP";
-export type ThemeValue = "light" | "dark" | "system";
 
 export interface UserSetting {
   id: string;

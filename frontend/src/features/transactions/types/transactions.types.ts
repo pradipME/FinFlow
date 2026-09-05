@@ -47,14 +47,6 @@ export interface TransactionDetail {
   updatedAt: string;
 }
 
-export interface DepositPayload {
-  accountId: string;
-  amountCents: number;
-  currency?: string;
-  description?: string;
-  idempotencyKey?: string;
-}
-
 export interface WithdrawalPayload {
   accountId: string;
   amountCents: number;
@@ -66,6 +58,15 @@ export interface WithdrawalPayload {
 export interface TransferPayload {
   sourceAccountId: string;
   targetAccountId: string;
+  amountCents: number;
+  currency?: string;
+  description?: string;
+  idempotencyKey?: string;
+}
+
+export interface MobilePaymentPayload {
+  sourceAccountId: string;
+  recipientMobile: string;
   amountCents: number;
   currency?: string;
   description?: string;

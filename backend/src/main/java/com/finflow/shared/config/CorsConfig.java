@@ -29,6 +29,10 @@ public class CorsConfig {
         origins.add("https://*.finflow.com");
         origins.add("http://localhost:3000");
         origins.add("http://localhost:5173");
+        // Vite dev server picks the first free port (5173, 5174, 5175, ...).
+        // Allow any localhost port so local development works regardless of
+        // which port Vite binds to.
+        origins.add("http://localhost:*");
         origins.addAll(configuredOrigins);
 
         config.setAllowedOriginPatterns(List.copyOf(origins));

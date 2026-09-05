@@ -18,16 +18,6 @@ export interface CardSummary {
   createdAt: string;
 }
 
-export interface CreateCardPayload {
-  accountId: string;
-  cardType: CardType;
-  cardholderName: string;
-  creditLimitCents?: number;
-  dailyLimitCents?: number;
-  monthlyLimitCents?: number;
-  currency?: string;
-}
-
 export interface UpdateCardPayload {
   cardholderName?: string;
   dailyLimitCents?: number;

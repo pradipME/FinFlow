@@ -6,7 +6,6 @@ export type {
   AccountDetail,
   Hold,
   StatusHistoryEntry,
-  CreateAccountPayload,
   UpdateAccountPayload,
   ChangeStatusPayload,
   PlaceHoldPayload,

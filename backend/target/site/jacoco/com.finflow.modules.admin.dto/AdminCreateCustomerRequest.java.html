@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdminCreateCustomerRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.admin.dto</a> &gt; <span class="el_source">AdminCreateCustomerRequest.java</span></div><h1>AdminCreateCustomerRequest.java</h1><pre class="source lang-java linenums">package com.finflow.modules.admin.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.*;
+
+/**
+ * Incoming payload for an administrator creating a new customer record.
+ *
+ * &lt;p&gt;The admin provisions a full customer identity (email, username, phone) plus
+ * an initial password. The CUSTOMER role is assigned automatically. Terms are
+ * accepted on behalf of the customer at the point of provisioning.&lt;/p&gt;
+ */
+@Schema(description = &quot;Request payload to create a customer as an administrator&quot;)
+<span class="nc" id="L14">public record AdminCreateCustomerRequest(</span>
+
+        @Schema(description = &quot;Customer email address&quot;, example = &quot;customer@finflow.com&quot;, requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotBlank
+        @Size(min = 5, max = 254)
+        @Email
+        String email,
+
+        @Schema(description = &quot;Desired username (3-30 chars)&quot;, example = &quot;customer_01&quot;, requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotBlank
+        @Size(min = 3, max = 30)
+        @Pattern(regexp = &quot;^[a-zA-Z0-9_]+$&quot;)
+        String username,
+
+        @Schema(description = &quot;Phone number in E.164 format&quot;, example = &quot;+2348012345678&quot;, requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotBlank
+        @Pattern(regexp = &quot;^\\+?[1-9]\\d{1,14}$&quot;)
+        String phoneNumber,
+
+        @Schema(description = &quot;Initial password meeting security policy&quot;, example = &quot;Str0ng!Pass#2026&quot;, requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotBlank
+        @Size(min = 8, max = 128)
+        @Pattern(regexp = &quot;^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&amp;+=!]).*$&quot;)
+        String password
+) {}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -9,11 +9,14 @@ import com.finflow.modules.auth.repository.UserRepository;
 import com.finflow.modules.auth.repository.RoleRepository;
 import com.finflow.modules.auth.repository.UserRoleRepository;
 import com.finflow.modules.auth.validator.RegistrationValidator;
+import com.finflow.modules.admin.events.AdminEventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 /**
  * Core service for user registration operations.
@@ -37,6 +40,7 @@ public class RegistrationService {
     private final RegistrationValidator validator;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final AdminEventService adminEventService;
 
     public RegistrationService(UserRepository userRepository,
                                UserCredentialRepository credentialRepository,
@@ -44,7 +48,8 @@ public class RegistrationService {
                                UserRoleRepository userRoleRepository,
                                RegistrationValidator validator,
                                UserMapper userMapper,
-                               PasswordEncoder passwordEncoder) {
+                               PasswordEncoder passwordEncoder,
+                               AdminEventService adminEventService) {
         this.userRepository = userRepository;
         this.credentialRepository = credentialRepository;
         this.roleRepository = roleRepository;
@@ -52,6 +57,7 @@ public class RegistrationService {
         this.validator = validator;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
+        this.adminEventService = adminEventService;
     }
 
     /**
@@ -93,6 +99,12 @@ public class RegistrationService {
         UserRole userRole = new UserRole(user, customerRole, user.getId().toString());
         userRoleRepository.save(userRole);
         log.info("CUSTOMER role assigned to user: {}", user.getId());
+
+        adminEventService.sendToAdmins("new-customer", Map.of(
+                "type", "CUSTOMER_CREATE",
+                "userId", user.getId().toString(),
+                "email", user.getEmail()
+        ));
 
         return userMapper.toRegisterResponse(user);
     }

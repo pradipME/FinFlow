@@ -50,12 +50,6 @@ export interface StatusHistoryEntry {
   changedAt: string;
 }
 
-export interface CreateAccountPayload {
-  accountType: AccountType;
-  nickname?: string;
-  currency?: string;
-}
-
 export interface UpdateAccountPayload {
   nickname?: string;
   accountType?: AccountType;

@@ -26,6 +26,10 @@ public record RegisterResponse(
                 example = "john_doe")
         String username,
 
+        @Schema(description = "Phone number in E.164 format",
+                example = "+2348012345678")
+        String phoneNumber,
+
         @Schema(description = "Account status",
                 example = "ACTIVE")
         String status,

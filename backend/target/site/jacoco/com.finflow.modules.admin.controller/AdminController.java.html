@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdminController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.admin.controller</a> &gt; <span class="el_source">AdminController.java</span></div><h1>AdminController.java</h1><pre class="source lang-java linenums">package com.finflow.modules.admin.controller;
 
+import com.finflow.modules.admin.dto.AdminCreateAccountRequest;
+import com.finflow.modules.admin.dto.AdminCreateCustomerRequest;
 import com.finflow.modules.admin.dto.AdminDashboardResponse;
 import com.finflow.modules.admin.dto.AuditLogResponse;
+import com.finflow.modules.admin.dto.CustomerDetailResponse;
+import com.finflow.modules.admin.dto.FundAccountRequest;
 import com.finflow.modules.admin.dto.UserManagementResponse;
 import com.finflow.modules.admin.service.AdminService;
+import com.finflow.modules.accounts.dto.AccountDetailResponse;
+import com.finflow.modules.cards.dto.CardResponse;
+import com.finflow.modules.requests.domain.CustomerRequestStatus;
+import com.finflow.modules.requests.dto.CustomerRequestResponse;
+import com.finflow.modules.requests.dto.ReviewRequestRequest;
+import com.finflow.modules.requests.service.RequestService;
+import com.finflow.modules.transactions.dto.TransactionDetailResponse;
+import com.finflow.modules.transactions.dto.TransactionSummaryResponse;
 import com.finflow.shared.dto.ApiResponse;
 import com.finflow.shared.dto.PageResponse;
-import com.finflow.shared.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping(&quot;/api/v1/admin&quot;)
@@ -23,29 +38,160 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
 
     private final AdminService adminService;
+    private final RequestService requestService;
 
-<span class="nc" id="L27">    public AdminController(AdminService adminService) {</span>
-<span class="nc" id="L28">        this.adminService = adminService;</span>
-<span class="nc" id="L29">    }</span>
+<span class="nc" id="L43">    public AdminController(AdminService adminService, RequestService requestService) {</span>
+<span class="nc" id="L44">        this.adminService = adminService;</span>
+<span class="nc" id="L45">        this.requestService = requestService;</span>
+<span class="nc" id="L46">    }</span>
 
     @GetMapping(&quot;/audit-logs&quot;)
     @Operation(summary = &quot;List all audit logs&quot;)
     public ResponseEntity&lt;ApiResponse&lt;PageResponse&lt;AuditLogResponse&gt;&gt;&gt; getAuditLogs(
             @PageableDefault(page = 0, size = 20, sort = &quot;createdAt&quot;, direction = Sort.Direction.DESC) Pageable pageable) {
-<span class="nc" id="L35">        return ResponseEntity.ok(ApiResponse.ok(adminService.getAuditLogs(pageable)));</span>
+<span class="nc" id="L52">        return ResponseEntity.ok(ApiResponse.ok(adminService.getAuditLogs(pageable)));</span>
     }
 
     @GetMapping(&quot;/dashboard&quot;)
     @Operation(summary = &quot;Get admin dashboard statistics&quot;)
     public ResponseEntity&lt;ApiResponse&lt;AdminDashboardResponse&gt;&gt; getDashboard() {
-<span class="nc" id="L41">        return ResponseEntity.ok(ApiResponse.ok(adminService.getDashboardStats()));</span>
+<span class="nc" id="L58">        return ResponseEntity.ok(ApiResponse.ok(adminService.getDashboardStats()));</span>
     }
 
     @GetMapping(&quot;/users&quot;)
     @Operation(summary = &quot;List users for management&quot;)
     public ResponseEntity&lt;ApiResponse&lt;PageResponse&lt;UserManagementResponse&gt;&gt;&gt; getUsers(
             @PageableDefault(page = 0, size = 20, sort = &quot;createdAt&quot;, direction = Sort.Direction.DESC) Pageable pageable) {
-<span class="nc" id="L48">        return ResponseEntity.ok(ApiResponse.ok(adminService.getUserList(pageable)));</span>
+<span class="nc" id="L65">        return ResponseEntity.ok(ApiResponse.ok(adminService.getUserList(pageable)));</span>
+    }
+
+    // ---------------- Customers ----------------
+
+    @PostMapping(&quot;/customers&quot;)
+    @Operation(summary = &quot;Provision a new customer as an administrator&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;UserManagementResponse&gt;&gt; createCustomer(
+            @Valid @RequestBody AdminCreateCustomerRequest request) {
+<span class="nc" id="L74">        return ResponseEntity.status(HttpStatus.CREATED)</span>
+<span class="nc" id="L75">                .body(ApiResponse.ok(adminService.createCustomer(request), &quot;Customer created&quot;));</span>
+    }
+
+    @GetMapping(&quot;/users/{userId}&quot;)
+    @Operation(summary = &quot;Get detailed customer view for management&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;CustomerDetailResponse&gt;&gt; getUserDetails(
+            @PathVariable String userId) {
+<span class="nc" id="L82">        return ResponseEntity.ok(ApiResponse.ok(adminService.getUserDetails(userId)));</span>
+    }
+
+    @GetMapping(&quot;/users/{userId}/cards&quot;)
+    @Operation(summary = &quot;List all cards held by a customer&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;PageResponse&lt;CardResponse&gt;&gt;&gt; getCardsByUser(
+            @PathVariable String userId,
+            @PageableDefault(page = 0, size = 20) Pageable pageable) {
+<span class="nc" id="L90">        return ResponseEntity.ok(ApiResponse.ok(adminService.getCardsByUser(userId, pageable)));</span>
+    }
+
+    // ---------------- Accounts ----------------
+
+    @GetMapping(&quot;/accounts&quot;)
+    @Operation(summary = &quot;List all accounts&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;PageResponse&lt;AccountDetailResponse&gt;&gt;&gt; getAccounts(
+            @PageableDefault(page = 0, size = 20, sort = &quot;createdAt&quot;, direction = Sort.Direction.DESC) Pageable pageable) {
+<span class="nc" id="L99">        return ResponseEntity.ok(ApiResponse.ok(adminService.getAccounts(pageable)));</span>
+    }
+
+    @GetMapping(&quot;/accounts/{accountId}&quot;)
+    @Operation(summary = &quot;Get a single account&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;AccountDetailResponse&gt;&gt; getAccount(
+            @PathVariable UUID accountId) {
+<span class="nc" id="L106">        return ResponseEntity.ok(ApiResponse.ok(adminService.getAccount(accountId)));</span>
+    }
+
+    @PostMapping(&quot;/accounts&quot;)
+    @Operation(summary = &quot;Create an account for a customer&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;AccountDetailResponse&gt;&gt; createAccount(
+            @Valid @RequestBody AdminCreateAccountRequest request) {
+<span class="nc" id="L113">        return ResponseEntity.status(HttpStatus.CREATED)</span>
+<span class="nc" id="L114">                .body(ApiResponse.ok(adminService.createAccountForCustomer(request), &quot;Account created&quot;));</span>
+    }
+
+    @PostMapping(&quot;/accounts/{accountId}/fund&quot;)
+    @Operation(summary = &quot;Fund (credit) a customer account&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;TransactionDetailResponse&gt;&gt; fundAccount(
+            @PathVariable UUID accountId, @Valid @RequestBody FundAccountRequest request) {
+<span class="nc" id="L121">        return ResponseEntity.ok(ApiResponse.ok(adminService.fundAccount(accountId, request), &quot;Account funded&quot;));</span>
+    }
+
+    @GetMapping(&quot;/users/{userId}/accounts&quot;)
+    @Operation(summary = &quot;List accounts for a customer&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;PageResponse&lt;AccountDetailResponse&gt;&gt;&gt; getAccountsByUser(
+            @PathVariable String userId,
+            @PageableDefault(page = 0, size = 20) Pageable pageable) {
+<span class="nc" id="L129">        return ResponseEntity.ok(ApiResponse.ok(adminService.getAccountsByUser(userId, pageable)));</span>
+    }
+
+    // ---------------- Cards ----------------
+
+    @GetMapping(&quot;/cards&quot;)
+    @Operation(summary = &quot;List all cards&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;PageResponse&lt;CardResponse&gt;&gt;&gt; getCards(
+            @PageableDefault(page = 0, size = 20, sort = &quot;createdAt&quot;, direction = Sort.Direction.DESC) Pageable pageable) {
+<span class="nc" id="L138">        return ResponseEntity.ok(ApiResponse.ok(adminService.getCards(pageable)));</span>
+    }
+
+    @GetMapping(&quot;/cards/{cardId}&quot;)
+    @Operation(summary = &quot;Get a single card&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;CardResponse&gt;&gt; getCard(
+            @PathVariable UUID cardId) {
+<span class="nc" id="L145">        return ResponseEntity.ok(ApiResponse.ok(adminService.getCard(cardId)));</span>
+    }
+
+    @GetMapping(&quot;/accounts/{accountId}/cards&quot;)
+    @Operation(summary = &quot;List cards linked to an account&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;PageResponse&lt;CardResponse&gt;&gt;&gt; getCardsByAccount(
+            @PathVariable String accountId) {
+<span class="nc" id="L152">        return ResponseEntity.ok(ApiResponse.ok(adminService.getCardsByAccount(accountId)));</span>
+    }
+
+    // ---------------- Transactions ----------------
+
+    @GetMapping(&quot;/transactions&quot;)
+    @Operation(summary = &quot;List all transactions&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;PageResponse&lt;TransactionSummaryResponse&gt;&gt;&gt; getTransactions(
+            @PageableDefault(page = 0, size = 20, sort = &quot;createdAt&quot;, direction = Sort.Direction.DESC) Pageable pageable) {
+<span class="nc" id="L161">        return ResponseEntity.ok(ApiResponse.ok(adminService.getTransactions(pageable)));</span>
+    }
+
+    @GetMapping(&quot;/transactions/{transactionId}&quot;)
+    @Operation(summary = &quot;Get a single transaction&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;TransactionDetailResponse&gt;&gt; getTransaction(
+            @PathVariable UUID transactionId) {
+<span class="nc" id="L168">        return ResponseEntity.ok(ApiResponse.ok(adminService.getTransaction(transactionId)));</span>
+    }
+
+    // ---------------- Customer requests ----------------
+
+    @GetMapping(&quot;/requests&quot;)
+    @Operation(summary = &quot;List all customer requests (optionally by status)&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;PageResponse&lt;CustomerRequestResponse&gt;&gt;&gt; getRequests(
+            @RequestParam(required = false) CustomerRequestStatus status,
+            @PageableDefault(page = 0, size = 20, sort = &quot;createdAt&quot;, direction = Sort.Direction.ASC) Pageable pageable) {
+<span class="nc" id="L178">        return ResponseEntity.ok(ApiResponse.ok(requestService.getAllRequests(status, pageable)));</span>
+    }
+
+    @PostMapping(&quot;/requests/{requestId}/approve&quot;)
+    @Operation(summary = &quot;Approve a customer request (creates the underlying resource)&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;CustomerRequestResponse&gt;&gt; approveRequest(
+            @PathVariable UUID requestId) {
+<span class="nc" id="L185">        return ResponseEntity.ok(ApiResponse.ok(requestService.approve(requestId), &quot;Request approved&quot;));</span>
+    }
+
+    @PostMapping(&quot;/requests/{requestId}/reject&quot;)
+    @Operation(summary = &quot;Reject a customer request&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;CustomerRequestResponse&gt;&gt; rejectRequest(
+            @PathVariable UUID requestId,
+            @Valid @RequestBody(required = false) ReviewRequestRequest body) {
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        String reason = body != null ? body.rejectionReason() : null;</span>
+<span class="nc" id="L194">        return ResponseEntity.ok(ApiResponse.ok(requestService.reject(requestId, reason), &quot;Request rejected&quot;));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

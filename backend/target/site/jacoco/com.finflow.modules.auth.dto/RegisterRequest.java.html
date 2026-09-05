@@ -22,7 +22,8 @@ import jakarta.validation.constraints.*;
         @Email(message = ErrorCodes.INVALID_FORMAT)
         String email,
 
-        @Schema(description = &quot;Phone number in E.164 format&quot;, example = &quot;+2348012345678&quot;)
+        @Schema(description = &quot;Phone number in E.164 format&quot;, example = &quot;+2348012345678&quot;, requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotBlank(message = ErrorCodes.REQUIRED_FIELD)
         @Pattern(regexp = &quot;^\\+?[1-9]\\d{1,14}$&quot;, message = ErrorCodes.INVALID_FORMAT)
         String phoneNumber,
 
@@ -51,10 +52,10 @@ import jakarta.validation.constraints.*;
          * @return this request with email normalized
          */
         public RegisterRequest normalize() {
-<span class="nc" id="L54">            return new RegisterRequest(</span>
-<span class="nc bnc" id="L55" title="All 2 branches missed.">                    email != null ? email.trim().toLowerCase() : null,</span>
-<span class="nc bnc" id="L56" title="All 2 branches missed.">                    phoneNumber != null ? phoneNumber.trim() : null,</span>
-<span class="nc bnc" id="L57" title="All 2 branches missed.">                    username != null ? username.trim() : null,</span>
+<span class="nc" id="L55">            return new RegisterRequest(</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">                    email != null ? email.trim().toLowerCase() : null,</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">                    phoneNumber != null ? phoneNumber.trim() : null,</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">                    username != null ? username.trim() : null,</span>
                     password,
                     termsAccepted
             );

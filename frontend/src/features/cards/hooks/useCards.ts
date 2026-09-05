@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "@/shared/constants";
-import { getCardsApi, getCardApi, createCardApi, freezeCardApi, unfreezeCardApi, blockCardApi, cancelCardApi } from "../api";
-import type { CreateCardPayload } from "../types";
+import { getCardsApi, getCardApi, freezeCardApi, unfreezeCardApi, blockCardApi, cancelCardApi } from "../api";
 
 export function useCards(params?: Record<string, unknown>) {
   return useQuery({
@@ -15,16 +14,6 @@ export function useCard(id: string) {
     queryKey: QUERY_KEYS.CARD_DETAIL(id),
     queryFn: () => getCardApi(id),
     enabled: !!id,
-  });
-}
-
-export function useCreateCard() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (payload: CreateCardPayload) => createCardApi(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CARDS });
-    },
   });
 }
 

@@ -90,5 +90,26 @@ public class TransactionValidator {
 <span class="nc" id="L90">            throw new ValidationException(&quot;You do not have access to this account&quot;);</span>
         }
 <span class="nc" id="L92">    }</span>
+
+    /**
+     * Prevents silent cross-currency transfers: both source and target must
+     * operate in the resolved transaction currency. If the caller requested a
+     * different currency than the accounts, the transfer is rejected rather
+     * than crediting the target in a currency it does not support.
+     */
+    public void validateSameCurrency(Account sourceAccount, Account targetAccount, String currency) {
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        if (currency == null) {</span>
+<span class="nc" id="L102">            throw new ValidationException(&quot;Transaction currency is required&quot;);</span>
+        }
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (!currency.equals(sourceAccount.getCurrency())) {</span>
+<span class="nc" id="L105">            throw new ValidationException(</span>
+<span class="nc" id="L106">                    &quot;Source account currency (&quot; + sourceAccount.getCurrency() + &quot;) does not match requested currency (&quot; + currency + &quot;)&quot;);</span>
+        }
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (!currency.equals(targetAccount.getCurrency())) {</span>
+<span class="nc" id="L109">            throw new ValidationException(</span>
+                    &quot;Cross-currency transfers are not supported: target account operates in &quot;
+<span class="nc" id="L111">                            + targetAccount.getCurrency() + &quot; but the transaction is in &quot; + currency);</span>
+        }
+<span class="nc" id="L113">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

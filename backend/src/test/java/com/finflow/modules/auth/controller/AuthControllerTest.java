@@ -71,6 +71,7 @@ class AuthControllerTest {
                     UUID.randomUUID(),
                     "test@finflow.com",
                     "testuser",
+                    "+2348012345678",
                     "ACTIVE",
                     LocalDateTime.now()
             );

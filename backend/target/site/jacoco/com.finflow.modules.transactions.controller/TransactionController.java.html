@@ -36,36 +36,20 @@ public class TransactionController {
 <span class="nc" id="L36">        this.transactionService = transactionService;</span>
 <span class="nc" id="L37">    }</span>
 
-    @PostMapping(&quot;/deposit&quot;)
-    @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = &quot;Create a deposit&quot;, description = &quot;Deposits funds into an account.&quot;)
-    public ResponseEntity&lt;ApiResponse&lt;TransactionDetailResponse&gt;&gt; createDeposit(
-            @Valid @RequestBody DepositRequest request,
-            @RequestHeader(value = RequestHeaders.IDEMPOTENCY_KEY, required = false) String idempotencyKey) {
-<span class="nc bnc" id="L45" title="All 2 branches missed.">        if (idempotencyKey != null) {</span>
-<span class="nc" id="L46">            request = new DepositRequest(request.accountId(), request.amountCents(),</span>
-<span class="nc" id="L47">                    request.currency(), request.description(), idempotencyKey);</span>
-        }
-<span class="nc" id="L49">        log.info(&quot;Deposit request: accountId={}, amountCents={}&quot;, request.accountId(), request.amountCents());</span>
-<span class="nc" id="L50">        TransactionDetailResponse response = transactionService.createDeposit(request);</span>
-<span class="nc" id="L51">        return ResponseEntity.status(HttpStatus.CREATED)</span>
-<span class="nc" id="L52">                .body(ApiResponse.ok(response, &quot;Deposit completed successfully&quot;));</span>
-    }
-
     @PostMapping(&quot;/withdrawal&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = &quot;Create a withdrawal&quot;, description = &quot;Withdraws funds from an account.&quot;)
     public ResponseEntity&lt;ApiResponse&lt;TransactionDetailResponse&gt;&gt; createWithdrawal(
             @Valid @RequestBody WithdrawalRequest request,
             @RequestHeader(value = RequestHeaders.IDEMPOTENCY_KEY, required = false) String idempotencyKey) {
-<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (idempotencyKey != null) {</span>
-<span class="nc" id="L62">            request = new WithdrawalRequest(request.accountId(), request.amountCents(),</span>
-<span class="nc" id="L63">                    request.currency(), request.description(), idempotencyKey);</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        if (idempotencyKey != null) {</span>
+<span class="nc" id="L46">            request = new WithdrawalRequest(request.accountId(), request.amountCents(),</span>
+<span class="nc" id="L47">                    request.currency(), request.description(), idempotencyKey);</span>
         }
-<span class="nc" id="L65">        log.info(&quot;Withdrawal request: accountId={}, amountCents={}&quot;, request.accountId(), request.amountCents());</span>
-<span class="nc" id="L66">        TransactionDetailResponse response = transactionService.createWithdrawal(request);</span>
-<span class="nc" id="L67">        return ResponseEntity.status(HttpStatus.CREATED)</span>
-<span class="nc" id="L68">                .body(ApiResponse.ok(response, &quot;Withdrawal completed successfully&quot;));</span>
+<span class="nc" id="L49">        log.info(&quot;Withdrawal request: accountId={}, amountCents={}&quot;, request.accountId(), request.amountCents());</span>
+<span class="nc" id="L50">        TransactionDetailResponse response = transactionService.createWithdrawal(request);</span>
+<span class="nc" id="L51">        return ResponseEntity.status(HttpStatus.CREATED)</span>
+<span class="nc" id="L52">                .body(ApiResponse.ok(response, &quot;Withdrawal completed successfully&quot;));</span>
     }
 
     @PostMapping(&quot;/transfer&quot;)
@@ -74,23 +58,41 @@ public class TransactionController {
     public ResponseEntity&lt;ApiResponse&lt;TransactionDetailResponse&gt;&gt; createTransfer(
             @Valid @RequestBody TransferRequest request,
             @RequestHeader(value = RequestHeaders.IDEMPOTENCY_KEY, required = false) String idempotencyKey) {
-<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (idempotencyKey != null) {</span>
-<span class="nc" id="L78">            request = new TransferRequest(request.sourceAccountId(), request.targetAccountId(),</span>
-<span class="nc" id="L79">                    request.amountCents(), request.currency(), request.description(), idempotencyKey);</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (idempotencyKey != null) {</span>
+<span class="nc" id="L62">            request = new TransferRequest(request.sourceAccountId(), request.targetAccountId(),</span>
+<span class="nc" id="L63">                    request.amountCents(), request.currency(), request.description(), idempotencyKey);</span>
         }
-<span class="nc" id="L81">        log.info(&quot;Transfer request: source={}, target={}, amountCents={}&quot;,</span>
-<span class="nc" id="L82">                request.sourceAccountId(), request.targetAccountId(), request.amountCents());</span>
-<span class="nc" id="L83">        TransactionDetailResponse response = transactionService.createTransfer(request);</span>
-<span class="nc" id="L84">        return ResponseEntity.status(HttpStatus.CREATED)</span>
-<span class="nc" id="L85">                .body(ApiResponse.ok(response, &quot;Transfer completed successfully&quot;));</span>
+<span class="nc" id="L65">        log.info(&quot;Transfer request: source={}, target={}, amountCents={}&quot;,</span>
+<span class="nc" id="L66">                request.sourceAccountId(), request.targetAccountId(), request.amountCents());</span>
+<span class="nc" id="L67">        TransactionDetailResponse response = transactionService.createTransfer(request);</span>
+<span class="nc" id="L68">        return ResponseEntity.status(HttpStatus.CREATED)</span>
+<span class="nc" id="L69">                .body(ApiResponse.ok(response, &quot;Transfer completed successfully&quot;));</span>
+    }
+
+    @PostMapping(&quot;/pay&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = &quot;Pay another customer by mobile number&quot;,
+            description = &quot;Debits the sender's account and credits the recipient resolved by mobile number.&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;TransactionDetailResponse&gt;&gt; payByMobile(
+            @Valid @RequestBody MobilePaymentRequest request,
+            @RequestHeader(value = RequestHeaders.IDEMPOTENCY_KEY, required = false) String idempotencyKey) {
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        if (idempotencyKey != null) {</span>
+<span class="nc" id="L80">            request = new MobilePaymentRequest(request.sourceAccountId(), request.recipientMobile(),</span>
+<span class="nc" id="L81">                    request.amountCents(), request.currency(), request.description(), idempotencyKey);</span>
+        }
+<span class="nc" id="L83">        log.info(&quot;Mobile payment request: source={}, recipient={}, amountCents={}&quot;,</span>
+<span class="nc" id="L84">                request.sourceAccountId(), request.recipientMobile(), request.amountCents());</span>
+<span class="nc" id="L85">        TransactionDetailResponse response = transactionService.payByMobile(request);</span>
+<span class="nc" id="L86">        return ResponseEntity.status(HttpStatus.CREATED)</span>
+<span class="nc" id="L87">                .body(ApiResponse.ok(response, &quot;Payment completed successfully&quot;));</span>
     }
 
     @GetMapping(&quot;/{transactionId}&quot;)
     @Operation(summary = &quot;Get transaction details&quot;, description = &quot;Returns full details for a transaction.&quot;)
     public ResponseEntity&lt;ApiResponse&lt;TransactionDetailResponse&gt;&gt; getTransaction(
             @PathVariable UUID transactionId) {
-<span class="nc" id="L92">        TransactionDetailResponse response = transactionService.getTransaction(transactionId);</span>
-<span class="nc" id="L93">        return ResponseEntity.ok(ApiResponse.ok(response));</span>
+<span class="nc" id="L94">        TransactionDetailResponse response = transactionService.getTransaction(transactionId);</span>
+<span class="nc" id="L95">        return ResponseEntity.ok(ApiResponse.ok(response));</span>
     }
 
     @GetMapping
@@ -103,19 +105,19 @@ public class TransactionController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDate,
             @RequestParam(defaultValue = &quot;0&quot;) int page,
             @RequestParam(defaultValue = &quot;20&quot;) int size) {
-<span class="nc" id="L106">        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, &quot;createdAt&quot;));</span>
-<span class="nc" id="L107">        PageResponse&lt;TransactionSummaryResponse&gt; response = transactionService.getMyTransactions(</span>
+<span class="nc" id="L108">        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, &quot;createdAt&quot;));</span>
+<span class="nc" id="L109">        PageResponse&lt;TransactionSummaryResponse&gt; response = transactionService.getMyTransactions(</span>
                 type, status, accountId, fromDate, toDate, pageable);
-<span class="nc" id="L109">        return ResponseEntity.ok(ApiResponse.ok(response));</span>
+<span class="nc" id="L111">        return ResponseEntity.ok(ApiResponse.ok(response));</span>
     }
 
     @PostMapping(&quot;/{transactionId}/cancel&quot;)
     @Operation(summary = &quot;Cancel a pending transaction&quot;, description = &quot;Cancels a pending transaction.&quot;)
     public ResponseEntity&lt;ApiResponse&lt;TransactionDetailResponse&gt;&gt; cancelTransaction(
             @PathVariable UUID transactionId) {
-<span class="nc" id="L116">        log.info(&quot;Cancel request: transactionId={}&quot;, transactionId);</span>
-<span class="nc" id="L117">        TransactionDetailResponse response = transactionService.cancelTransaction(transactionId);</span>
-<span class="nc" id="L118">        return ResponseEntity.ok(ApiResponse.ok(response, &quot;Transaction cancelled successfully&quot;));</span>
+<span class="nc" id="L118">        log.info(&quot;Cancel request: transactionId={}&quot;, transactionId);</span>
+<span class="nc" id="L119">        TransactionDetailResponse response = transactionService.cancelTransaction(transactionId);</span>
+<span class="nc" id="L120">        return ResponseEntity.ok(ApiResponse.ok(response, &quot;Transaction cancelled successfully&quot;));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,8 +1,8 @@
 export {
   useTransactions,
   useTransaction,
-  useCreateDeposit,
   useCreateWithdrawal,
   useCreateTransfer,
+  useCreatePayment,
   useCancelTransaction,
 } from "./useTransactions";

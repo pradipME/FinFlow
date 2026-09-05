@@ -43,14 +43,6 @@ public class CardController {
         return ResponseEntity.ok(ApiResponse.ok(cardService.getCardById(SecurityUtil.getCurrentUserId(), cardId)));
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Create a new card")
-    public ResponseEntity<ApiResponse<CardResponse>> createCard(@Valid @RequestBody CreateCardRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.ok(cardService.createCard(SecurityUtil.getCurrentUserId(), request)));
-    }
-
     @PutMapping("/{cardId}")
     @Operation(summary = "Update card details")
     public ResponseEntity<ApiResponse<CardResponse>> updateCard(@PathVariable UUID cardId,

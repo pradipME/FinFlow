@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomerRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.requests.domain</a> &gt; <span class="el_source">CustomerRequest.java</span></div><h1>CustomerRequest.java</h1><pre class="source lang-java linenums">package com.finflow.modules.requests.domain;
+
+import com.finflow.shared.domain.BaseEntity;
+import com.finflow.shared.domain.BaseEntityListener;
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+
+/**
+ * A customer request in the bank-style ADMIN → CUSTOMER workflow.
+ *
+ * &lt;p&gt;Customers cannot directly create bank accounts or cards; they file a
+ * {@code CustomerRequest}. An ADMIN reviews it and either approves
+ * (platform creates the resource) or rejects it.&lt;/p&gt;
+ *
+ * &lt;p&gt;Table: {@code finflow_admin.customer_requests}&lt;/p&gt;
+ *
+ * @author FinFlow Engineering
+ * @since 1.0.0
+ */
+@Entity
+@Table(name = &quot;customer_requests&quot;, schema = &quot;finflow_admin&quot;)
+@EntityListeners({BaseEntityListener.class, org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
+public class CustomerRequest extends BaseEntity {
+
+    @Column(name = &quot;customer_id&quot;, nullable = false, length = 36, columnDefinition = &quot;CHAR(36)&quot;)
+    private String customerId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = &quot;request_type&quot;, nullable = false, length = 30)
+    private CustomerRequestType requestType;
+
+<span class="fc" id="L33">    @Enumerated(EnumType.STRING)</span>
+    @Column(name = &quot;request_status&quot;, nullable = false, length = 20)
+    private CustomerRequestStatus requestStatus = CustomerRequestStatus.PENDING;
+
+    @Column(name = &quot;target_account_id&quot;, length = 36, columnDefinition = &quot;CHAR(36)&quot;)
+    private String targetAccountId;
+
+    @Column(name = &quot;details&quot;, columnDefinition = &quot;TEXT&quot;)
+    private String details;
+
+    @Column(name = &quot;reviewed_by&quot;, length = 36, columnDefinition = &quot;CHAR(36)&quot;)
+    private String reviewedBy;
+
+    @Column(name = &quot;reviewed_at&quot;)
+    private LocalDateTime reviewedAt;
+
+    @Column(name = &quot;rejection_reason&quot;, length = 500)
+    private String rejectionReason;
+
+<span class="fc" id="L52">    protected CustomerRequest() {}</span>
+
+    public CustomerRequest(String customerId, CustomerRequestType requestType,
+<span class="fc" id="L55">                           String targetAccountId, String details) {</span>
+<span class="fc" id="L56">        this.customerId = customerId;</span>
+<span class="fc" id="L57">        this.requestType = requestType;</span>
+<span class="fc" id="L58">        this.targetAccountId = targetAccountId;</span>
+<span class="fc" id="L59">        this.details = details;</span>
+<span class="fc" id="L60">        this.requestStatus = CustomerRequestStatus.PENDING;</span>
+<span class="fc" id="L61">    }</span>
+
+    public void approve(String reviewerUserId) {
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        if (this.requestStatus != CustomerRequestStatus.PENDING) {</span>
+<span class="nc" id="L65">            throw new IllegalStateException(&quot;Only PENDING requests can be approved&quot;);</span>
+        }
+<span class="fc" id="L67">        this.requestStatus = CustomerRequestStatus.APPROVED;</span>
+<span class="fc" id="L68">        this.reviewedBy = reviewerUserId;</span>
+<span class="fc" id="L69">        this.reviewedAt = LocalDateTime.now();</span>
+<span class="fc" id="L70">    }</span>
+
+    public void reject(String reviewerUserId, String reason) {
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        if (this.requestStatus != CustomerRequestStatus.PENDING) {</span>
+<span class="nc" id="L74">            throw new IllegalStateException(&quot;Only PENDING requests can be rejected&quot;);</span>
+        }
+<span class="fc" id="L76">        this.requestStatus = CustomerRequestStatus.REJECTED;</span>
+<span class="fc" id="L77">        this.reviewedBy = reviewerUserId;</span>
+<span class="fc" id="L78">        this.reviewedAt = LocalDateTime.now();</span>
+<span class="fc" id="L79">        this.rejectionReason = reason;</span>
+<span class="fc" id="L80">    }</span>
+
+<span class="fc" id="L82">    public String getCustomerId() { return customerId; }</span>
+<span class="fc" id="L83">    public CustomerRequestType getRequestType() { return requestType; }</span>
+<span class="fc" id="L84">    public CustomerRequestStatus getRequestStatus() { return requestStatus; }</span>
+<span class="fc" id="L85">    public String getTargetAccountId() { return targetAccountId; }</span>
+<span class="fc" id="L86">    public String getDetails() { return details; }</span>
+<span class="fc" id="L87">    public String getReviewedBy() { return reviewedBy; }</span>
+<span class="fc" id="L88">    public LocalDateTime getReviewedAt() { return reviewedAt; }</span>
+<span class="fc" id="L89">    public String getRejectionReason() { return rejectionReason; }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

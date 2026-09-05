@@ -22,7 +22,8 @@ public record RegisterRequest(
         @Email(message = ErrorCodes.INVALID_FORMAT)
         String email,
 
-        @Schema(description = "Phone number in E.164 format", example = "+2348012345678")
+        @Schema(description = "Phone number in E.164 format", example = "+2348012345678", requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotBlank(message = ErrorCodes.REQUIRED_FIELD)
         @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$", message = ErrorCodes.INVALID_FORMAT)
         String phoneNumber,
 

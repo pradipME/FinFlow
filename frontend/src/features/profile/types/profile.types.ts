@@ -1,6 +1,7 @@
 export interface UserProfile {
   id: string;
   userId: string;
+  phoneNumber: string | null;
   firstName: string | null;
   lastName: string | null;
   dateOfBirth: string | null;

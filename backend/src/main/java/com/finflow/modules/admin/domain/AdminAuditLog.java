@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "admin_audit_log", schema = "finflow_admin")
+@EntityListeners({org.springframework.data.jpa.domain.support.AuditingEntityListener.class})
 public class AdminAuditLog extends BaseAuditableEntity {
 
     @Column(name = "admin_user_id", nullable = false, length = 36, columnDefinition = "CHAR(36)")

@@ -125,6 +125,7 @@ export function ProfilePage() {
           <ProfileField label="First Name" value={profile?.firstName} />
           <ProfileField label="Last Name" value={profile?.lastName} />
           <ProfileField label="Date of Birth" value={profile?.dateOfBirth} />
+          <ProfileField label="Phone Number" value={profile?.phoneNumber} />
         </div>
       </div>
 

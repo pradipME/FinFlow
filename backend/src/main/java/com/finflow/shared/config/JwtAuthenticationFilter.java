@@ -78,10 +78,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String header = request.getHeader("Authorization");
         if (StringUtils.hasText(header) && header.startsWith(BEARER_PREFIX)) {
             String token = header.substring(BEARER_PREFIX.length()).trim();
-            if (token.isEmpty()) {
-                return null;
+            if (!token.isEmpty()) {
+                return token;
             }
-            return token;
+        }
+        // Support Server-Sent Events, where browsers cannot send custom headers.
+        String queryToken = request.getParameter("access_token");
+        if (StringUtils.hasText(queryToken)) {
+            return queryToken.trim();
         }
         return null;
     }

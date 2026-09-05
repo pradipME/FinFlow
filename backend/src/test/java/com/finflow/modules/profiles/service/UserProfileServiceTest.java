@@ -1,5 +1,8 @@
 package com.finflow.modules.profiles.service;
 
+import com.finflow.modules.auth.domain.User;
+import com.finflow.modules.auth.domain.UserStatus;
+import com.finflow.modules.auth.repository.UserRepository;
 import com.finflow.modules.profiles.domain.UserProfile;
 import com.finflow.modules.profiles.dto.UpdateProfileRequest;
 import com.finflow.modules.profiles.dto.UserProfileResponse;
@@ -40,12 +43,16 @@ class UserProfileServiceTest {
     @Mock
     private UserProfileMapper userProfileMapper;
 
+    @Mock
+    private UserRepository userRepository;
+
     @InjectMocks
     private UserProfileService userProfileService;
 
     private UserProfile testProfile;
     private UUID testProfileId;
     private String testUserId;
+    private static final String TEST_PHONE = "+2348012345678";
 
     @BeforeEach
     void setUp() {
@@ -59,6 +66,9 @@ class UserProfileServiceTest {
         var auth = new UsernamePasswordAuthenticationToken(
                 testUserId, null, List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER")));
         SecurityContextHolder.getContext().setAuthentication(auth);
+
+        User user = new User("john@example.com", "john", TEST_PHONE, java.time.LocalDateTime.now());
+        when(userRepository.findById(UUID.fromString(testUserId))).thenReturn(Optional.of(user));
     }
 
     @AfterEach
@@ -76,10 +86,10 @@ class UserProfileServiceTest {
             when(userProfileRepository.findByUserId(testUserId)).thenReturn(Optional.of(testProfile));
 
             UserProfileResponse response = new UserProfileResponse(
-                    testProfileId.toString(), testUserId, "John", "Doe", null,
+                    testProfileId.toString(), testUserId, TEST_PHONE, "John", "Doe", null,
                     null, null, null, null, null, null, null,
                     null, null);
-            when(userProfileMapper.toResponse(testProfile)).thenReturn(response);
+            when(userProfileMapper.toResponse(eq(testProfile), anyString())).thenReturn(response);
 
             UserProfileResponse result = userProfileService.getProfile();
 
@@ -96,10 +106,10 @@ class UserProfileServiceTest {
             when(userProfileRepository.save(any(UserProfile.class))).thenReturn(testProfile);
 
             UserProfileResponse response = new UserProfileResponse(
-                    testProfileId.toString(), testUserId, null, null, null,
+                    testProfileId.toString(), testUserId, TEST_PHONE, null, null, null,
                     null, null, null, null, null, null, null,
                     null, null);
-            when(userProfileMapper.toResponse(testProfile)).thenReturn(response);
+            when(userProfileMapper.toResponse(eq(testProfile), anyString())).thenReturn(response);
 
             UserProfileResponse result = userProfileService.getProfile();
 
@@ -121,8 +131,8 @@ class UserProfileServiceTest {
             UpdateProfileRequest request = new UpdateProfileRequest(
                     "Jane", "Smith", "1995-06-15",
                     "456 Oak Ave", null, "Boston", "MA", "02101", "US", null);
-            when(userProfileMapper.toResponse(testProfile)).thenReturn(new UserProfileResponse(
-                    testProfileId.toString(), testUserId, "Jane", "Smith", "1995-06-15",
+            when(userProfileMapper.toResponse(eq(testProfile), anyString())).thenReturn(new UserProfileResponse(
+                    testProfileId.toString(), testUserId, TEST_PHONE, "Jane", "Smith", "1995-06-15",
                     "456 Oak Ave", null, "Boston", "MA", "02101", "US", null,
                     null, null));
 
@@ -143,8 +153,8 @@ class UserProfileServiceTest {
             UpdateProfileRequest request = new UpdateProfileRequest(
                     "Jane", "Smith", null,
                     null, null, null, null, null, null, null);
-            when(userProfileMapper.toResponse(testProfile)).thenReturn(new UserProfileResponse(
-                    testProfileId.toString(), testUserId, "Jane", "Smith", null,
+            when(userProfileMapper.toResponse(eq(testProfile), anyString())).thenReturn(new UserProfileResponse(
+                    testProfileId.toString(), testUserId, TEST_PHONE, "Jane", "Smith", null,
                     null, null, null, null, null, null, null,
                     null, null));
 
@@ -163,8 +173,8 @@ class UserProfileServiceTest {
             UpdateProfileRequest request = new UpdateProfileRequest(
                     "Jane", null, null,
                     null, null, null, null, null, null, null);
-            when(userProfileMapper.toResponse(testProfile)).thenReturn(new UserProfileResponse(
-                    testProfileId.toString(), testUserId, "Jane", "Doe", null,
+            when(userProfileMapper.toResponse(eq(testProfile), anyString())).thenReturn(new UserProfileResponse(
+                    testProfileId.toString(), testUserId, TEST_PHONE, "Jane", "Doe", null,
                     null, null, null, null, null, null, null,
                     null, null));
 
@@ -183,8 +193,8 @@ class UserProfileServiceTest {
             UpdateProfileRequest request = new UpdateProfileRequest(
                     null, null, "1990-01-15",
                     null, null, null, null, null, null, null);
-            when(userProfileMapper.toResponse(testProfile)).thenReturn(new UserProfileResponse(
-                    testProfileId.toString(), testUserId, null, null, "1990-01-15",
+            when(userProfileMapper.toResponse(eq(testProfile), anyString())).thenReturn(new UserProfileResponse(
+                    testProfileId.toString(), testUserId, TEST_PHONE, null, null, "1990-01-15",
                     null, null, null, null, null, null, null,
                     null, null));
 
@@ -203,8 +213,8 @@ class UserProfileServiceTest {
             UpdateProfileRequest request = new UpdateProfileRequest(
                     null, null, null,
                     "789 Pine St", "Suite 100", "Seattle", "WA", "98101", "US", null);
-            when(userProfileMapper.toResponse(testProfile)).thenReturn(new UserProfileResponse(
-                    testProfileId.toString(), testUserId, null, null, null,
+            when(userProfileMapper.toResponse(eq(testProfile), anyString())).thenReturn(new UserProfileResponse(
+                    testProfileId.toString(), testUserId, TEST_PHONE, null, null, null,
                     "789 Pine St", "Suite 100", "Seattle", "WA", "98101", "US", null,
                     null, null));
 
@@ -225,8 +235,8 @@ class UserProfileServiceTest {
             UpdateProfileRequest request = new UpdateProfileRequest(
                     null, null, null,
                     null, null, null, null, null, null, "https://cdn.example.com/avatar.jpg");
-            when(userProfileMapper.toResponse(testProfile)).thenReturn(new UserProfileResponse(
-                    testProfileId.toString(), testUserId, null, null, null,
+            when(userProfileMapper.toResponse(eq(testProfile), anyString())).thenReturn(new UserProfileResponse(
+                    testProfileId.toString(), testUserId, TEST_PHONE, null, null, null,
                     null, null, null, null, null, null, "https://cdn.example.com/avatar.jpg",
                     null, null));
 

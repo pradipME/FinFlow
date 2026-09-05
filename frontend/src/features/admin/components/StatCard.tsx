@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { ReactNode } from "react";
 
 const TONES = [
@@ -13,12 +14,13 @@ interface StatCardProps {
   description?: string;
   icon?: ReactNode;
   tone?: number;
+  href?: string;
 }
 
-export function StatCard({ title, value, description, icon, tone = 0 }: StatCardProps) {
+export function StatCard({ title, value, description, icon, tone = 0, href }: StatCardProps) {
   const palette = TONES[tone % TONES.length];
 
-  return (
+  const card = (
     <div className="group relative overflow-hidden rounded-2xl border border-border-default bg-surface-primary p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-primary/30 hover:shadow-elevation-md">
       <div
         className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
@@ -44,4 +46,10 @@ export function StatCard({ title, value, description, icon, tone = 0 }: StatCard
       </div>
     </div>
   );
+
+  if (href) {
+    return <Link to={href} className="block no-underline">{card}</Link>;
+  }
+
+  return card;
 }

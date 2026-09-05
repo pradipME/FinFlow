@@ -1,1 +1,1 @@
-export type { CardType, CardStatus, CardSummary, CreateCardPayload, UpdateCardPayload } from "./cards.types";
+export type { CardType, CardStatus, CardSummary, UpdateCardPayload } from "./cards.types";

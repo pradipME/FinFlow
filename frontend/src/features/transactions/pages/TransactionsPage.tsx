@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { ArrowDownToLine, ArrowUpFromLine, ArrowRightLeft } from "lucide-react";
+import { ArrowUpFromLine, ArrowRightLeft } from "lucide-react";
 import { PageHeader } from "@/shared/layout";
 import { Button, EmptyState, ErrorState, Skeleton } from "@/shared/components";
 import { useAccounts } from "@/features/accounts/hooks/useAccounts";
 import { useTransactions as useTxnList } from "../hooks";
 import { TransactionRow } from "../components";
 import { TransactionFilters } from "../components";
-import { DepositDialog } from "./DepositDialog";
 import { WithdrawalDialog } from "./WithdrawalDialog";
 import { TransferDialog } from "./TransferDialog";
 import type { TransactionType, TransactionStatus } from "../types";
@@ -15,7 +14,6 @@ export function TransactionsPage() {
   const [page, setPage] = useState(0);
   const [typeFilter, setTypeFilter] = useState<TransactionType | "">("");
   const [statusFilter, setStatusFilter] = useState<TransactionStatus | "">("");
-  const [showDeposit, setShowDeposit] = useState(false);
   const [showWithdrawal, setShowWithdrawal] = useState(false);
   const [showTransfer, setShowTransfer] = useState(false);
 
@@ -61,9 +59,6 @@ export function TransactionsPage() {
         subtitle="View and manage your transactions"
         actions={
           <div className="flex items-center gap-2">
-            <Button leftIcon={<ArrowDownToLine className="h-4 w-4" />} onClick={() => setShowDeposit(true)}>
-              Deposit
-            </Button>
             <Button leftIcon={<ArrowUpFromLine className="h-4 w-4" />} variant="neutral" onClick={() => setShowWithdrawal(true)}>
               Withdraw
             </Button>
@@ -87,11 +82,13 @@ export function TransactionsPage() {
           description="No transactions found matching your filters."
         />
       ) : (
-        <div className="divide-y divide-border-subtle overflow-hidden rounded-xl border border-border-default bg-surface-primary">
+        <ul className="space-y-3">
           {transactions.map((txn) => (
-            <TransactionRow key={txn.id} transaction={txn} />
+            <li key={txn.id}>
+              <TransactionRow transaction={txn} />
+            </li>
           ))}
-        </div>
+        </ul>
       )}
 
       {totalPages > 1 && (
@@ -120,7 +117,6 @@ export function TransactionsPage() {
         </div>
       )}
 
-      <DepositDialog open={showDeposit} onClose={() => setShowDeposit(false)} accounts={accounts} />
       <WithdrawalDialog open={showWithdrawal} onClose={() => setShowWithdrawal(false)} accounts={accounts} />
       <TransferDialog open={showTransfer} onClose={() => setShowTransfer(false)} accounts={accounts} />
     </div>

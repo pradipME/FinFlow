@@ -1,11 +1,22 @@
 package com.finflow.modules.admin.service;
 
+import com.finflow.modules.accounts.repository.AccountRepository;
+import com.finflow.modules.accounts.service.AccountService;
 import com.finflow.modules.admin.domain.AdminAuditLog;
 import com.finflow.modules.admin.dto.AdminDashboardResponse;
 import com.finflow.modules.admin.dto.AuditLogResponse;
 import com.finflow.modules.admin.dto.UserManagementResponse;
+import com.finflow.modules.admin.events.AdminEventService;
 import com.finflow.modules.admin.mapper.AdminMapper;
 import com.finflow.modules.admin.repository.AdminAuditLogRepository;
+import com.finflow.modules.auth.repository.UserRepository;
+import com.finflow.modules.auth.repository.UserRoleRepository;
+import com.finflow.modules.auth.service.RegistrationService;
+import com.finflow.modules.cards.repository.CardRepository;
+import com.finflow.modules.requests.repository.CustomerRequestRepository;
+import com.finflow.modules.transactions.mapper.TransactionMapper;
+import com.finflow.modules.transactions.repository.TransactionRepository;
+import com.finflow.modules.transactions.validator.TransactionValidator;
 import com.finflow.shared.dto.PageResponse;
 import com.finflow.shared.exception.BusinessRuleException;
 import com.finflow.shared.util.SecurityUtil;
@@ -43,6 +54,28 @@ class AdminServiceTest {
     private AdminAuditLogRepository auditLogRepository;
     @Mock
     private AdminMapper adminMapper;
+    @Mock
+    private AccountRepository accountRepository;
+    @Mock
+    private AccountService accountService;
+    @Mock
+    private CardRepository cardRepository;
+    @Mock
+    private TransactionRepository transactionRepository;
+    @Mock
+    private TransactionMapper transactionMapper;
+    @Mock
+    private TransactionValidator transactionValidator;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private UserRoleRepository userRoleRepository;
+    @Mock
+    private RegistrationService registrationService;
+    @Mock
+    private CustomerRequestRepository customerRequestRepository;
+    @Mock
+    private AdminEventService adminEventService;
 
     @InjectMocks
     private AdminService adminService;
@@ -193,6 +226,8 @@ class AdminServiceTest {
             authenticateAsAdmin();
 
             Pageable pageable = PageRequest.of(0, 20);
+            Page<com.finflow.modules.auth.domain.User> emptyPage = new PageImpl<>(List.of(), pageable, 0);
+            when(userRepository.findAll(pageable)).thenReturn(emptyPage);
 
             PageResponse<UserManagementResponse> result = adminService.getUserList(pageable);
 

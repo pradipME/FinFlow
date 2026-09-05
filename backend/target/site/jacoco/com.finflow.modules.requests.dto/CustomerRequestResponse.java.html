@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomerRequestResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FinFlow Backend</a> &gt; <a href="index.source.html" class="el_package">com.finflow.modules.requests.dto</a> &gt; <span class="el_source">CustomerRequestResponse.java</span></div><h1>CustomerRequestResponse.java</h1><pre class="source lang-java linenums">package com.finflow.modules.requests.dto;
+
+import com.finflow.modules.requests.domain.CustomerRequestStatus;
+import com.finflow.modules.requests.domain.CustomerRequestType;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+/**
+ * Response DTO for a customer request (used by both customer and admin views).
+ */
+@Schema(description = &quot;Customer request response DTO&quot;)
+<span class="fc" id="L11">public record CustomerRequestResponse(</span>
+    @Schema(description = &quot;Request ID&quot;)
+    String id,
+    @Schema(description = &quot;Customer who filed the request&quot;)
+    String customerId,
+    @Schema(description = &quot;Request type&quot;)
+    CustomerRequestType requestType,
+    @Schema(description = &quot;Current status&quot;)
+    CustomerRequestStatus requestStatus,
+    @Schema(description = &quot;Target account id (card requests)&quot;)
+    String targetAccountId,
+    @Schema(description = &quot;Structured request details&quot;)
+    RequestDetails details,
+    @Schema(description = &quot;Admin who reviewed the request&quot;)
+    String reviewedBy,
+    @Schema(description = &quot;When the request was reviewed&quot;)
+    String reviewedAt,
+    @Schema(description = &quot;Rejection reason, when rejected&quot;)
+    String rejectionReason,
+    @Schema(description = &quot;When the request was created&quot;)
+    String createdAt
+) {}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

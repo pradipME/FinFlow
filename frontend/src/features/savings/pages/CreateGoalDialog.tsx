@@ -93,7 +93,7 @@ export function CreateGoalDialog({ open, onClose }: CreateGoalDialogProps) {
         />
 
         <Input
-          label={`Target Amount (${selectedAccount?.currency ?? "USD"})`}
+          label={`Target Amount (${selectedAccount?.currency ?? "INR"})`}
           type="number"
           step="0.01"
           min="0.01"

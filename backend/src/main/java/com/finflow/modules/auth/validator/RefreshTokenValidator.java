@@ -22,10 +22,12 @@ import java.util.regex.Pattern;
 public class RefreshTokenValidator {
 
     /**
-     * JWT token format: three base64url-encoded segments separated by dots.
+     * Refresh token format: url-safe base64 without padding as emitted by
+     * {@code TokenHashService#generateRefreshToken()} (48 random bytes →
+     * 64 chars). Generated tokens are opaque values, not JWTs.
      */
-    private static final Pattern JWT_PATTERN =
-            Pattern.compile("^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$");
+    private static final Pattern REFRESH_TOKEN_PATTERN =
+            Pattern.compile("^[A-Za-z0-9_-]{32,64}$");
 
     /**
      * Maximum refresh token length (JWT typically ~500 chars).
@@ -52,9 +54,9 @@ public class RefreshTokenValidator {
                         "Refresh token exceeds maximum length"));
             }
 
-            if (!JWT_PATTERN.matcher(trimmed).matches()) {
+            if (!REFRESH_TOKEN_PATTERN.matcher(trimmed).matches()) {
                 errors.add(new FieldError("refreshToken", ErrorCodes.INVALID_FORMAT,
-                        "Refresh token must be a valid JWT format"));
+                        "Refresh token must be a valid url-safe base64 value"));
             }
         }
 

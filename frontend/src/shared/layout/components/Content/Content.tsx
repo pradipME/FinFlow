@@ -29,13 +29,13 @@ export function Content({
 }: ContentProps): ReactNode {
   return (
     <main
-      className={cn("min-h-screen transition-all duration-300 ease-out", className)}
+      className={cn("min-h-screen min-h-dvh transition-all duration-300 ease-out", className)}
       style={{
         paddingTop: HEADER_HEIGHT,
         marginLeft: sidebarOffset,
       }}
     >
-      <div className={cn("px-4 py-6 pb-24 sm:px-6 sm:pb-6 lg:px-8", getContentWidthClasses(width))}>
+      <div className={cn("px-4 pt-4 pb-24 sm:px-6 sm:py-6 sm:pb-6 lg:px-8", getContentWidthClasses(width))}>
         {children}
       </div>
     </main>

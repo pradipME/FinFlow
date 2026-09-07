@@ -84,6 +84,7 @@ export const Z_INDEX = {
   sidebar: 30,
   header: 20,
   overlay: 40,
+  sidebarOverlay: 45,
   commandPalette: 50,
   mobileNav: 30,
 } as const;

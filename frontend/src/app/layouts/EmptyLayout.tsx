@@ -11,5 +11,5 @@ interface EmptyLayoutProps {
 }
 
 export function EmptyLayout({ children }: EmptyLayoutProps): ReactNode {
-  return <div className="min-h-screen">{children}</div>;
+  return <div className="min-h-screen min-h-dvh">{children}</div>;
 }

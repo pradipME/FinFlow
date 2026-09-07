@@ -55,7 +55,7 @@ class RefreshTokenServiceTest {
 
         testSession = new SessionService.RefreshTokenSession(
                 "raw-refresh-token", "session-uuid", "family-uuid",
-                "hash-abc", LocalDateTime.now().plusDays(30));
+                "hash-abc", LocalDateTime.now().plusDays(30), testUser.getId().toString());
     }
 
     @Nested
@@ -97,7 +97,7 @@ class RefreshTokenServiceTest {
             when(sessionService.validateSession("raw-token", "127.0.0.1"))
                     .thenReturn(Optional.of(testSession));
             when(sessionService.revokeSession("raw-token", "127.0.0.1")).thenReturn(true);
-            when(userRepository.findBySessionId("session-uuid"))
+            when(userRepository.findById(testUser.getId()))
                     .thenReturn(Optional.of(testUser));
             when(jwtTokenProvider.generateAccessToken(
                     eq(testUser.getId().toString()), eq("test@finflow.com"),
@@ -106,7 +106,7 @@ class RefreshTokenServiceTest {
 
             SessionService.RefreshTokenSession newSession = new SessionService.RefreshTokenSession(
                     "new-raw-token", "new-session", "family-uuid",
-                    "new-hash", LocalDateTime.now().plusDays(30));
+                    "new-hash", LocalDateTime.now().plusDays(30), testUser.getId().toString());
             when(sessionService.createSession(testUser, "127.0.0.1", "Agent"))
                     .thenReturn(newSession);
 

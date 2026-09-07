@@ -76,7 +76,7 @@ export function SavingsPage() {
       <CreateGoalDialog open={createOpen} onClose={() => setCreateOpen(false)} />
       <DepositGoalDialog
         goalId={depositGoal?.id ?? null}
-        currency={depositGoal?.currency ?? "USD"}
+        currency={depositGoal?.currency ?? "INR"}
         open={depositGoal !== null}
         onClose={() => setDepositGoal(null)}
       />

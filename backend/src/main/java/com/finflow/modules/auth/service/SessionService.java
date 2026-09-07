@@ -76,7 +76,8 @@ public class SessionService {
 
         enforceSessionLimit(user);
 
-        return new RefreshTokenSession(rawToken, sessionId, familyId, tokenHash, expiresAt);
+        return new RefreshTokenSession(rawToken, sessionId, familyId, tokenHash, expiresAt,
+                user.getId().toString());
     }
 
     public Optional<RefreshTokenSession> validateSession(String rawToken, String ipAddress) {
@@ -109,7 +110,8 @@ public class SessionService {
 
         return Optional.of(new RefreshTokenSession(
                 rawToken, token.getSessionId(), token.getFamilyId(),
-                token.getRefreshTokenHash(), token.getExpiresAt()));
+                token.getRefreshTokenHash(), token.getExpiresAt(),
+                token.getUser().getId().toString()));
     }
 
     @Transactional
@@ -192,6 +194,7 @@ public class SessionService {
             String sessionId,
             String familyId,
             String tokenHash,
-            LocalDateTime expiresAt
+            LocalDateTime expiresAt,
+            String userId
     ) {}
 }

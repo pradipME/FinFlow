@@ -174,7 +174,7 @@ export function MobilePaymentDialog({ open, onClose, accounts, defaultAccountId 
           {/* Amount display */}
           <div className="rounded-2xl border border-border-subtle bg-surface-primary px-4 py-4 text-center">
             <p className="text-center text-xs font-semibold uppercase tracking-wide text-text-tertiary">
-              Amount · {sourceAccount?.currency ?? "USD"}
+              Amount · {sourceAccount?.currency ?? "INR"}
             </p>
             <p className="font-tabular mt-1 text-center text-3xl font-bold tracking-tight text-text-primary">
               {amountStr === "" ? formatCurrency(0, sourceAccount?.currency) : formatCurrency(parseAmount(amountStr), sourceAccount?.currency)}

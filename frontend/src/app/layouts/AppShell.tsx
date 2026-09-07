@@ -10,6 +10,7 @@ import type { NavGroup } from "@/shared/layout/types";
 import { useAuth } from "@/features/auth/hooks";
 import { useProfile } from "@/features/profile/hooks";
 import { useUnreadNotificationCount } from "@/features/notifications/hooks";
+import { BrandLogo } from "@/shared/components/BrandLogo";
 import {
   Sidebar,
   Header,
@@ -40,21 +41,6 @@ import {
   ClipboardList,
   type LucideIcon,
 } from "lucide-react";
-
-// ── Brand mark ────────────────────────────────────────────────────
-
-export function BrandMark({ size = 28 }: { size?: number }): ReactNode {
-  return (
-    <span
-      className="relative inline-flex shrink-0 items-center justify-center rounded-[10px] bg-gradient-to-br from-chart-1 via-brand-primary to-chart-3 shadow-elevation-md"
-      style={{ width: size, height: size }}
-      aria-hidden="true"
-    >
-      <span className="text-[0.55em] font-bold tracking-tighter text-bg-primary">FF</span>
-      <span className="pointer-events-none absolute inset-0 rounded-[10px] ring-1 ring-inset ring-white/25" />
-    </span>
-  );
-}
 
 // ── Navigation ────────────────────────────────────────────────────
 
@@ -135,19 +121,14 @@ export function AppShell({ children, navGroups, headerActions }: AppShellProps):
   const roleLabel = "Member";
 
   return (
-    <div className="min-h-screen bg-bg-secondary">
+    <div className="min-h-screen min-h-dvh bg-bg-secondary">
       <Sidebar
         groups={effectiveGroups}
         mode={sidebar.mode}
         isOpen={sidebar.isOpen}
         onToggle={sidebar.toggle}
         onClose={sidebar.close}
-        logo={
-          <span className="flex items-center gap-2.5">
-            <BrandMark size={28} />
-            <span className="text-lg font-bold tracking-tight text-text-primary">FinFlow</span>
-          </span>
-        }
+        logo={<BrandLogo className="h-7" />}
         footer={
           <UserMenu
             name={displayName}

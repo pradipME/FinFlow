@@ -134,7 +134,7 @@ export function CreateBeneficiaryDialog({ open, onClose, beneficiary }: CreateBe
           />
           <Input
             label="Currency"
-            placeholder="USD"
+            placeholder="INR"
             errorText={errors.currency?.message}
             {...register("currency")}
           />

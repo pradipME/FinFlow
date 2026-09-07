@@ -92,7 +92,7 @@ public class TokenRotationService {
                  user.getId(), sessionId, familyId);
 
         return new SessionService.RefreshTokenSession(rawToken, sessionId, familyId,
-                                                       tokenHash, expiresAt);
+                tokenHash, expiresAt, user.getId().toString());
     }
 
     /**

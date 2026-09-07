@@ -114,15 +114,9 @@ public class RefreshTokenService {
         // Revoke old refresh token (rotation is mandatory)
         sessionService.revokeSession(rawRefreshToken, ipAddress);
 
-        // Look up user
-        Optional<User> userOpt = userRepository.findById(UUID.fromString(currentSession.sessionId()));
-        if (userOpt.isEmpty()) {
-            Optional<String> userIdOpt = sessionService.getUserIdFromSession(currentSession.sessionId());
-            if (userIdOpt.isPresent()) {
-                userOpt = userRepository.findById(UUID.fromString(userIdOpt.get()));
-            }
-        }
-
+        // Look up user via the validated session. The session already carries
+        // the owning user id, so this does not depend on the Redis cache layer.
+        Optional<User> userOpt = userRepository.findById(UUID.fromString(currentSession.userId()));
         if (userOpt.isEmpty()) {
             throw UnauthorizedException.invalidCredentials();
         }

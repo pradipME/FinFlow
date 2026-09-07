@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import type { NavGroup } from "@/shared/layout/types";
 import { useAuth } from "@/features/auth/hooks";
 import { useAdminRealtimeEvents } from "@/features/admin/hooks/useAdminRealtime";
+import { BrandLogo } from "@/shared/components/BrandLogo";
 import {
   Sidebar,
   Header,
@@ -37,21 +38,6 @@ import {
   Shield,
   Settings,
 } from "lucide-react";
-
-// ── Brand mark (admin console) ──────────────────────────────────
-
-export function AdminBrandMark({ size = 28 }: { size?: number }): ReactNode {
-  return (
-    <span
-      className="relative inline-flex shrink-0 items-center justify-center rounded-[10px] bg-gradient-to-br from-slate-700 via-slate-900 to-slate-950 shadow-elevation-md"
-      style={{ width: size, height: size }}
-      aria-hidden="true"
-    >
-      <span className="text-[0.55em] font-bold tracking-tighter text-white/90">FF</span>
-      <span className="pointer-events-none absolute inset-0 rounded-[10px] ring-1 ring-inset ring-white/25" />
-    </span>
-  );
-}
 
 // ── Navigation (bank administration only) ───────────────────────
 
@@ -107,7 +93,7 @@ export function AdminLayout({ children }: AdminLayoutProps): ReactNode {
         : 64;
 
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-[#0a0e14]">
+    <div className="min-h-screen min-h-dvh bg-slate-100 dark:bg-[#0a0e14]">
       <Sidebar
         groups={adminNav}
         mode={sidebar.mode}
@@ -116,8 +102,7 @@ export function AdminLayout({ children }: AdminLayoutProps): ReactNode {
         onClose={sidebar.close}
         logo={
           <span className="flex items-center gap-2.5">
-            <AdminBrandMark size={28} />
-            <span className="text-lg font-bold tracking-tight text-text-primary">FinFlow Bank</span>
+            <BrandLogo className="h-8" />
             <span className="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-100 dark:bg-white/10 dark:text-white/70">
               Admin
             </span>

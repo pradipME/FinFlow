@@ -8,7 +8,7 @@ import { StatCard } from "../components";
 function formatFunds(cents: number): string {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "USD",
+    currency: "INR",
     maximumFractionDigits: 0,
   }).format(cents / 100);
 }

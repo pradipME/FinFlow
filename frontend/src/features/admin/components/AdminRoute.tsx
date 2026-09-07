@@ -21,7 +21,7 @@ export function AdminRoute() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-bg-secondary">
+      <div className="flex min-h-screen min-h-dvh items-center justify-center bg-bg-secondary">
         <Spinner size="lg" />
       </div>
     );

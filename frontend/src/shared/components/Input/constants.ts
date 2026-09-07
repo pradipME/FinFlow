@@ -39,7 +39,7 @@ export const READONLY_CLASSES = "cursor-default bg-surface-secondary";
 // ── Input Element ────────────────────────────────────────────────
 
 export const INPUT_ELEMENT_CLASSES =
-  "w-full bg-transparent text-text-primary placeholder:text-text-tertiary outline-none disabled:cursor-not-allowed disabled:opacity-50";
+  "w-full bg-transparent text-text-primary placeholder:text-text-tertiary outline-none focus-visible:shadow-none disabled:cursor-not-allowed disabled:opacity-50";
 
 // ── Label ────────────────────────────────────────────────────────
 

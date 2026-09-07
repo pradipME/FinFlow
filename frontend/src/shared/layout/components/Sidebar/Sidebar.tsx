@@ -5,6 +5,7 @@
  * width transitions. Composed by AppShell.
  */
 import type { ReactNode } from "react";
+import { useEffect } from "react";
 import { X } from "lucide-react";
 import { cn } from "@/shared/utils";
 import { SIDEBAR_EXPANDED_WIDTH, SIDEBAR_COLLAPSED_WIDTH, Z_INDEX } from "../../constants";
@@ -42,12 +43,21 @@ export function Sidebar({
   const isCollapsed = mode === "collapsed";
   const isOverlay = mode === "overlay" || mode === "offscreen";
 
+  useEffect(() => {
+    if (!isOverlay || !isOpen) return;
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOverlay, isOpen, onClose]);
+
   return (
     <>
       {/* Backdrop for overlay mode */}
       {isOverlay && isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+          className="fixed inset-0 bg-black/50"
           style={{ zIndex: Z_INDEX.overlay }}
           onClick={onClose}
           aria-hidden="true"
@@ -56,7 +66,7 @@ export function Sidebar({
 
       <aside
         className={cn(
-          "fixed top-0 left-0 flex h-screen flex-col",
+          "fixed top-0 left-0 flex h-screen h-dvh flex-col",
           "border-r border-border-default",
           "bg-bg-primary",
           "transition-all duration-300 ease-out",
@@ -65,7 +75,7 @@ export function Sidebar({
         )}
         style={{
           width: isCollapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_EXPANDED_WIDTH,
-          zIndex: Z_INDEX.sidebar,
+          zIndex: isOverlay ? Z_INDEX.sidebarOverlay : Z_INDEX.sidebar,
         }}
         aria-label="Sidebar navigation"
       >

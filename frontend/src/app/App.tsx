@@ -108,7 +108,7 @@ const AdminSettingsPage = lazy(() =>
 
 function PageFallback() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-bg-primary">
+    <div className="flex min-h-screen min-h-dvh items-center justify-center bg-bg-primary">
       <div className="flex flex-col items-center gap-3">
         <div className="h-9 w-9 animate-spin rounded-full border-2 border-brand-primary border-t-transparent" />
         <p className="text-sm text-text-tertiary">Loading FinFlow…</p>
@@ -127,7 +127,7 @@ function AdminRouter() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-bg-secondary">
+      <div className="flex min-h-screen min-h-dvh items-center justify-center bg-bg-secondary">
         <Spinner size="lg" />
       </div>
     );
@@ -171,7 +171,7 @@ function CustomerRouter() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-bg-primary">
+      <div className="flex min-h-screen min-h-dvh items-center justify-center bg-bg-primary">
         <Spinner size="lg" />
       </div>
     );
@@ -281,7 +281,7 @@ function CustomerOrAdminRouter() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-bg-primary">
+      <div className="flex min-h-screen min-h-dvh items-center justify-center bg-bg-primary">
         <Spinner size="lg" />
       </div>
     );

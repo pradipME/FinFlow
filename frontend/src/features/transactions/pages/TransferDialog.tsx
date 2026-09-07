@@ -34,7 +34,7 @@ export function TransferDialog({ open, onClose, accounts, defaultAccountId }: Tr
     },
   });
 
-  const sourceCurrency = accounts.find((a) => a.id === watch("sourceAccountId"))?.currency ?? "USD";
+  const sourceCurrency = accounts.find((a) => a.id === watch("sourceAccountId"))?.currency ?? "INR";
 
   async function onSubmit(data: TransferFormData) {
     try {

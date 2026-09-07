@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useReducedMotion, fadeUp, pageFade } from "@/shared/motion";
 import { Shield, Zap, BarChart3 } from "lucide-react";
-import { BrandMark } from "./AppShell";
+import { BrandLogo } from "@/shared/components/BrandLogo";
 
 interface AuthLayoutProps {
   children: ReactNode;
@@ -31,7 +31,7 @@ export function AuthLayout({ children }: AuthLayoutProps): ReactNode {
   const prefersReduced = useReducedMotion();
 
   return (
-    <div className="relative flex min-h-screen overflow-hidden bg-bg-primary">
+    <div className="relative flex min-h-screen min-h-dvh overflow-hidden bg-bg-primary">
       {/* Aurora + grid depth background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="aurora-orb aurora-orb-1" />
@@ -48,9 +48,8 @@ export function AuthLayout({ children }: AuthLayoutProps): ReactNode {
           animate="visible"
           variants={pageFade}
         >
-          <Link to="/" className="mb-12 inline-flex items-center gap-3">
-            <BrandMark size={40} />
-            <span className="text-2xl font-bold tracking-tight text-text-primary">FinFlow</span>
+          <Link to="/" className="mb-12 inline-flex items-center">
+            <BrandLogo className="h-11" />
           </Link>
 
           <h2 className="mb-4 text-4xl font-bold leading-[1.1] tracking-tight text-text-primary">
@@ -118,10 +117,9 @@ export function AuthLayout({ children }: AuthLayoutProps): ReactNode {
           variants={fadeUp}
         >
           {/* Mobile logo */}
-          <div className="mb-8 flex items-center justify-center gap-2.5 lg:hidden">
-            <BrandMark size={32} />
-            <Link to="/" className="text-2xl font-bold tracking-tight text-text-primary">
-              FinFlow
+          <div className="mb-8 flex items-center justify-center lg:hidden">
+            <Link to="/">
+              <BrandLogo className="h-9" />
             </Link>
           </div>
 

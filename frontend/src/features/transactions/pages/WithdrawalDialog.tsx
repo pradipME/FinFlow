@@ -29,7 +29,7 @@ export function WithdrawalDialog({ open, onClose, accounts, defaultAccountId }: 
     defaultValues: { accountId: defaultAccountId ?? "", amountCents: 0, description: "" },
   });
 
-  const currency = accounts.find((a) => a.id === watch("accountId"))?.currency ?? "USD";
+  const currency = accounts.find((a) => a.id === watch("accountId"))?.currency ?? "INR";
 
   async function onSubmit(data: WithdrawalFormData) {
     try {

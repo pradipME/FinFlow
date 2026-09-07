@@ -130,7 +130,7 @@ export function CreateTemplateDialog({ accounts, onClose, open = true, existing 
           ]}
         />
         <Input
-          label={`Amount (${sourceAccount?.currency ?? "USD"})`}
+          label={`Amount (${sourceAccount?.currency ?? "INR"})`}
           type="number"
           step="0.01"
           min="0.01"

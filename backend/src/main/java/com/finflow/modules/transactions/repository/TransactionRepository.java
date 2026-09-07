@@ -36,11 +36,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
     Optional<Transaction> findByIdempotencyKey(String idempotencyKey);
 
     @Query("SELECT t FROM Transaction t WHERE t.userId = :userId " +
-           "AND (:type IS NULL OR t.transactionType = :type) " +
-           "AND (:status IS NULL OR t.transactionStatus = :status) " +
-           "AND (:accountId IS NULL OR t.sourceAccountId = :accountId OR t.targetAccountId = :accountId) " +
-           "AND (:fromDate IS NULL OR t.createdAt >= :fromDate) " +
-           "AND (:toDate IS NULL OR t.createdAt <= :toDate) " +
+           "AND (COALESCE(:type, 'NONE') = 'NONE' OR t.transactionType = :type) " +
+           "AND (COALESCE(:status, 'NONE') = 'NONE' OR t.transactionStatus = :status) " +
+           "AND (COALESCE(:accountId, '') = '' OR t.sourceAccountId = :accountId OR t.targetAccountId = :accountId) " +
+           "AND t.createdAt >= COALESCE(:fromDate, t.createdAt) " +
+           "AND t.createdAt <= COALESCE(:toDate, t.createdAt) " +
            "ORDER BY t.createdAt DESC")
     Page<Transaction> findMyTransactions(
             @Param("userId") String userId,
@@ -63,11 +63,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
     @Query("SELECT DISTINCT t FROM Transaction t WHERE " +
            "(t.userId = :userId " +
            "OR (:accountIds IS NOT NULL AND (t.sourceAccountId IN :accountIds OR t.targetAccountId IN :accountIds))) " +
-           "AND (:type IS NULL OR t.transactionType = :type) " +
-           "AND (:status IS NULL OR t.transactionStatus = :status) " +
-           "AND (:accountId IS NULL OR t.sourceAccountId = :accountId OR t.targetAccountId = :accountId) " +
-           "AND (:fromDate IS NULL OR t.createdAt >= :fromDate) " +
-           "AND (:toDate IS NULL OR t.createdAt <= :toDate) " +
+           "AND (COALESCE(:type, 'NONE') = 'NONE' OR t.transactionType = :type) " +
+           "AND (COALESCE(:status, 'NONE') = 'NONE' OR t.transactionStatus = :status) " +
+           "AND (COALESCE(:accountId, '') = '' OR t.sourceAccountId = :accountId OR t.targetAccountId = :accountId) " +
+           "AND t.createdAt >= COALESCE(:fromDate, t.createdAt) " +
+           "AND t.createdAt <= COALESCE(:toDate, t.createdAt) " +
            "ORDER BY t.createdAt DESC")
     Page<Transaction> findCustomerVisible(
             @Param("userId") String userId,

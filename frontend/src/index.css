@@ -250,40 +250,61 @@
 }
 
 /* ── Premium RGB brand glow (Login hero / brand moments) ──────── */
-/* Soft animated cyan/blue/purple/pink gradient halo behind the
-   brand/hero. Low-intensity, smooth — a premium fintech glow rather
-   than a gaming RGB theme. Disabled for reduced-motion users. */
-@keyframes ff-glow-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+/* Cinematic cyan → blue → purple → pink gradient halo behind the login
+   brand/hero. The gradient window wanders through all four hues while
+   the glow gently rotates, scales and breathes — smooth and premium,
+   clearly moving, never flashing. Disabled for reduced-motion users. */
+@keyframes ff-brand-glow-anim {
+  0%, 100% {
+    background-position: 0% 30%;
+    transform: rotate(-4deg) scale(1);
+    opacity: 0.55;
+  }
+  25% {
+    background-position: 100% 30%;
+    transform: rotate(-1deg) scale(1.06);
+    opacity: 0.72;
+  }
+  50% {
+    background-position: 100% 70%;
+    transform: rotate(4deg) scale(1.12);
+    opacity: 0.85;
+  }
+  75% {
+    background-position: 0% 70%;
+    transform: rotate(1deg) scale(1.06);
+    opacity: 0.72;
+  }
 }
 @keyframes ff-orb-drift-a {
-  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.45; }
-  50% { transform: translate(24px, -32px) scale(1.15); opacity: 0.7; }
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+  33% { transform: translate(38px, -46px) scale(1.18); opacity: 0.7; }
+  66% { transform: translate(-30px, 26px) scale(0.95); opacity: 0.55; }
 }
 @keyframes ff-orb-drift-b {
-  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.45; }
-  50% { transform: translate(-28px, 24px) scale(1.12); opacity: 0.68; }
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+  33% { transform: translate(-44px, 34px) scale(1.16); opacity: 0.68; }
+  66% { transform: translate(34px, -30px) scale(0.96); opacity: 0.55; }
 }
 
 .ff-brand-glow {
   pointer-events: none;
   background: linear-gradient(
     120deg,
-    rgba(56, 189, 248, 0.5),
-    rgba(129, 140, 248, 0.5),
-    rgba(232, 121, 249, 0.42),
-    rgba(34, 211, 238, 0.5)
+    rgba(34, 211, 238, 0.6),
+    rgba(56, 189, 248, 0.6),
+    rgba(167, 139, 250, 0.6),
+    rgba(244, 114, 182, 0.58)
   );
-  background-size: 300% 300%;
-  filter: blur(86px);
-  animation: ff-glow-shift 16s ease-in-out infinite;
+  background-size: 400% 400%;
+  filter: blur(72px);
+  animation: ff-brand-glow-anim 12s ease-in-out infinite;
 }
 .ff-glow-orb-a {
-  animation: ff-orb-drift-a 14s ease-in-out infinite;
+  animation: ff-orb-drift-a 12s ease-in-out infinite;
 }
 .ff-glow-orb-b {
-  animation: ff-orb-drift-b 19s ease-in-out infinite;
+  animation: ff-orb-drift-b 15s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

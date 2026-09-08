@@ -38,6 +38,14 @@ export function AuthLayout({ children }: AuthLayoutProps): ReactNode {
         <div className="aurora-orb aurora-orb-2" />
         <div className="aurora-orb aurora-orb-3" />
         <div className="ff-dot-grid absolute inset-0 opacity-60" />
+
+        {/* Premium RGB glow around the login brand/hero */}
+        <div className="ff-brand-glow absolute top-0 left-1/2 h-56 w-[85vw] -translate-x-1/2 lg:hidden" />
+        <div className="ff-brand-glow absolute top-1/2 hidden h-[52vh] w-[34vw] -translate-y-1/2 lg:left-[4%] lg:block xl:left-[10%]" />
+        <div className="ff-glow-orb-a absolute top-14 left-1/3 h-56 w-56 rounded-full bg-cyan-400/30 blur-3xl lg:hidden" />
+        <div className="ff-glow-orb-b absolute top-1/2 left-2/3 h-64 w-64 rounded-full bg-fuchsia-500/25 blur-3xl lg:hidden" />
+        <div className="ff-glow-orb-a absolute top-16 left-[20%] hidden h-64 w-64 rounded-full bg-cyan-400/30 blur-3xl lg:block" />
+        <div className="ff-glow-orb-b absolute top-1/3 left-[38%] hidden h-72 w-72 rounded-full bg-fuchsia-500/25 blur-3xl lg:block" />
       </div>
 
       {/* Left brand panel (hidden on mobile) */}

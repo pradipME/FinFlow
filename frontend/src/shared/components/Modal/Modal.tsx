@@ -81,7 +81,7 @@ export function Modal({
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-modal flex items-end justify-center p-4 sm:items-center"
+          className="fixed inset-0 z-modal flex items-center justify-center p-4"
           role="dialog"
           aria-modal="true"
           aria-label={typeof title === "string" ? title : undefined}
@@ -99,7 +99,7 @@ export function Modal({
             ref={panelRef}
             tabIndex={-1}
             className={cn(
-              "relative w-full rounded-xl border border-border-default bg-surface-primary shadow-elevation-xl outline-none",
+              "relative flex max-h-[calc(100dvh-2rem)] w-full flex-col overflow-hidden rounded-xl border border-border-default bg-surface-primary shadow-elevation-xl outline-none",
               SIZES[size],
               className,
             )}
@@ -124,7 +124,7 @@ export function Modal({
                 {description && <p className="mt-1 text-sm text-text-tertiary">{description}</p>}
               </div>
             )}
-            <div className="max-h-[70vh] overflow-y-auto p-5">{children}</div>
+            <div className="min-h-0 flex-1 overflow-y-auto p-5">{children}</div>
             {footer && (
               <div className="flex items-center justify-end gap-3 border-t border-border-subtle bg-bg-secondary px-5 py-3.5 rounded-b-xl">
                 {footer}

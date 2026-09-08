@@ -249,68 +249,127 @@
   }
 }
 
-/* ── Premium RGB brand glow (Login hero / brand moments) ──────── */
-/* Cinematic cyan → blue → purple → pink gradient halo behind the login
-   brand/hero. The gradient window wanders through all four hues while
-   the glow gently rotates, scales and breathes — smooth and premium,
-   clearly moving, never flashing. Disabled for reduced-motion users. */
-@keyframes ff-brand-glow-anim {
-  0%, 100% {
-    background-position: 0% 30%;
-    transform: rotate(-4deg) scale(1);
-    opacity: 0.55;
-  }
-  25% {
-    background-position: 100% 30%;
-    transform: rotate(-1deg) scale(1.06);
-    opacity: 0.72;
-  }
-  50% {
-    background-position: 100% 70%;
-    transform: rotate(4deg) scale(1.12);
-    opacity: 0.85;
-  }
-  75% {
-    background-position: 0% 70%;
-    transform: rotate(1deg) scale(1.06);
-    opacity: 0.72;
-  }
-}
-@keyframes ff-orb-drift-a {
-  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-  33% { transform: translate(38px, -46px) scale(1.18); opacity: 0.7; }
-  66% { transform: translate(-30px, 26px) scale(0.95); opacity: 0.55; }
-}
-@keyframes ff-orb-drift-b {
-  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-  33% { transform: translate(-44px, 34px) scale(1.16); opacity: 0.68; }
-  66% { transform: translate(34px, -30px) scale(0.96); opacity: 0.55; }
+/* ── Premium RGB cinematic glow (Login hero / brand moments) ──── */
+/* Large, independently animated radial-gradient blobs that visibly
+   travel around the login background, plus a slowly rotating color
+   wash sweeping cyan → blue → purple → pink. The blobs use built-in
+   radial falloff (no heavy filter blur) and transform-only animation,
+   so the motion is GPU-composited and clearly visible. Smooth and
+   premium, never flashing. Disabled for reduced-motion users. */
+.ff-rgb-cine {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
-.ff-brand-glow {
-  pointer-events: none;
+.ff-rgb-wash {
+  position: absolute;
+  inset: -55%;
   background: linear-gradient(
-    120deg,
-    rgba(34, 211, 238, 0.6),
-    rgba(56, 189, 248, 0.6),
-    rgba(167, 139, 250, 0.6),
-    rgba(244, 114, 182, 0.58)
+    135deg,
+    rgba(34, 211, 238, 0.3),
+    rgba(59, 130, 246, 0.3),
+    rgba(167, 139, 250, 0.3),
+    rgba(244, 114, 182, 0.3),
+    rgba(34, 211, 238, 0.3)
   );
-  background-size: 400% 400%;
-  filter: blur(72px);
-  animation: ff-brand-glow-anim 12s ease-in-out infinite;
+  background-size: 200% 200%;
+  filter: blur(60px);
+  opacity: 0.65;
+  will-change: transform;
+  animation: ff-cine-wash 24s linear infinite;
 }
-.ff-glow-orb-a {
-  animation: ff-orb-drift-a 12s ease-in-out infinite;
+@keyframes ff-cine-wash {
+  from { transform: rotate(0deg) scale(1); }
+  to   { transform: rotate(360deg) scale(1.15); }
 }
-.ff-glow-orb-b {
-  animation: ff-orb-drift-b 15s ease-in-out infinite;
+
+.ff-blob {
+  position: absolute;
+  width: 44vmax;
+  height: 44vmax;
+  border-radius: 9999px;
+  will-change: transform;
+}
+.ff-blob-cyan {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(34, 211, 238, 0.5),
+    rgba(34, 211, 238, 0.16) 55%,
+    rgba(34, 211, 238, 0) 72%
+  );
+}
+.ff-blob-blue {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(59, 130, 246, 0.48),
+    rgba(59, 130, 246, 0.14) 55%,
+    rgba(59, 130, 246, 0) 72%
+  );
+}
+.ff-blob-purple {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(167, 139, 250, 0.48),
+    rgba(167, 139, 250, 0.14) 55%,
+    rgba(167, 139, 250, 0) 72%
+  );
+}
+.ff-blob-pink {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(244, 114, 182, 0.45),
+    rgba(244, 114, 182, 0.13) 55%,
+    rgba(244, 114, 182, 0) 72%
+  );
+}
+
+.ff-blob-a {
+  top: -18%;
+  left: -14%;
+  animation: ff-blob-a 11s ease-in-out infinite;
+}
+.ff-blob-b {
+  top: -10%;
+  right: -16%;
+  animation: ff-blob-b 14s ease-in-out infinite;
+}
+.ff-blob-c {
+  bottom: -22%;
+  left: 14%;
+  animation: ff-blob-c 15s ease-in-out infinite;
+}
+.ff-blob-d {
+  bottom: -8%;
+  right: 2%;
+  animation: ff-blob-d 12s ease-in-out infinite;
+}
+
+@keyframes ff-blob-a {
+  0%, 100% { transform: translate(0, 0) scale(0.92); }
+  33%      { transform: translate(30vw, 26vh) scale(1.12); }
+  66%      { transform: translate(12vw, 52vh) scale(1.02); }
+}
+@keyframes ff-blob-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(-34vw, 20vh) scale(1.12); }
+  66%      { transform: translate(-18vw, 56vh) scale(0.94); }
+}
+@keyframes ff-blob-c {
+  0%, 100% { transform: translate(0, 0) scale(0.96); }
+  33%      { transform: translate(-26vw, -22vh) scale(1.1); }
+  66%      { transform: translate(20vw, -30vh) scale(1.02); }
+}
+@keyframes ff-blob-d {
+  0%, 100% { transform: translate(0, 0) scale(0.94); }
+  33%      { transform: translate(-30vw, -18vh) scale(1.08); }
+  66%      { transform: translate(-10vw, -44vh) scale(0.98); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ff-brand-glow,
-  .ff-glow-orb-a,
-  .ff-glow-orb-b {
+  .ff-rgb-wash,
+  .ff-blob {
     animation: none;
   }
 }

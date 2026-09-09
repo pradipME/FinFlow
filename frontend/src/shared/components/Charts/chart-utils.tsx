@@ -84,9 +84,9 @@ export function buildAreaPath(path: string, height: number): string {
 }
 
 export function formatAxisValue(value: number): string {
-  if (Math.abs(value) >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
-  if (Math.abs(value) >= 1_000) return `$${(value / 1_000).toFixed(0)}k`;
-  return `$${value.toFixed(0)}`;
+  if (Math.abs(value) >= 1_000_000) return `₹${(value / 1_000_000).toFixed(1)}M`;
+  if (Math.abs(value) >= 1_000) return `₹${(value / 1_000).toFixed(0)}k`;
+  return `₹${value.toFixed(0)}`;
 }
 
 export function useChartDimensions(width: number | undefined, height: number): { width: number; height: number } {

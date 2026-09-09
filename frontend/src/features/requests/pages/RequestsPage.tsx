@@ -46,8 +46,8 @@ function NewRequestModal({ onClose }: { onClose: () => void }) {
         targetAccountId: type === "CARD_REQUEST" ? targetAccountId : undefined,
         details:
           type === "ACCOUNT_REQUEST"
-            ? { accountType, nickname: nickname || null, currency: "USD" }
-            : { cardType, cardholderName, currency: "USD" },
+            ? { accountType, nickname: nickname || null, currency: "INR" }
+            : { cardType, cardholderName, currency: "INR" },
       },
       {
         onSuccess: () => {
